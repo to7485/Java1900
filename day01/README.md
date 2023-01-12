@@ -4,4 +4,4 @@
 - [JDK다운로드](https://www.oracle.com/java/technologies/downloads)
 
 ## 이클립스 설치하기
-- [Eclipse다운로드] (https://www.eclipse.org/)
+- [Eclipse다운로드](https://www.eclipse.org/)
