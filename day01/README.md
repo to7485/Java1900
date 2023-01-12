@@ -1,11 +1,19 @@
 # 실습 환경 구축하기
 
+## 내 PC에 실습을 위한 폴더 만들기
+내 PC -> D드라이브 진입 -> JAVA1900_이니셜 -> 안에 util,work 폴더만들기
+
+![image](https://user-images.githubusercontent.com/54658614/211975967-b510f6c6-1f98-4372-b52c-65c6ed39bb6e.png)
+
+<hr>
+
+
 ## 자바 설치하기
 - [JDK다운로드](https://www.oracle.com/java/technologies/downloads)
 
 ### 자바의 버전을 보면 많다 어떤 버전을 사용하는것이 좋은가??
 기업에서 이미 운영하고 있는 프로젝트들이 있을 것이다. 대부분 Java8버전으로 하는 경우가 많다.
-프로젝트를 새로 시작하는 경우 Java11, Java17을 사용하는 경우가 있다.
+프로젝트를 새로 시작하는 경우 Java11, Java17을 사용하는 4경우가 있다.
 
 ### 특정 자바 버전을 학습 해야 할까???
 12,17과 같은 특정 Java버전만을 "학습"할 필요가 없다.
@@ -38,4 +46,11 @@ win + r -> 실행창에 cmd -> java -verion 입력
 
 ![image](https://user-images.githubusercontent.com/54658614/211975334-e2287139-5269-4218-8dd0-1167fd62eea4.png)
 
+<span style="color:red">※ jdk를 먼저 설치하지 않으면 이클립스가 실행되지 않습니다!!</span>
+
+<hr>
+
+## 이클립스 실행해보기
+이클립스를 켜고 Browse를 눌러 우리가 만들어 놓은 work 폴더로 경로를 잡아주자.(앞으로 우리가 작업하는 프로젝트들은 work폴더에 저장될 것이다.)
+![image](https://user-images.githubusercontent.com/54658614/211976280-0159d649-c5d5-47c3-840a-09f4e37d4e24.png)
 
