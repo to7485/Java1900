@@ -46,7 +46,7 @@ win + r -> 실행창에 cmd -> java -verion 입력
 
 ![image](https://user-images.githubusercontent.com/54658614/211975334-e2287139-5269-4218-8dd0-1167fd62eea4.png)
 
-<span style="color:red">※ jdk를 먼저 설치하지 않으면 이클립스가 실행되지 않습니다!!</span>
+<span style="color:red"> ※ jdk를 먼저 설치하지 않으면 이클립스가 실행되지 않습니다!!</span>
 
 <hr>
 
