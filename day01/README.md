@@ -54,5 +54,6 @@ win + r -> 실행창에 cmd -> java -verion 입력
 
 ## 이클립스 실행해보기
 이클립스를 켜고 Browse를 눌러 우리가 만들어 놓은 work 폴더로 경로를 잡아주자.(앞으로 우리가 작업하는 프로젝트들은 work폴더에 저장될 것이다.)
+
 ![image](https://user-images.githubusercontent.com/54658614/211976280-0159d649-c5d5-47c3-840a-09f4e37d4e24.png)
 
