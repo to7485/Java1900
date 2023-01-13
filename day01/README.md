@@ -101,9 +101,83 @@ win + r -> 실행창에 cmd -> java -verion 입력
 
 ### 클래스를 작성하면 항상 main이라고 하는걸 작성해주자 지금 당장은 뭔지 모르겠지만 자바가 실행될 때 main 영역 안에 있는 코드가 실행된다.
 
-![image](https://user-images.githubusercontent.com/54658614/212240409-43e3b09e-921c-43cc-8c1b-74e1859e45cf.png)
+```java
+public class Test {
+	public static void main(String[] args) {
+		
+	}
+}
+```
+### System.out.println("hello world"); 작성해보기
+main의 영역 안에 System.out.println("hello world")를 적고 ctrl + f11를 눌러 실행을 해보도록 하겠습니다.<br>
+실행을 하기 전에는 ctrl + s를 눌러 꼭 저장을 해주도록 합시다!
+```java
+public class Test {
+	public static void main(String[] args) {
+		System.out.println("hello world");
+	}
+}
+```
+저장을 하고 실행을 하면 콘솔이라는 공간에 System.out.println() 소괄호 사이에 적은 문장이 출력되어 나오는 모습을 볼 수 있습니다.
+![image](https://user-images.githubusercontent.com/54658614/212241733-b89dbf5a-ae42-4ebd-b28c-53d89afbc2af.png)
 
+## 주석
+프로그램의 소스코드에 프로그래머의 의견이나 설명을 적을 수 있는데 이런 것을 주석(Comment)라고 합니다. 주석은 프로그램 소스에 삽입하더라도 프로그램의 수행에 전혀 영향을 끼치지 않습니다. 컴퓨터(JVM)에서 컴파일을 할 시 인식하지 못하는 코드이기 때문입니다.
 
+```java
+public class Test {
+	public static void main(String[] args) {
+    //한줄 주석 : //
+    /*
+    여
+    러
+    줄
+    주
+    석
+    */
+    //주석을 사용하는 이유 : 코드에 설명을 달아주기 위해
+    //sysout 적고 ctrl + spacebar 자동완성
+		System.out.println("hello world");
+	}
+}
+```
 
+## JVM
+### JVM이란?
+자바 가상 머신(Java Virtual Machine)은 자바 프로그램 실행환경을 만들어주는 소프트웨어입니다. 자바 코드를 컴파일 하여 바이트 코드로 만들면 이 코드가 자바 가상 머신 환경에서 실행됩니다. JVM은 자바 실행 환경 JRE(Java Runtime Environment)에 포함되어 있습니다. 현재 사용하는 컴퓨터의 운영체제에 맞는 자바 실행환경(JRE)가 설치되어 있다면 자바 가상 머신이 설치되어 있다는 뜻입니다.
 
+## 컴파일(Compile)
+프로그래머가 작성한 .java 코드(자바코드)를 .class 코드(바이트 코드)로 바꾸는 일련의 과정
 
+## 여러가지 형태의 데이터 출력해보기
+
+```java
+public class Test {
+	public static void main(String[] args) {
+    //한줄 주석 : //
+    /*
+    여
+    러
+    줄
+    주
+    석
+    */
+    //주석을 사용하는 이유 : 코드에 설명을 달아주기 위해
+    //sysout 적고 ctrl + spacebar 자동완성
+		System.out.println("hello world");
+		System.out.println(100);
+		System.out.println(100+50);
+		
+		//문장뒤에 숫자를 더하면 문장 뒤에 붙는구나
+		System.out.println("안녕하세요"+10);
+		
+		//코드는 항상 위에서 아래로, 좌에서 우로 진행이 되기 때문에 15:15가 나옵니다.
+		System.out.println(5+10+":"+(5+10));
+		
+		// "2 + 2 = "가 숫자 처럼 보이지만 ""안에 묶여있으면 문장 취급을 받고
+		//문장에 숫자를 더했기 때문에 22가 됩니다.
+		System.out.println("2 + 2 = " + 2 + 2);
+		System.out.println("2 + 2 = " + (2 + 2));	 
+	}
+}
+```
