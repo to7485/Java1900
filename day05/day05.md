@@ -268,8 +268,28 @@ Scanner 객체명 = new Scanner(System.in);
 	}//main
 }
 ```
+## for vs while
+for문은 내가 몇번 반복해야하는지 정확하게 알 때 사용을 한다.<br>
+while문은 몇번 반복해야하는지 정확하게 알 수 없을때도 사용이 가능하다<br>
 
-
+아래의 예제는 사용자가 -1을 입력하는 시기를 예측할 수 없습니다.
+```java
+Scanner sc = new Scanner(System.in);
+		
+System.out.print("정수를 입력해주세요 : ");
+int num = sc.nextInt();
+		
+while(num != -1) {
+	System.out.printf("입력한 정수 : %d\n",num);
+	System.out.print("정수를 입력해주세요 : ");
+	num = sc.nextInt();
+	if(num == -1) {
+		System.out.print("-1이 입력되어 종료합니다.");
+		break;
+	}
+			
+}
+```
 
 
 
