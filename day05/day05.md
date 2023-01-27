@@ -290,7 +290,162 @@ while(num != -1) {
 			
 }
 ```
+<hr>
+## 예제
 
+```java
+자바 1주차(2) 문제 - 1
+Scanner를 통해 정수 n을 입력받는다.
+그리고 1부터 입력받은 정수 n까지의 합을 계산하여 그 결과를 출력하는 프로그램을 작성.
+예를들어 정수 5를 입력받으면, 1 + 2 + 3 + 4 + 5의 연산결과인 15를 출력해야 한다.
+
+public class Work_Ex1 {
+	public static void main(String[] args) {
+		
+int result = 0;
+System.out.print("숫자입력 : ");
+Scanner scan = new Scanner(System.in);	
+int n = scan.nextInt();
+	for(int i = 1; i <= n; i++){
+		result += i;
+		System.out.println("결과 : " + result);
+  	}
+}//main
+
+
+자바 1주차(2) 문제 - 2
+Scanner를 통해 정수 n1, n2를 입력받는다.
+그리고 n1부터 n2까지의 합을 계산하여 그 결과를 출력하는 프로그램을 작성.
+예를들어 2와 5를 입력받으면, 2 + 3 + 4 + 5의 연산결과인 14를 출력해야 한다.
+
+public class Work_Ex2 {	
+	public static void main(String[] args) {
+		
+	int n1 = 0, n2 = 0;
+	int result = 0;
+		
+	System.out.print("첫번째 숫자입력 : ");	
+	Scanner scan = new Scanner(System.in);	
+	n1 = scan.nextInt();
+	System.out.print("두번째 숫자입력 : ");
+	n2 = scan.nextInt();
+		
+	//혹시 스왑을 사용하고 싶다면...	
+	if(n1 > n2){
+	    int n3 = n1;
+	    n1 = n2;
+	    n2 = n3;
+	}
+
+	for(int i = n1; i <= n2; i++){	
+		result += i;
+	}
+	System.out.println("결과 : " + result);
+    }
+}
+
+자바 1주차(2) 문제 - 3
+키보드에서 숫자를 두 개 입력 받아, 입력받은 두 수의 최소공배수 구하기.
+예를들어 2와 5를 입력받았다면 10을, 
+         3과 3을 입력받았다면 3이 출력되어야 한다.
+
+public class Work_Ex3 {
+	public static void main(String[] args) {
+		
+		int n1 = 0, n2 = 0;
+		
+		System.out.print("첫번째 숫자입력 : ");
+		Scanner scan = new Scanner(System.in);
+		n1 = scan.nextInt();
+		
+		System.out.print("두번째 숫자입력 : ");
+		n2 = scan.nextInt();
+		
+		int i = 0;
+		for(i = 1; i <= n1 * n2; i++){
+			
+			if(i % n1 == 0 && i % n2 == 0)
+				break;						
+		}
+		//while(true){
+			//i++;
+			//if(i % n1 == 0 && i % n2 == 0)
+				//break;
+		//}
+
+		//int i = 1;	
+		//while(!(i % n1 == 0 && i % n2 == 0)){
+			//i++;
+		//}
+		System.out.println("최소공배수는 " + i);
+	}
+}
+
+
+자바 1주차(2) 문제 - 4
+키보드에서 숫자를 두 개 입력 받아, 입력받은 두 수의 최대공약수 구하기.
+예를들어 10과 4를 입력받았다면 2가,3과 7을 입력받았다면 “최대공약수가 없습니다”라는 문자열이 출력 되어야 한다.
+
+public class Work_Ex4 {
+	public static void main(String[] args) {
+
+int n1 = 0, n2 = 0;
+int check = 0;
+	System.out.print("첫번째 숫자입력 : ");	Scanner scan = new Scanner(System.in);
+n1 = scan.nextInt();
+
+		System.out.print("두번째 숫자입력 : ");
+		n2 = scan.nextInt();
+
+		if(n1 >= n2)
+			check = n2;
+		else
+			check = n1;
+
+		int i;
+		for (i = check; i >= 1; i--) {
+			if ((n1 % i == 0) && (n2 % i == 0)) {
+				break;
+			}
+		}
+		
+		if (i == 1) {//두 숫자에는 1이외의 공통된 약수가 없다는 의미.
+			System.out.print("최대공약수가 없습니다.");	
+		}else {
+			System.out.print("최대공약수 : " + i);
+		}
+	}
+}
+
+자바 1주차(2) 문제 – 5
+키보드에서 숫자를 입력받으면 그 숫자가 소수인지 아닌지를 판별해주는 코드 작성.
+
+public class Work_Ex5 {
+	public static void main(String[] args) {
+
+		int n = 0;
+		
+		System.out.println("숫자를 입력하세요 : ");
+		Scanner scan = new Scanner(System.in);
+		
+		n = scan.nextInt();
+		
+		int i = 0;
+		for(i = 2; i <= n; i++){
+			
+			if(n % i == 0){
+				break;
+			}
+		}
+		
+		if(i == n)
+			System.out.println(n + "은(는) 소수입니다.");
+		else{
+			System.out.println(n + "은(는) 소수가 아닙니다.");
+		}
+	}
+}
+```
 
 
 
