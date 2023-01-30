@@ -388,6 +388,8 @@ public class FileEx {
 자바로 만들어진 모든 프로그램은 클래스로 이루어져 있습니다.
 우리가 문자열을 저장하기 위해 사용했던 String도 자바에 내장되어있는 클래스입니다.
 
+[자바문서](https://docs.oracle.com/javase/8/docs/api/index.html)
+
 ```java
 package ex_String;
 
