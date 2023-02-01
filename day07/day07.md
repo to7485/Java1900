@@ -384,6 +384,48 @@ Up!!
 숫자입력 : 25
 3회 만에 정답!!!!
 
+```java
+public class Start {
+
+	Random rnd = new Random();
+	
+	int rnum = rnd.nextInt(50)+1;
+	int count = 1;
+	public String check(int number) {
+		if(number == rnum) {
+			return "정답!";
+		} else if(number >rnum) {
+			return "DOWN!";
+		} else {
+			return "UP!";
+		}
+	}
+}
+
+main
+public class StartMain {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		
+		Start s = new Start();
+		
+		while(true) {
+			System.out.print("숫자입력 : ");
+			int number = sc.nextInt();
+			if(s.check(number).equals("정답!")) {
+				System.out.println(s.count+"회 만에 정답");
+				break;
+			} else {
+				System.out.println(s.check(number));
+				s.count++;
+			}
+			
+		}
+	}
+}
+```
+
 ---------------------------------------------------------------
 클래스를 이용한 입출금 로직 구현
 
