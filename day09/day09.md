@@ -296,6 +296,77 @@ public class SuperMain {
 	}
 }
 ```
+#### 상속과 super()를 이용한 문제
+Car 클래스는 gasGauge변수를 갖고 있고, 가스잔여량을 출력하는 함수인 showCurrentGauge()를 갖고 있다.<br>
+
+HybridCar 클래스는 electricGauge변수를 갖고 있고, Car 클래스를 상속하고 생성자를 생성할 때 gasGauge,electricGauge를 파라미터로 받는다.<br>
+메서드는 오버라이딩을 이용하여 잔여 가스와 잔여 전기량을 출력<br>
+	
+HybridWaterCar 클래스는 waterGauge변수를 갖고 있고, HybridCar 클래스를 상속받는다.<br>
+생성자 생성할 때는 gasGauge,electricGauge,waterGauge를 파라미터로 받는다.<br>
+메서드 오버라이딩을 이용하여 잔여 가스와 잔여 전기량, 잔여 물량 출력<br>
+	
+main에서 HybridWaterCar 객체를 생성하여 다음과 같은 결과를 출력하시오.<br>
+
+잔여 가스량 : 15<br>
+잔여 전기량 : 30<br>
+잔여 물량 : 25<br>
+
+#### Car 클래스 생성
+```java
+class Car {
+	private int gasolineGauge; // 변수에 private가 붙어 다른 메소드에서 접근X
+	Car(int gasolineGauge) { //생성자 오버로딩으로 파라미터를 받는다.
+		this.gasolineGauge = gasolineGauge; 
+	}
+	// 변수 출력을 위해 해당 출력 메소드를 통해 접근
+	public void showCurrentGauge() {
+		System.out.println("잔여 가솔린 : " + gasolineGauge);
+	
+	}
+}
+```
+#### HybridCar 클래스 생성
+```java
+class HybridCar extends Car	{
+	private int electricGauge;
+	HybridCar(int gasolineGauge, int electricGauge) {
+		super(gasolineGauge);
+// 상위 클래스의 변수는 상위 클래스 생성자에서 초기화할 수 있도록 매개변수 전달
+		this.electricGauge = electricGauge;	
+	}
+
+	public void showCurrentGauge() {
+		super.showCurrentGauge();// Car 출력문 호출
+		System.out.println("잔여 전기량 : " + electricGauge);
+	}
+}
+```
+#### HybridWaterCar 클래스 생성
+```java
+class HybridWaterCar extends HybridCar {
+	private int waterGauge;
+	HybridWaterCar(int gasolineGauge, int electricGauge, int waterGauge) {
+		super(waterGauge, electricGauge);
+		this.waterGauge = waterGauge;
+	}
+	public void showCurrentGauge() {
+		super.showCurrentGauge();
+// HybridCar을 호출함으로써 상위 클래스 출력문까지 함께 출력
+		System.out.println("잔여 워터량 : " + waterGauge);
+	}
+}
+```
+#### CarMain 클래스 생성
+```java
+class Main {
+	public static void main(String[] args) {
+		HybridWaterCar hwc = new HybridWaterCar(15, 25, 35);
+		hwc.showCurrentGauge();
+	}
+} 
+```
+[출처] [JAVA/자바] 상속 오버라이딩 예제|작성자 하늘달<br>
 
 ### Object상속관계
 #### ExtendsEx1클래스 정의
