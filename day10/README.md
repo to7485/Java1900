@@ -645,48 +645,53 @@ jvm이 스레드 처리시 하는 일 -> 스레드 스케쥴링<br>
 - 자바 스레드로 작동할 작업이 무엇인지 코드로 작성
 - 스레드 코드가 실행할 수 있도록 JVM한테 요청
 
+<hr>
 
-
-
-
-
-스레드의 생성
+#### 스레드의 생성
 
 스레드 작업 코드 작성 방법에는 두가지가 있다.
 
-1) Thread 클래스 상속
+1) Thread 클래스 상속<br>
 
-calss ThreadTest extends Thread{
+#### ThreadTest 클래스 생성
+
+```java
+public calss ThreadTest extends Thread{
 	public void run() { //run()메서드 오버라이딩
 		//작업할 내용
 	}
 }
+```
 
-2) Runnable 인터페이스 구현
-calss ThreadTest implements Runnable{
+2) Runnable 인터페이스 구현<br>
+
+#### RunnableTest 클래스 생성
+```java
+public calss RunnableTest implements Runnable{
 	public void run() { //run()메서드 오버라이딩 필수!
 		//작업할 내용
 	}
 }
-
+```
+#### ThreadMain 클래스 생성
+```java
 스레드 클래스 상속시 스레드 코드가 실행할 수 있도록 JVM에 요청
-ThreadTest t1 = new ThreadTest(); //객체생성
-t1.start();
+public class ThreadMain{
+    public static void main(String[]args){
+	ThreadTest t1 = new ThreadTest(); //객체생성
+	t1.start();
 
-러너블 인터페이스 구현시 스레드 코드가 실행할 수 있도록 JVM에 요청
-ThreadTest t2 = new ThreadTest(); //객체 생성
-Thread t = new Thread(t2);
-t.start();
+	러너블 인터페이스 구현시 스레드 코드가 실행할 수 있도록 JVM에 요청
+	ThreadTest t2 = new ThreadTest(); //객체 생성
+	Thread t = new Thread(t2);
+	t.start();
+    }
+}
+```
+#### ex2_Thread 패키지 만들기
 
-
-
-
-
-
-
-
-
-MyThread 클래스 정의
+#### MyThread 클래스 정의
+```java
 public class MyThread extends Thread{
 
 	@Override
@@ -697,7 +702,9 @@ public class MyThread extends Thread{
 		}
 	}
 }
-MyThread2 클래스 정의
+```
+#### MyThread2 클래스 정의
+```java
 public class MyThread2 implements Runnable{
 	@Override
 	public void run() {
@@ -707,8 +714,10 @@ public class MyThread2 implements Runnable{
 		}
 	}
 }
+```
 
-ThreadMain클래스 정의
+#### ThreadMain클래스 정의
+```java
 public class ThreadMain {
 	public static void main(String[] args) {
 		
@@ -728,10 +737,13 @@ public class ThreadMain {
 		}
 	}
 }
+```
+#### ex3_Thread 패키지 생성
 
-MainThread 클래스 생성 – 메인 메서드도 스레드 라는걸 증명
-스레드 클래스에서 제공하는 현재 스레드의 이름과 상태 우선순위를 확인해보려고 한다.
+#### MainThread 클래스 생성 – 메인 메서드도 스레드 라는걸 증명
+스레드 클래스에서 제공하는 현재 스레드의 이름과 상태 우선순위를 확인해보려고 한다.<br>
 
+```java
 public static void main(String [] args) {
 
 	ThreadName tn = new ThreadName();
@@ -741,9 +753,11 @@ public static void main(String [] args) {
 	System.out.println(“현재실행되고있는스레드의상태: Thread.currentThread().getState());
 	System.out.println(“현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
 }
+```
 
-ThreadName 클래스 생성
+#### ThreadName 클래스 생성
 
+```java
 class ThreadName extends Thread {
 	@Override	
 	public void run() {
@@ -753,30 +767,28 @@ class ThreadName extends Thread {
 	System.out.println(“현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
 	}
 }
+```
 
+### 스레드의 라이프 사이클
+스레드는 현재 상태에 따라 네 가지 상태로 분류할 수 있으며, 상태가 변화하는 주기를 Life Cycle이라고 한다.<br>
 
+#### 스레드 상태
+new : 스레드가 new를 통해서 객체화 된 상태, Runnable이 될 수 있는 상태이며 아직 대기열에 올라가지 못한 상태<br>
 
+Runnable : start()메서드가 호출되면 new 상태에서 Runnable상태가 된다. Runnable상태가 되면 실행할 수 있는 상태로 대기하게 되며 스케줄러에 의해 선택되면 run()메서드를 바로 수행한다.<br>
 
-----------------------------------------------------------------------------
+Blocked : 실행 중인 스레드가 sleep(),join()메서드를 호출하게 되면, Blocked상태가 된다.<br>
+Blocked상태가 되면 스케줄러에 의해 선택받을 수 없다.<br>
 
-스레드의 라이프 사이클
-스레드는 현재 상태에 따라 네 가지 상태로 분류할 수 있으며, 상태가 변화하는 주기를
-Life Cycle이라고 한다.
-
-<스레드 상태>
-new : 스레드가 new를 통해서 객체화 된 상태, Runnable이 될 수 있는 상태이며 아직 대기열에 올라가지 못한 상태
-
-Runnable : start()메서드가 호출되면 new 상태에서 Runnable상태가 된다. Runnable상태가 되면 실행할 수 있는 상태로 대기하게 되며 스케줄러에 의해 선택되면 run()메서드를 바로 수행한다.
-
-Blocked : 실행 중인 스레드가 sleep(),join()메서드를 호출하게 되면, Blocked상태가 된다.
-Blocked상태가 되면 스케줄러에 의해 선택받을 수 없다.
-
-Dead : run()메서드의 실행을 모두 완료하게 되면 스레드는 Dead상태가 된다. 할당받은 메모리와 정보 모두 삭제된다.
+Dead : run()메서드의 실행을 모두 완료하게 되면 스레드는 Dead상태가 된다. 할당받은 메모리와 정보 모두 삭제된다.<br>
 
 ----------------------------------------------------------------------------
-sleep() 스레드를 지정한 시간동안 block상태로 만든다 시간은 1000분의 1초 까지 결정할 수 있으며, 지정된 시간이 지나면 다시 runnable(실행가능한)상태로 돌아간다.
+#### sleep() 스레드를 지정한 시간동안 block상태로 만든다 시간은 1000분의 1초 까지 결정할 수 있으며, 지정된 시간이 지나면 다시 runnable(실행가능한)상태로 돌아간다.
 
-SleepThread클래스 생성
+#### ex4_Thread 패키지 생성
+
+#### SleepThread클래스 생성
+```java
 public class SleepThread extends Thread{
 	public void run() {
 		System.out.println(“카운트다운 5초”);
@@ -792,18 +804,21 @@ public class SleepThread extends Thread{
 		System.out.println(“종료!”);
 	}
 }
-
-SleepMain 클래스 생성
+```
+#### SleepMain 클래스 생성
+```java
 public class SleepMain{
 	public static void main(String[] args) {
 		SleepThread st = new SleepThread();
 		st.start();
 	}
 }
-----------------------------------------------------------------------------
-yield() : 자신의 시간을 양보하는 메서드, 스레드가 작업을 수행하던 중yield()를 만나면, 자신에게 할당된 시간을 다음 차례 스레드에게 양도
+```
 
-YieldTest1 클래스 생성
+#### yield() : 자신의 시간을 양보하는 메서드, 스레드가 작업을 수행하던 중yield()를 만나면, 자신에게 할당된 시간을 다음 차례 스레드에게 양도
+
+#### YieldTest1 클래스 생성
+```java
 public class YieldTest1 implements Runnable{
 	public void run() {
 		for(int I = 0; i<30; I++) {
@@ -812,7 +827,9 @@ public class YieldTest1 implements Runnable{
 		}
 	}
 }
-YieldTest2 클래스 생성
+```
+#### YieldTest2 클래스 생성
+```java
 public class YieldTest2 implements Runnable{
 	public void run() {
 		for(int I = 0; i<30; I++) {
@@ -820,7 +837,10 @@ public class YieldTest2 implements Runnable{
 		}
 	}
 }
-YieldMain 클래스 생성
+```
+
+#### YieldMain 클래스 생성
+```java
 public class YieldMain{
 	public static void main(String[] args) {
 		YieldTest1 yt1 = new YieldTest1();
@@ -831,10 +851,12 @@ public class YieldMain{
 		t2.start();
 	}
 }
-----------------------------------------------------------------------------
-join() : 특정한 메서드가 작업을 먼저 수행할 때 사용, 실행 순서를 지켜야 하는 스레드들을 제어한다.
+```
 
-JoinTest1 클래스 생성
+#### join() : 특정한 메서드가 작업을 먼저 수행할 때 사용, 실행 순서를 지켜야 하는 스레드들을 제어한다.
+
+#### JoinTest1 클래스 생성
+```java
 public class JoinTest1 implements Runnable{
 	public void run() {
 		for(int I = 0; i<10; I++) {
@@ -844,7 +866,9 @@ public class JoinTest1 implements Runnable{
 		System.out.println(“<<t1완료>>”);
 	}
 }
-JoinTest2 클래스 생성
+
+#### JoinTest2 클래스 생성
+```java
 public class JoinTest2 implements Runnable{
 	public void run() {
 		for(int I = 0; i<10; I++) {
@@ -853,23 +877,9 @@ public class JoinTest2 implements Runnable{
 		System.out.println(“<<t2완료>>”);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-JoinMain 클래스 생성
+```
+#### JoinMain 클래스 생성
+```java
 public class JoinMain{
 	public static void main(String[] args) {
 		JoinTest1 jt1 = new JoinTest1();
@@ -895,209 +905,15 @@ public class JoinMain{
 
 	}
 }
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-----------------------------------------------------------------------------
-멀티스레드.
-
-Thread_test1클래스 정의
-public class Thread_test1 extends Thread{
-	
-	@Override
-	public void run() {//스레드 클레스에는 스레드 작동을 위한 run()메서드가 있다.
-		
-		for(int i = 0; i < 50; i++){
-			
-			System.out.print("1");
-		}
-	}
-}
-
-Thread_test2클래스 정의
-public class Thread_test2 extends Thread{
-
-	@Override
-	public void run() {
-		for(int i = 0; i < 50; i++){
-
-			System.out.print("2");
-		}
-	}
-}
-
-Thread_Ex클래스 정의
-public class Thread_Ex_Main{
-	public static void main(String[] args) {
-		Thread_test1 t1 = new Thread_test1();
-		Thread_test2 t2 = new Thread_test2();
-		
-		t1.start();
-		t2.start();
-		//실행하면 스레드는 동시에 진행되는 것이 아니라 
-		//번갈아가며 실행된다는 것을 알 수 있다.
-	}
-}
-
------------------------------------------------------------------------예제 1
-
-Thread_Ex클래스 정의(스레드 sleep예제)
-public class Thread_Ex extends Thread{
-	
-	private int[] temp;
-	
-	public Thread_Ex(){//생성자
-		temp = new int[10];
-		for(int i = 0; i < temp.length; i++){
-			temp[i] = i;
-		}
-	}
-	
-	@Override
-	public void run() {//스레드 클레스에는 스레드 작동을 위한 run()메서드가 있다.
-		
-		for(int i : temp){
-			
-			try {
-				Thread.sleep(1000);//1초 대기
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			System.out.println("temp : " + temp[i]);
-		}
-	}
-}
-
-Thread_Ex_Main클래스 정의
-public class Thread_Ex_Main {
-	public static void main(String[] args) {
-		Thread_Ex t1 = new Thread_Ex();
-		t1.start(); //start()메서드를 호출하면 run()메서드 내부의 연산을 처리.
-
-		try{
-			Thread.sleep(2000);
-			System.out.println(“프로그램 종료”);	
-		}catch(Exption e){
-			e.printStackTrace();
-		}
-	}	
-}
-----------------------------------------------------------------------예제2
-
-Runnable인터페이스를 이용한 스레드 생성법
-
-Thread_test클래스 정의
-public class Thread_test1 implements Runnable {
-
-	int temp[];
-	public Thread_test1(){
-		temp = new int[10];
-		for(int i = 0; i < temp.length; i++){
-			temp[i] = i;
-		}
-	}
-	
-	@Override
-	public void run() {
-		for(int i = 0; i < temp.length; i++){
-			
-			try {
-				Thread.sleep(1000);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			System.out.println("temp: " + temp[i]);
-		}
-	}
-}
-
-Thread_Ex_Main클래스 정의
-public class Thread_Ex_Main{
-	public static void main(String[] args) {
-		//Runnable을 구현하는 클래스를 이용한 객체화
-		Thread_test1 t1 = new Thread_test1();
-		
-		//스레드를 생성하여 파라미터로 Runnable객체를 넣어줘야 한다.
-		Thread t2 = new Thread(t1);
-		t2.start();
-	}
-}
-----------------------------------------------------------------------예제3
-
-Thread_Ex_Main클래스 정의
-public class Thread_Ex_Main implements Runnable{
-	public static void main(String[] args) {
-		
-		System.out.println("메인클래스 시작");
-		Thread_Ex_Main t1 = new Thread_Ex_Main();
-		//Runnable t1 = new Thread_Ex_Main();
-		Thread mThread = new Thread(t1);//스레드 생성
-		mThread.start();//run()호출
-		System.out.println("메인클래스 종료");
-		
-		//결과를 보면
-		//메인 클래스 시작
-		//run()
-		//first()
-		//second()
-		//메인클래스 종료
-		//위의 순서대로 나와야 할 것 같지만 실제로는 그렇지 않다.
-		
-		//메인클래스 시작
-		//메인클래스 종료
-		//run()
-		//first()
-		//second()
-		//이렇게 출력이 된다.
-		
-		//메인클래스가 실행된 이후에
-		//스레드 객체를 호출하고
-		//start()를 사용해 run()을 호출했지만
-		//run()이 호출되기 전에 
-		//그 아래줄인 '메인클래스 종료'가 먼저 출력되었기 때문
-		
-		//이처럼 스레드를 사용하면
-		//위에서 아래로, 좌에서 우로 라고 하는
-		//작업순서를 따르게 되지 않을수도 있다.
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		System.out.println("run()");
-		first();
-	}
-	
-	public void first(){
-		System.out.println("first()");
-		second();
-	}
-	
-	public void second(){
-		System.out.println("second()");
-	}
-}
-----------------------------------------------------------------------예제4
-
-데몬쓰레드
+### 데몬쓰레드
 데몬 쓰레드는 다른 일반 쓰레드의 작업을 돕는 보조적인 역할을 수행하는 쓰레드이다.
 함께 구동중인 일반 스레드가 종료되면 데몬스레드도 함께 종료된다.
 예를들어 문서를 작성하는 도중에 3초 간격으로 자동 세이브가 필요하다고 가정하여 코드를 작성해 보자.
 
-DaemonMain 클래스 생성
+#### DaemonMain 클래스 생성
+```java
 public class DaemonMain implements Runnable{
 	
 	static boolean autoSave = false;
@@ -1107,12 +923,13 @@ public class DaemonMain implements Runnable{
 		DaemonMain dm = new DaemonMain();
 		Thread t = new Thread(dm);
 		
-		//t라는 스레드가 데몬스레드임을 명시하는 메서드.
-		//메인스레드가 종료될 때 함께 종료되도록 한다.
-		t.setDaemon(true);
 		
-		//run()메서드 시작
-		t.start();
+		
+		t.setDaemon(true);//t라는 스레드가 데몬스레드임을 명시하는 메서드.
+				  //메인스레드가 종료될 때 함께 종료되도록 한다.
+		
+		
+		t.start();//run()메서드 시작
 		
 		for(int i = 1; i <= 15; i++){
 			
@@ -1149,52 +966,9 @@ public class DaemonMain implements Runnable{
 		}
 	}//run()
 }
+```
 
-스레드의 join기능
-이전 예제와 같지만, join메서드를 이용하여, 작업의 결과물을 다르게 출력해보자.
-
-ThreadJoin 클래스 정의
-public class ThreadJoin implements Runnable{
-	public static void main(String[] args) {
-		
-		System.out.println("메인클래스 시작");
-		ThreadJoin t1 = new ThreadJoin();
-		//Runnable t1 = new ThreadJoin();
-		Thread mThread = new Thread(t1);//스레드 생성
-		mThread.start();//run()호출
-		
-		try {
-			//join메서드를 사용하면
-			//해당스레드의 run()메서드가 완전히 작업을 마칠때까지
-			//메인스레드에서 응답을 기다리게 된다.
-			mThread.join();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		System.out.println("메인클래스 종료");	
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		System.out.println("run()");
-		first();
-	}
-	
-	public void first(){
-		System.out.println("first()");
-		second();
-	}
-	
-	public void second(){
-		System.out.println("second()");
-	}
-}
-
-
-
-
-----------------------------------------------------------------------예제5
+```java
 문제 : 
 스캐너를 이용하여 키보드에서 숫자를 입력받고
 스레드에서 입력받은 숫자가 1씩 감소하다가 0이 되었을 때
@@ -1220,8 +994,10 @@ public class ThreadCount implements Runnable{
 		}
 		System.out.println("종료");
 	}
+```
 
-Main클래스
+#### Main클래스 생성
+```java
 	public static void main(String[] args) {
 
 		System.out.print("값을 입력 : ");
@@ -1233,13 +1009,14 @@ Main클래스
 	}
 
 }
-
+```
 
 
 ------------------------------------------------------------------예제(문제)6
 
-(심심풀이) Thread.sleep()을 이용하여 
-희한한 달리기 게임을 만들어보자ㅎㅎ(함께 해보기)
+(심심풀이) Thread.sleep()을 이용하여 <br>
+희한한 달리기 게임을 만들어보자ㅎㅎ(함께 해보기)<br>
+```java
 public class Runners {
 	public static void main(String[] args) {
 		
@@ -1304,20 +1081,127 @@ System.out.println("--------------------------------------------");
 		}//while
 	}//main end
 }//class end
-
----------------------------------------------------------달리기
+```
+```
 자바문제 –스레드(암산퀴즈) 출제!!
+QuizThread클래스를 만들어 스레드를 상속 받는다.
+startGame()메서드를 만들고 그 안에서 1 ~ 100사이의 난수 두 개를 더하는 문제를 출제
 
-스레드 동기화(Synchronized)
-휴대폰으로 음악이나 영상을 동기화 하게되면, 동기화가 끝날때까지 휴대폰은 다른작업을 할 수가 없죠?? 그게 이 동기화 스레드의 구조인데요
-두 개 이상의 스레드가 하나의 자원을 공유할 경우, 동기화 문제가 발생한다.
-변수는 하나인데, 두 개의 스레드가 동시에 한 변수의 값을 변경하다가 오류가 발생할수도 있기 때문입니다.
+키보드에서 답을 입력하여 5문제가 정답처리 될 때까지 로직을 반복한다.
 
-내가 컴퓨터로 작업을 하다가 잠시 자리를 비운 사이에 누군가가 내 컴퓨터에 손을 대서 내가 하고 있던 작업내용을 바꿔버리지 못하게 하기 위해서, 내 문서작업이 끝날때까지 다른사람이 손대지 못하도록 컴퓨터를 잠궈둘 필요가 있다.
+정답을 맞히고 난 후에 모든 문제를 맞히는데 몇 초가 걸렸는지를 화면에 출력하며 프로그램 종료.
 
-이처럼 특정 스레드들이 공유하는 한 개의 자원을 사용중일 때, 현재 자원을 사용중이지 않은 다른스레드가 작업을 수행하지 못하게 하기 위해 동기화가 필요하다.
 
-SynchronizedEx 클래스 정의
+QuizMain클래스를 만들고 이 메인 클래스에서는
+
+QuizThread qt = new QuizThread();
+		qt.start();//스레드 구동
+		qt.startGame();//문제풀이 함수
+
+위의 세 줄 이외의 다른 코드는 추가하지 않도록 한다.
+
+
+단, 사용자가 문제의 정답으로 정수 이외의 문자를 입력했을 경우에
+“정답은 정수로 입력하세요”라는 문장이 출력되도록 한다.
+
+---------실행 결과----------- 
+
+23 + 48 = 71
+정답!!
+66 + 100 = 166
+정답!!
+68 + 52 = 1
+오답
+61 + 51 = 112
+정답!!
+9 + 48 = 57
+정답!!
+53 + 28 = 81
+정답!!
+결과 : 24초...
+```
+#### QuizThread클래스 생성
+```java
+public class QuizThread extends Thread{
+
+	int su1, su2;
+	int timer = 0;
+	int playCount = 0;
+	boolean isCheck = true;
+	final int FINISH = 5;//출제 문제 갯수
+
+	public void startGame(){
+
+		while(isCheck){
+
+			try {
+				su1 = new Random().nextInt(100) + 1;
+				su2 = new Random().nextInt(100) + 1;
+				System.out.print(su1 + " + " + su2 + " = ");
+				Scanner scan = new Scanner(System.in);
+				int result = scan.nextInt();
+
+				if(result == (su1 + su2)){
+					System.out.println("정답!!");
+				}else{
+					System.out.println("오답");
+					continue;
+				}	
+
+				playCount++;
+
+				if(playCount == FINISH){
+					System.out.println("결과 : " 
+							       + timer + "초...");
+					isCheck = false;
+				}
+				
+			} catch (Exception e) {
+				System.out.println("정답은 정수로 입력하세요");
+			}
+		}
+	}
+
+	@Override
+	public void run() {
+
+		while (isCheck) {
+
+			try {
+				Thread.sleep(1000);
+				timer++;
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			}			
+		}
+	}
+}
+```
+#### QuizMain클래스 생성
+```java
+public class QuizMain {
+	public static void main(String[] args) {
+
+		QuizThread qt = new QuizThread();
+		qt.start();
+		qt.startGame();
+		
+	}
+}
+```
+
+#### 스레드 동기화(Synchronized)
+휴대폰으로 음악이나 영상을 동기화 하게되면, 동기화가 끝날때까지 휴대폰은 다른작업을 할 수가 없죠?? 그게 이 동기화 스레드의 구조인데요<br>
+두 개 이상의 스레드가 하나의 자원을 공유할 경우, 동기화 문제가 발생한다.<br>
+변수는 하나인데, 두 개의 스레드가 동시에 한 변수의 값을 변경하다가 오류가 발생할수도 있기 때문입니다.<br>
+
+내가 컴퓨터로 작업을 하다가 잠시 자리를 비운 사이에 누군가가 내 컴퓨터에 손을 대서 내가 하고 있던 작업내용을 바꿔버리지 못하게 하기 위해서, 내 문서작업이 끝날때까지 다른사람이 손대지 못하도록 컴퓨터를 잠궈둘 필요가 있다.<br>
+
+이처럼 특정 스레드들이 공유하는 한 개의 자원을 사용중일 때, 현재 자원을 사용중이지 않은 다른스레드가 작업을 수행하지 못하게 하기 위해 동기화가 필요하다.<br>
+
+#### SynchronizedEx 클래스 정의
+```java
 public class SynchronizedEx implements Runnable{
 
 	private long money = 10000;//잔액
@@ -1376,8 +1260,10 @@ public class SynchronizedEx implements Runnable{
 		}
 	}
 }
+```
+#### SyncMain 클래스 정의
 
-SyncMain 클래스 정의
+```java
 public class SyncMain {
 	public static void main(String[] args) {
 		SynchronizedEx atm = new SynchronizedEx();
@@ -1390,16 +1276,18 @@ public class SyncMain {
 		son.start();
 	}
 }
+```
 ----------------------------------------------------------------------예제6
 
-wait()과 notify()
+#### wait()과 notify()
 
-스레드가 진행중에 wait()을 만나면 일시적으로 정지된다.
-스레드가 구동되고 있을 때 일시적으로 대기상태에 보내고, 다른 스레드에게 제어권을 넘긴다.
-wait()을 만나 대기상태에 빠진 스레드는 notify()를 만나 재 구동된다.
-두 개 이상의 스레드가 구동중일 때 한 개의 동기화 스레드가 작업을 완전히 마칠때까지 기다렸다가 다른 스레드의 작업이 수행되는 것이 아니라 동기화 진행중에 일시적으로 스레드를 정지시키고 다른 스레드가 작업을 할 수 있다.
+스레드가 진행중에 wait()을 만나면 일시적으로 정지된다.<br>
+스레드가 구동되고 있을 때 일시적으로 대기상태에 보내고, 다른 스레드에게 제어권을 넘긴다.<br>
+wait()을 만나 대기상태에 빠진 스레드는 notify()를 만나 재 구동된다.<br>
+두 개 이상의 스레드가 구동중일 때 한 개의 동기화 스레드가 작업을 완전히 마칠때까지 기다렸다가 다른 스레드의 작업이 수행되는 것이 아니라 동기화 진행중에 일시적으로 스레드를 정지시키고 다른 스레드가 작업을 할 수 있다.<br>
 
-Account클래스 정의
+#### Account클래스 정의
+```java
 public class Account {
 	
 	int balance = 1000;//잔액
@@ -1428,9 +1316,11 @@ public class Account {
 		notify();//정지된 스레드를 실행
 	}
 }
+```
 
+#### AccountThread클래스 생성
 
-AccountThread클래스 생성
+```java
 public class AccountThread implements Runnable{
 
 	Account acc;//Account객체 준비
@@ -1460,8 +1350,9 @@ public class AccountThread implements Runnable{
 		}
 	}
 }
-
-AccountMain클래스 정의
+```
+#### AccountMain클래스 정의
+```java
 public class AccountMain {
 	public static void main(String[] args) {
 
@@ -1481,6 +1372,6 @@ public class AccountMain {
 		}
 	}
 }
-
+```
 
 
