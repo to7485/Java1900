@@ -392,7 +392,7 @@ Up!!
 숫자입력 : 25
 3회 만에 정답!!!!
 
-```java
+
 public class Start {
 
 	Random rnd = new Random();
