@@ -774,10 +774,10 @@ public class DataOutputEx {
 	}
 }
 ```
------------------------------------------------------------------------예제2
 byte스트림과 char스트림의 연결
 
-ByteCharReader클래스 정의
+#### ByteCharReader클래스 정의
+```java
 public class ByteCharReader {
 	public static void main(String[] args) throws IOException {
 		//byte스트림과 char스트림의 연결
@@ -801,3 +801,4 @@ public class ByteCharReader {
 			br.close();
 	}
 }
+```
