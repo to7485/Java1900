@@ -9,6 +9,8 @@ Set은 java.util 패키지에 존재하는 인터페이스입니다.<br>
 
 ex1_set패키지 생성<br>
 
+#### HashSet
+
 #### Ex1_Set 클래스 정의
 ```java
 public class Ex1_Set {
@@ -73,6 +75,55 @@ while(true) {
      for(int I = 0; i< arr.length; I++) {
         System.out.println(arr[i] + “ ”);
     }
+}
+```
+#### TreeSet
+TreeSet은 이진탐색트리 중에서도 성능을 향상시킨 레드-블랙 트리(Red-Black Tree)로 구현되어 있습니다.<br>
+레드 블랙 트리는  부모노드보다 작은 값을 가지는 노드는 왼쪽 자식으로, 큰 값을 가지는 노드는 오른쪽 자식으로 배치하여<br>
+데이터의 추가나 삭제 시 트리가 한쪽으로 치우쳐지지 않도록 균형을 맞추어줍니다.<br>
+
+![image](https://user-images.githubusercontent.com/54658614/221473694-d5356b1e-c9d8-422e-9537-8cda905691e1.png)
+
+#### Ex1_TreeSet
+```java
+TreeSet<Integer> set1 = new TreeSet<Integer>();//TreeSet생성
+TreeSet<Integer> set2 = new TreeSet<>();//new에서 타입 파라미터 생략가능
+TreeSet<Integer> set3 = new TreeSet<Integer>(set1);//set1의 모든 값을 가진 TreeSet생성
+TreeSet<Integer> set4 = new TreeSet<Integer>(Arrays.asList(1,2,3));//초기값 지정
+
+TreeSet<Integer> set = new TreeSet<Integer>();//TreeSet생성
+
+//TreeSet에 값 추가하기
+set.add(7);
+set.add(4);
+set.add(9);
+set.add(1);
+set.add(5);
+
+```
+![image](https://user-images.githubusercontent.com/54658614/221473842-753ae642-d3a6-4d8f-a0ac-753fe891a840.png)
+
+```java
+//TreeSet값 삭제
+TreeSet<Integer> set = new TreeSet<Integer>();//TreeSet생성
+set.remove(1);//값 1 제거
+set.clear();//모든 값 제거
+
+//TreeSet크기 구하기
+TreeSet<Integer> set = new TreeSet<Integer>(Arrays.asList(1,2,3));//초기값 지정
+System.out.println(set.size());//크기 : 3
+
+//Tree에 값 출력하기
+TreeSet<Integer> set = new TreeSet<Integer>(Arrays.asList(4,2,3));//초기값 지정
+System.out.println(set); //전체출력 [2,3,4]
+System.out.println(set.first());//최소값 출력
+System.out.println(set.last());//최대값 출력
+System.out.println(set.higher(3));//입력값보다 큰 데이터중 최소값 출력 없으면 null
+System.out.println(set.lower(3));//입력값보다 작은 데이터중 최대값 출력 없으면 null
+		
+Iterator iter = set.iterator();	// Iterator 사용
+while(iter.hasNext()) {//값이 있으면 true 없으면 false
+    System.out.println(iter.next());
 }
 ```
 -------------------------------------------------------------
