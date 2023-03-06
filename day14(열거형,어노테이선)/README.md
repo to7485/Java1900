@@ -262,9 +262,12 @@ public void method() {
 '@Test'는 이 메서드를 테스트해야 한다는 것을 테스트 프로그램에게 알리는 역할을 하며, 
 메서드가 포함된 프로그램 자체에는 아무런 영향을 미치지 않는다. 주석처럼 존재하지 않는 것이나 다름없다.
 ```
+
+### 표준 어노테이션
+
 |어노테이션|설명|용도|
 |------|---|---|
-|@Override|컴파일러에게 재정의 하는 메서드라는 것을 알린다.|
+|@Override|컴파일러에게 재정의 하는 메서드라는 것을 알린다.| 메서드명,반환값이 일치하는지 판단해서 오류를 발생시킨다.
 |@Deprecated|앞으로 사용되지 않을 것을 권장하는 대상에게 붙인다.|
 |@SuppressWarnings|컴파일러의 특정 경고메세지가 나타나지 않게 해준다.| 경고를 무시해준다.
 |@SafeVarargs|지네릭스 타입의 가변인자에 사용한다.(JDK1.7)| (매개변수에 가변 인수를 쓸 때 발생하는 예외를 억제할 때)경고를 무시해준다.
@@ -275,12 +278,6 @@ public void method() {
 |@Inherited*|어노테이션이 하위 클래스에 상속되도록 한다.|
 |@Retention*|어노테이션이 유지되는 범위를 지정하는데 사용한다.|
 |@Repeatable*|어노테이션을 반복해서 적용할 수 있게 한다.(JDK1.8)|
-
-### 표준 어노테이션
-- 메서드 앞에만 붙일 수 있는 어노테이션
-- 상위클래스의 메서드를 재정의 하는 것이라는 걸 컴파일러에게 알려주는 역할을 한다.
-- 재정의할 때 메서드 앞에 '@Override'라고 어노테이션을 붙이면, 컴파일러가 같은 이름의 메서드가 상위 클래스에 있는지 확인하고 없으면 에러메세지를 출력한다.
-- 재정의할 때 메서드 앞에 '@Override'를 붙이는 것이 필수는 아니지만 알아내기 어려운 실수를 미연에 방지해 주므로 붙이는 것이 좋다.
 
 ex1_annotaion 패키지 생성
 
@@ -296,24 +293,12 @@ ex1_annotaion 패키지 생성
 //@SafeVarargs (매개변수에 가변 인수를 쓸 때 발생하는 예외를 억제할 때)경고를 무시해준다.
 //@FunctionalInterface 람다식(인터페이스 - 추상메서드가 1개만 정의된 인터페이스)
 
-//2. 메타 어노테이션
-// 어노테이션을 만들기 위한 어노테이션
-// @Target - @Target(TYPE), @Target({TYPE, FIELD, TYPE_USE, METHOD})
-// @Documented
-// @Inherited
-// @Retention
-// @Repeatable
-
-
-
 
 @FunctionalInterface -이 어노테이션을 사용하면 인터페이스에 추상메서드를 하나만 정의할 수 있다.
 interface testInter{
 	void method1();
 	void method2();
 }
-
-
 
 
 public class Ex1_annotaion {
@@ -325,10 +310,244 @@ public class Ex1_annotaion {
 }
 ```
 
+### 메타 어노테이션
+- 어노테이션을 만들기 위한 어노테이션
+- 스프링에서는 어노테이션으로 많이 통제한다.
+- java.lang.annotaion 패키지에 정의되어 있다.
+
+### @Target
+
+어노테이션이 적용 가능한 대상(범위)을 지정하는데 사용된다.
+
+|어노테이션|설명|
+|------|---|
+|@Target(ElementType.TYPE)|클래스의 어떤 요소에나 적용 가능, 기본값|
+|@Target(ElementType.FIELD)|클래스의 특정 필드|
+|@Target(ElementType.METHOD)|클래스의 메서드|
+|@Target(ElementType.PARAMETER)|메서드의 파라미터|
+|@Target(ElementType.CONSTRUCTOR)|생성자|
+|@Target(ElementType.ANNOTATION_TYPE)|어노테이션 타입|
+
+- @Target({TYPE,FIELD, TYPE_USE,METHOD})로 여러개 사용 가능
+
+### @Retention
+어노테이션이 유지되는 기간을 지정하는데 사용된다.
+
+|어노테이션|설명|
+|------|---|
+|@Retention(SOURCE)|어노테이션이 소스 코드에만 이용 가능하며 컴파일 후에는 사라짐|
+|@Retention(CLASS)|어노테이션이 .class파일에 존재하지만 런타임에는 사라짐(실행시 사용 불가)|
+|@Retention(RUMTIME)|어노테이션이 컴파일러와 런타임에 사용 가능(실행시에 정보 제공)|
+
+### 어노테이션 타입 정의하기
+- "@"기호를 붙이는 것을 제외하면 인터페이스를 정의하는 것과 동일하다.
+- "@Override"는 어노테이션이고 'Override'는 어노테이션의 '타입'이다.
+
+만드는방법
+```java
+@interface 어노테이션{
+
+}
+```
+### 어노테이션 요소의 규칙
+어노테이션 요소를 선언할 때 반드시 지켜야 하는 규칙
+- 요소의 타입은 기본자료형,String,Enum,어노테이션,Class만 허용된다.
+- ()안에 매개변수를 선언할 수 없다.
+- 예외를 선언할 수 없다.
+- 요소를 타입 매개변수로 정의할 수 없다.
+
+![image](https://user-images.githubusercontent.com/54658614/223021389-e148a551-90ef-4649-a29f-2f7896ce5f69.png)
+
+#### TestInfo 어노테이션 생성하기
+```java
+//2. 메타 어노테이션
+// 어노테이션을 만들기 위한 어노테이션
+// @Target - @Target(TYPE), @Target({TYPE, FIELD, TYPE_USE, METHOD})
+// @Documented
+// @Inherited
+// @Retention
+// @Repeatable
+
+package test;
+
+import static java.lang.annotation.ElementType.*;//ElementType은 열거형 -> 들어있는 것은 전부 상수
+import java.lang.annotation.*;
+import static java.lang.annotation.RetentionPolicy.*;//RetentionPolicy은 열거형 -> 들어있는 것은 전부 상수
+
+
+@Target({TYPE,FIELD,TYPE_USE,METHOD})
+@Retention(RUNTIME)
+public @interface TestInfo {
+	String value();//추상메서드
+}
+```
+#### Ex2_annotaion 클래스 생성하기
+```java
+package test;
+
+import java.lang.annotation.Annotation;
+
+@TestInfo(value="테스트 정보")//value=를 통해서 TestInfo의 value()메서드에 정보가 저장된다.
+						   //value= 는 생략 가능하다.
+public class Ex2_annotaion {
+	public static void main(String[] args) {
+		Annotation[] annos = Ex2_annotaion.class.getAnnotations();
+		
+		for(Annotation anno : annos) {
+			System.out.println(anno);
+		}
+		
+		TestInfo testInfo = (TestInfo)Ex2_annotaion.class.getAnnotation(TestInfo.class);
+		System.out.println(testInfo.value()); //테스트 정보 출력
+	}
+}
+
+```
+#### TestInfo 어노테이션 수정하기
+```java
+package test;
+
+import static java.lang.annotation.ElementType.*;//ElementType은 열거형 -> 들어있는 것은 전부 상수
+import java.lang.annotation.*;
+import static java.lang.annotation.RetentionPolicy.*;//RetentionPolicy은 열거형 -> 들어있는 것은 전부 상수
+
+@Target({TYPE,FIELD,TYPE_USE,METHOD})
+@Retention(RUNTIME)
+public @interface TestInfo {
+	String[] value();//배열형태로 저장이 가능하다.
+}
+
+```
+#### Ex2_annotaion 클래스 코드 수정하기
+```java
+package test;
+
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+
+@TestInfo({"테스트 정보","정보2","정보3"})//여러개를 쓸 때는 중괄호를 사용해야 한다.
+public class Ex2_annotaion {
+	public static void main(String[] args) {
+		Annotation[] annos = Ex2_annotaion.class.getAnnotations();
+		
+		for(Annotation anno : annos) {
+			System.out.println(anno);
+		}
+		
+		TestInfo testInfo = (TestInfo)Ex2_annotaion.class.getAnnotation(TestInfo.class);
+		String[] value = testInfo.value();
+		System.out.println(Arrays.toString(value));
+	}
+}
+
+```
+#### TestInfo 어노테이션 수정하기
+```java
+package test;
+
+import static java.lang.annotation.ElementType.*;//ElementType은 열거형 -> 들어있는 것은 전부 상수
+import java.lang.annotation.*;
+import static java.lang.annotation.RetentionPolicy.*;//RetentionPolicy은 열거형 -> 들어있는 것은 전부 상수
 
 
 
+@Target({TYPE,FIELD,TYPE_USE,METHOD})
+@Retention(RUNTIME)
+public @interface TestInfo {
+	String[] value()default"정보1";//아무것도 입력하지 않으면 기본값으로 "정보1"이 나오게 할 수 있다.
+}
+```
+#### Ex2_annotaion 클래스 코드 수정하기
+```java
+package test;
+
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+
+@TestInfo()//여러개를 쓸 때는 중괄호를 사용해야 한다.
+public class Ex2_annotaion {
+	public static void main(String[] args) {
+		Annotation[] annos = Ex2_annotaion.class.getAnnotations();
+		
+		for(Annotation anno : annos) {
+			System.out.println(anno);
+		}
+		
+		TestInfo testInfo = (TestInfo)Ex2_annotaion.class.getAnnotation(TestInfo.class);
+		String[] value = testInfo.value();
+		System.out.println(Arrays.toString(value));
+	}
+}
+
+```
+일반적인 추상메서드 외에도 다른 타입에 대해서 알아보자.
+
+#### TestInfo 어노테이션 수정하기
+```java
+package test;
+
+import static java.lang.annotation.ElementType.*;//ElementType은 열거형 -> 들어있는 것은 전부 상수
+import java.lang.annotation.*;
+import static java.lang.annotation.RetentionPolicy.*;//RetentionPolicy은 열거형 -> 들어있는 것은 전부 상수
 
 
 
+@Target({TYPE,FIELD,TYPE_USE,METHOD})
+@Retention(RUNTIME)
+public @interface TestInfo {
+	String[] value()default"정보1";//아무것도 입력하지 않으면 기본값으로 "정보1"이 나오게 할 수 있다.
+	String[] testTool()default"INFO1"; 
+	String tester();
+	DateTime datetime();
+}
+```
+#### DateTime 어노테이션 생성하기
+```java
+package test;
 
+import static java.lang.annotation.ElementType.*;//ElementType은 열거형 -> 들어있는 것은 전부 상수
+import java.lang.annotation.*;
+import static java.lang.annotation.RetentionPolicy.*;//RetentionPolicy은 열거형 -> 들어있는 것은 전부 상수
+
+@Target(METHOD)//범위를 메서드로 제한한다.
+@Retention(RUNTIME)
+public @interface DateTime {
+	//날짜와 시간을 저장하도록 하는 메서드 
+	String date();
+	String time();
+}
+
+```
+#### Ex2_annotaion 코드 추가하기
+```java
+package test;
+
+import java.lang.annotation.Annotation;
+import java.util.Arrays;
+
+@TestInfo(tester="이현준", datetime=@DateTime(date="20230306",time="150008"))//여러개를 쓸 때는 중괄호를 사용해야 한다.
+public class Ex2_annotaion {
+	public static void main(String[] args) {
+		Annotation[] annos = Ex2_annotaion.class.getAnnotations();
+		
+		for(Annotation anno : annos) {
+			System.out.println(anno);
+		}
+		
+		TestInfo testInfo = (TestInfo)Ex2_annotaion.class.getAnnotation(TestInfo.class);
+		String[] value = testInfo.value();
+		System.out.println(Arrays.toString(value));
+		
+		String[] tools = testInfo.testTool();
+		System.out.println(Arrays.toString(tools));
+		
+		String tester = testInfo.tester();
+		System.out.println(tester);
+		
+		String date = testInfo.datetime().date();
+		String time = testInfo.datetime().time();
+		System.out.printf("date=%s, time=%s \n",date,time);
+	}
+}
+
+```
