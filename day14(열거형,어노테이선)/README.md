@@ -317,7 +317,8 @@ public class Ex1_annotaion {
 
 ### @Target
 
-어노테이션이 적용 가능한 대상(범위)을 지정하는데 사용된다.
+어노테이션이 적용 가능한 대상(범위)을 지정하는데 사용된다.<br>
+말 그대로 어노테이션을 붙일 수 있는 대상을 지정하는 것<br>
 
 |어노테이션|설명|
 |------|---|
@@ -377,7 +378,7 @@ import static java.lang.annotation.RetentionPolicy.*;//RetentionPolicy은 열거
 
 @Target({TYPE,FIELD,TYPE_USE,METHOD})
 @Retention(RUNTIME)
-public @interface TestInfo {
+public @interface TestInfo {//앞으로 다른곳에서 @TestInfo로 어노테이션을 사용할 수 있다.
 	String value();//추상메서드
 }
 ```
