@@ -109,6 +109,9 @@ public class Ex1_Event {
     }//main
 }
 ```
+![image](https://user-images.githubusercontent.com/54658614/223324889-7d9bd9a4-cb50-4919-af24-a7ac81b984d7.png)
+
+
 #### ex1_ChoiceTest클래스 생성
 ```java
 public class ChoiceTest {
@@ -155,6 +158,9 @@ public class ChoiceTest {
 	}//main
 }
 ```
+![image](https://user-images.githubusercontent.com/54658614/223324935-fc66bed5-bfa5-4744-bc38-44f86377cf63.png)
+
+
 #### ChoiceAdapter클래스 생성
 ```java
 윈도우 리스너를 제외하면 나머지 감지자들은 어지간하면 추상메서드를 하나만 갖고 있어요.
@@ -177,6 +183,10 @@ public class ChoiceAdapter implements ItemListener {
 	}
 }
 ```
+![image](https://user-images.githubusercontent.com/54658614/223325033-f04051f1-07f2-40fd-9b7a-fc932533e61c.png)
+
+
+
 ex2_frame_exam 패키지 생성
 
 #### FrameExamMain클래스 생성
@@ -272,6 +282,8 @@ public class FrameExamMain {
 	}//main
 }
 ```
+![image](https://user-images.githubusercontent.com/54658614/223325096-72963286-ad91-487d-949d-c2bb8acfdf5d.png)
+
 ---------------------------------------------------------------------------------
 ##### TextAdapter 클래스 생성
 ```java
