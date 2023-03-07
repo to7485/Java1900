@@ -279,6 +279,54 @@ JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌�
 |JPasswordFIeld(int columns)|열의 수(길이)가 columns인 패스워드 필드를 생성한다.|
 |JPasswordField(String text, int columns)|초기 문자열이 text이고, 열의 수가 columns인 패스워드 필드를 생성한다.|
 
+ex2_component 패키지 생성
+#### Ex1_JText클래스 생성
+```java
+package test;
+
+import java.awt.FlowLayout;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class Test extends JFrame {
+	
+	JTextField tf;
+	JTextArea ta;
+	JPasswordField pf;
+	
+	Test() {
+		super("JLabelText");
+		setLayout(new FlowLayout());
+		setSize(300, 240);
+		setLocation(400, 400);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+		JLabel lb1 = new JLabel("이름");
+		JLabel lb2 = new JLabel("주소");
+		JLabel lb3 = new JLabel("비밀");
+		
+		tf = new JTextField(20);
+		ta = new JTextArea(7, 20);
+		pf = new JPasswordField(20);
+		
+		add(lb1);
+		add(tf);
+		add(lb2);
+		add(ta);
+		add(lb3);
+		add(pf);
+	}
+	
+	public static void main(String[] args) {
+		Test jlt = new Test();
+	}
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223490882-f5da6467-f1b4-4ea5-a061-a2a401075466.png)
+
 ### JButton
 - JButton은 클릭 기능을 제공한다.
 - JButton클래스는 문자열 또는 아이콘을 사용하여 버튼을 생성할 수가 있으며, AbstractButton 클래스로부터 상속받는다.|
@@ -299,6 +347,45 @@ JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌�
 |boolean isDefaultButton()|이 버튼이 RootPane의 기본 버튼인지 알아낸다.|
 |boolean isDefaultCapable()|이 버튼이 RootPane의 기본 버튼이 될 수 있는지 알아낸다.|
 |void setDefaultCapable(boolean defaultCapable)|이 버튼이 RootPane의 기본 버튼이 될 수 있는지의 여부를 정한다.|
+
+#### Ex2_JButton
+```java
+package test;
+
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+
+public class JButtonTest extends JFrame {
+	JButton jbtn1, jbtn2, jbtn3;
+	JButtonTest() {
+		super("버튼(JButton) 추가");
+		setLayout(new FlowLayout());
+		
+		jbtn1 = new JButton("1");
+		jbtn2 = new JButton("2");
+		jbtn3 = new JButton("3");
+		
+		add(jbtn1);
+		add(jbtn2);
+		add(jbtn3);
+		
+		setSize(300, 200);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String[] args) {
+		new JButtonTest();
+	}
+
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223491878-09f2725f-b9c2-4caf-b77f-d8085d7216b1.png)
+
+
 
 ### JCheckBoxs
 - JCheckBox 클래스는 체크 박스 기능을 제공하며, AbstractButton 클래스로부터 상속받는다. 
@@ -333,6 +420,78 @@ JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌�
 
 - 여러개의 라디오 버튼은 ButtonGroup을 사용하여 하나의(논리적) 그룹으로 묶을 수가 있다. 그룹으로 묶으면 여러 개의 라디오 버튼에서 하나만이 선택되어진다. 라디오 버튼을 그룹으로 묶으면 ButtonGroup 클래스에서 제공하는 add()메서드를 사용한다.
 
+#### Ex3_JCheckBoxTest 클래스 생성
+```java
+package test;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
+public class JCheckBoxTest extends JFrame {
+
+	JCheckBox jcb1, jcb2, jcb3;
+	JRadioButton jrb1, jrb2, jrb3, jrb4, jrb5;
+	JPanel jp1, jp2, jp3;
+	
+	JCheckBoxTest() {
+		super("체크박스와 라디오 버튼 만들기");
+		
+		// 체크 박스 등록 
+		jp1 = new JPanel();
+		jcb1 = new JCheckBox("음악감상", true);
+		jcb2 = new JCheckBox("등산", true);
+		jcb3 = new JCheckBox("조깅", false);
+		jp1.add(jcb1);
+		jp1.add(jcb2);
+		jp1.add(jcb3);
+		
+		add(jp1, "North");
+		
+		// 결혼여부 라디오 버튼 등록
+		jp2 = new JPanel();
+		jrb1 = new JRadioButton("결혼", true);
+		jrb2 = new JRadioButton("미혼", false);
+		ButtonGroup bg1 = new ButtonGroup();
+		bg1.add(jrb1);
+		bg1.add(jrb2);
+		
+		jp2.add(jrb1);
+		jp2.add(jrb2);
+		add(jp2, "Center");
+		
+		// 주거형 라디오 버튼 등록
+		jp3 = new JPanel();
+		jrb3 = new JRadioButton("자가", true);
+		jrb4 = new JRadioButton("전세", false);
+		jrb5 = new JRadioButton("월세", false);
+		
+		ButtonGroup bg2 = new ButtonGroup();
+		bg2.add(jrb3); 
+		bg2.add(jrb4);
+		bg2.add(jrb5);
+		
+		jp3.add(jrb3);
+		jp3.add(jrb4);
+		jp3.add(jrb5);
+		add(jp3, "South");
+		
+		setSize(300, 200);
+		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String[] args) {
+		new JCheckBoxTest();
+	}
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223492795-c68b54e2-f079-4320-b675-8b5fc138fa16.png)
+
+
 ### JComboBox
 
 - JComboBox 클래스는 텍스트 필드와 풀다운 리스트를 조합한 형태의 콤보 박스의 기능을 제공한다. 콩보 박스는 텍스트 필드에 하나의 항목만 나타내지만, 마우스로 항목을 선택하면 풀다운 형태의 리스트를 제공한다.
@@ -359,6 +518,47 @@ JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌�
 |void removeItem(Object anObject)|아이템 리스트에서 아이템을 삭제한다. 이 메소드는 JComboBox가 기본 데이터 모델을 사용할 때에만 작동한다.|
 |void removeItem(int anIndex)|anIndex에 위치한 아이템을 삭제한다. 이 메모스든 JCheckBox가 기본 데이터 모델을 사용할 때에만 작동한다.|
 |void removeAllItems()|모든 아이템을 삭제한다. 이 메서드는 JComboBox가 기본 데이터 모델을 사용할 때에만 작동한다.|
+
+#### Ex4_JComboBoxTest 클래스 생성
+```java
+package test;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class JComboBoxTest extends JFrame {
+	JCheckBox jcb1, jcb2, jcb3;
+	JComboBox<String> jcm1;
+	JPanel jp1;
+	String[] title = {"C", "비주얼베이직", "JAVA 프로그래밍", "자료구조", "이산수학"};
+	JComboBoxTest() {
+		super("콤보 박스 만들기");
+		setLayout(new FlowLayout());
+		jp1 = new JPanel();
+		jcb1 = new JCheckBox("컴퓨터공학", true);
+		jcb2 = new JCheckBox("전자상거래", true);
+		jcb3 = new JCheckBox("경영학", false);
+		jp1.add(jcb1);
+		jp1.add(jcb2);
+		jp1.add(jcb3);
+		add(jp1);
+		
+		jcm1 = new JComboBox<>(title);
+		add(jcm1);
+		setSize(300, 250);
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String[] args) {
+		new JComboBoxTest();
+	}
+}
+
+```
+
+![image](https://user-images.githubusercontent.com/54658614/223493241-d7bf18ae-b23b-4c5a-88a7-ec7a4ac95d8e.png)
+
 
 ### JScollPane
 - JScollPane 클래스는 스크롤바의 기능을 제공한다.
@@ -414,6 +614,52 @@ JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌�
 </tbody>
 </table>
 
+#### Ex4_JScrollPaneTest 클래스 생성
+```java
+package test;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class JScrollPaneTest extends JFrame {
+	JPanel jp;
+	
+	JScrollPaneTest() {
+		super("JScrollPane Test");
+		setSize(300, 300);
+		setLayout(new BorderLayout());
+		setLocation(300, 300);
+		setVisible(true);
+		
+		jp = new JPanel();
+		jp.setLayout(new GridLayout(10, 5));
+		int cnt = 1;
+		for (int i = 1; i <= 10; i++) {
+			for (int j = 1; j <= 5; j++) {
+				jp.add(new JButton("버튼" + cnt));
+				cnt++;
+			}
+		}
+		
+		// 수직, 수평 스크롤바를 설정하기 위한 상수를 얻음
+		int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
+		int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
+		JScrollPane  js = new JScrollPane(jp, v, h);
+		add(js, BorderLayout.CENTER);
+		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		
+	}
+	
+	public static void main(String[] args) {
+		new JScrollPaneTest();
+		
+	}
+}
+```
+![image](https://user-images.githubusercontent.com/54658614/223494533-a745d419-6d34-460a-8e58-bbcb165f48cd.png)
+
+
 ### JTable
 - JTable 클래스는 데이터를 테이블 형태인 행과 열로 나타내고자 할 때 사용한다.
 - JTable 클래스로 나타낸 테이블에서 행은 마우스를 이용하여 경계선을 조정하고 위치를 바꿀 수 있다.
@@ -429,6 +675,42 @@ JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌�
 - 테이블의 각 행에 들어갈 데이터인 이차원 배열 객체를 생성한다.
 - 테이블(JTable) 객체 생성한다.
 - JScrollPane에 테이블을 붙인다.
+
+#### Ex5_JTableTest 클래스 생성
+```java
+package test;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class JTableTest extends JFrame {
+	JTableTest() {
+		super("JTable Test");
+		setSize(300, 300);
+		setLocation(300, 300);
+		setLayout(new BorderLayout());
+		String[] title = {"사번", "성명", "부서"};
+		String[][] data = {{"1", "고애신", "총무과"}, {"2", "최유신", "인사과"}, {"3", "구동매", "전산과"}};
+		JTable table = new JTable(data, title);
+		int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED;
+		int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED;
+		
+		JScrollPane js = new JScrollPane(table, v, h);
+		add(js, BorderLayout.CENTER);
+		
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String[] args) {
+		new JTableTest();
+	}
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223495069-9f9f3539-cb58-4c08-b9e5-87cc9a20a71d.png)
+
+
 
 ### 메뉴 - JMenuBar, JMenu, JMenuItem
 - 스윙에서 메뉴 관련 클래스는 JMenuBar, JMenu, JMenuItem, JCheckBoxMenuItem, JRadioButtonMenuItem이 있다.
@@ -459,6 +741,68 @@ JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌�
 |JMenuItem(String text, Icon icon)|메뉴의 레이블로 문자열과 아이콘을 사용하는 메뉴아이템을 생성한다.|
 |JMenuItem(String text, int mnemonic)|메뉴의 레이블로 문자열과 키보드 mnemonic(단축키)를 갖는 메뉴아이템을 생성한다.|
 
+#### Ex6_JMenuTest 클래스 생성
+```java
+package test;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class JMenuTest extends JFrame {
+	JMenuTest() {
+		super("JMenuTest");
+		setSize(300, 300);
+		setLocation(300, 300);
+		
+		JMenuBar jmb = new JMenuBar();
+		JMenu jmu1 = new JMenu("파일");
+		JMenu jmu2 = new JMenu("편집");
+		JMenu jmu3 = new JMenu("보기");
+		
+		JMenuItem jmi1 = new JMenuItem("새로만들기");
+		JMenuItem jmi2 = new JMenuItem("열기");
+		JMenuItem jmi3 = new JMenuItem("저장");
+		
+		jmu1.add(jmi1);
+		jmu1.add(jmi2);
+		jmu1.add(jmi3);
+		
+		JMenuItem jmi4 = new JMenuItem("잘라내기");
+		JMenuItem jmi5 = new JMenuItem("복사");
+		JMenuItem jmi6 = new JMenuItem("붙여넣기");
+		
+		jmu2.add(jmi4);
+		jmu2.add(jmi5);
+		jmu2.add(jmi6);
+		
+		JMenuItem jmi7 = new JMenuItem("도구모음");
+		JMenuItem jmi8 = new JMenuItem("상태표시줄");
+		
+		jmu3.add(jmi7);
+		jmu3.add(jmi8);
+		
+		jmb.add(jmu1);
+		jmb.add(jmu2);
+		jmb.add(jmu3);
+		
+		setJMenuBar(jmb);
+		
+		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+	
+	public static void main(String[] args) {
+		new JMenuTest();
+	}
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223495526-06073cfe-7993-416f-9722-7cf2a4e24568.png)
+
+
+
+
+
 ### JPopupMenu
 - JPopupMenu 클래스는 팝업 메뉴 기능을 제공한다.
 - 일반적으로 팝업 메뉴는 마우스의 오른쪽 버튼을 누르거나(mousePressed), 해제(mouseReleased)할 때 수행한다.
@@ -467,6 +811,61 @@ JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌�
 |-----|------|
 |JPopupMenu()|팝업 메뉴를 생성한다.|
 |JPopupMenu(String label)|기술된 텍스트를 팝업 메뉴의 레이블로 사용하는 팝업메뉴를 생성한다.|
+
+#### Ex7_JPopupMenuTest 클래스 생성
+```java
+package test;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class JPopupMenuTest extends JFrame {
+	
+	
+	JPopupMenuTest() {
+		super("팝업메뉴에서 항목 선택");
+		
+		String[] title = {"사번", "성명", "부서" };
+		JRadioButtonMenuItem[] rbm = new JRadioButtonMenuItem[3];
+		
+		JPopupMenu pmenu = new JPopupMenu();
+		ButtonGroup tgroup = new ButtonGroup();
+		
+		for (int i = 0; i < rbm.length; i++) {
+			rbm[i] = new JRadioButtonMenuItem(title[i]);
+			pmenu.add(rbm[i]);
+			tgroup.add(rbm[i]);
+		}
+		
+		// 마우스 이벤트를 리스너에 등록
+		addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				checkForTriggerEvent(e);
+			}
+			
+			public void mouseReleased(MouseEvent e) {
+				checkForTriggerEvent(e);
+			}
+			
+			// 마우스 오른쪽 버튼을 누르거나 해제할 때 발생
+			private void checkForTriggerEvent(MouseEvent e) {
+				if (e.isPopupTrigger()) 
+					pmenu.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+		
+		setSize(300, 200);
+		setVisible(true);
+	}
+	public static void main(String[] args) {
+		new JPopupMenuTest();
+	}
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223496283-caa61cb0-9d39-434f-82fd-e22c08be236d.png)
+
 
 ### JTabbedPane
 - JTabbedPane 클래스는 탭(Tab)의 기능을 제공한다.
@@ -490,6 +889,88 @@ JPanel jpn2 = new JPanel();
 jtp.addTab("기본내용", jpn1);
 jtp.addTab("기본내용", jpn2);
 ```
+
+#### Ex8_JTabbedPaneFrame 클래스 생성
+```java
+package test;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class JTabbedPaneFrame extends JFrame {
+	public JTabbedPaneFrame() {
+		super("사원 개인정보 조회(JTabbedPane)");
+		
+		JTabbedPane jtp = new JTabbedPane(JTabbedPane.TOP);
+		JPanel jpn1 = new JPanel();
+		JPanel jpn2 = new JPanel();
+		JPanel jpn3 = new JPanel();
+		bTable jt1 = new bTable();
+		eTable jt2 = new eTable();
+		fTable jt3 = new fTable();
+		
+		jpn1.add(jt1);
+		jpn2.add(jt2);
+		jpn3.add(jt3);
+		
+		jtp.addTab("기본내용", jpn1);
+		jtp.addTab("추가내용", jpn2);
+		jtp.addTab("보안내용", jpn3);
+		
+		add(jtp, BorderLayout.CENTER);
+		
+		setSize(500, 200);
+		setVisible(true);
+	}
+	
+	public static void main(String[] args) {
+		JTabbedPaneFrame jt = new JTabbedPaneFrame();
+		jt.setDefaultCloseOperation(EXIT_ON_CLOSE);
+	}
+}
+
+
+class bTable extends JPanel {
+	public bTable() {
+		String[] title = {"사번", "성명", "부서"};
+		String[][] data = {{"1", "이름1", "총무과"}, {"2", "이승엽", "인사과"}, {"3", "박태환", "전산과"}};
+		JTable table = new JTable(data, title);
+		int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
+		int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
+		JScrollPane js = new JScrollPane(table, v, h);
+		add(js);
+	}
+}
+
+class eTable extends JPanel {
+	public eTable() {
+		String[] title = {"입사일", "주소", "전화" };
+		String[][] data = {{"2001-1-1", "은평구 응암동", "303-5555"}, {"2000-5-30", "마토구 도화동", "5555-6666"}, {"2008-1-1", "구로구 신림동", "777-1234"}};
+		JTable table = new JTable(data, title);
+		int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
+		int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
+		JScrollPane js = new JScrollPane(table, v, h);
+		add(js);
+	}
+}
+
+class fTable extends JPanel {
+	public fTable() {
+		String[] title = {"호봉", "근무평점"};
+		String[][] data = {{"0506", "보통"}, {"0401", "우수"}, {"0701", "미흡"}};
+		JTable table = new JTable(data, title);
+		int v = ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS;
+		int h = ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS;
+		JScrollPane js = new JScrollPane(table, v, h);
+		add(js);
+	}
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223496792-1dc382f1-5569-4e0d-abb6-f4603d5ff99a.png)
+
+
+
 
 ### Image 넣기
 
