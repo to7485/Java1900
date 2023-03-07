@@ -525,7 +525,7 @@ package test;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
-@TestInfo(tester="이현준", datetime=@DateTime(date="20230306",time="150008"))//여러개를 쓸 때는 중괄호를 사용해야 한다.
+@TestInfo(tester="이현준", datetime=@DateTime(date="20230306",time="150008"))
 public class Ex2_annotaion {
 	public static void main(String[] args) {
 		Annotation[] annos = Ex2_annotaion.class.getAnnotations();
