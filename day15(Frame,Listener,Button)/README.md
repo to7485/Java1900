@@ -27,7 +27,8 @@ public class FrameTest {
 	}
 }
 ```
----------------------------------------------------------------------------------
+![image](https://user-images.githubusercontent.com/54658614/223322809-37031b7c-c3ed-4e60-a693-bd3c58cc29ef.png)
+
 
 프레임을 상속받는 클래스를 만들고, 이 클래스를 객체화하여 화면에 뿌려보자.
 
@@ -52,8 +53,13 @@ public class FrameMain {
 	}
 }
 ```
+![image](https://user-images.githubusercontent.com/54658614/223322864-59041785-573b-4646-ba50-54890613c741.png)
 
----------------------------------------------------------------------------------
+결과는 위와 똑같다.<br>
+
+하지만 우상단에 x버튼을 눌러도 종료가 되지 않는 모습을 볼 수 있다.<br>
+버튼은 있지만 껍데기만 있을뿐 종료를 한다는 '기능'이 붙어있지 않기 때문이다<br>
+
 ### Listener
 
 ex3_listener 패키지<br> 
@@ -269,6 +275,10 @@ public class Ex1_Button{
 	}//main
 }
 ```
+f.setLayout(null)을 하지 않으면 아래의 그림과 같이 버튼이 배치가 되버린다.<br>
+![image](https://user-images.githubusercontent.com/54658614/223323313-4d88d0ee-b9bb-403d-9fbe-c60071b6e662.png)
+
+
 #### Ex2_Button 클래스 생성
 ```java
 public class Ex2_Button{
@@ -329,6 +339,9 @@ public class Ex2_Button{
 	}//main
 }
 ```
+
+![image](https://user-images.githubusercontent.com/54658614/223323158-676376bf-ef9a-4b68-896f-731f7d2edb22.png)
+
 버튼이 많아지게 되면 모든 버튼에 따로따로 감지자를 달아주게 되면 코드가 길어지고 관리가 힘들어지게 된다.
 
 #### Ex3_Button 클래스 생성
@@ -391,3 +404,6 @@ public class Ex3_Button{
 	}//main
 }
 ```
+각 버튼을 누를 때 콘솔에 출력이 된다
+![image](https://user-images.githubusercontent.com/54658614/223324771-63245873-10ec-47fa-92ce-df40ff6d7739.png)
+
