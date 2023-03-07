@@ -99,7 +99,6 @@ public class JFrameTest extends JFrame {
 ```java
 package test;
 
-
 import java.awt.Color;
 import java.awt.FlowLayout;
 
@@ -116,7 +115,8 @@ public class Test extends JFrame {
         JPanel p1 = new JPanel();
         p1.setBackground(Color.YELLOW);
         p1.setLayout(new FlowLayout());
-        
+        //p1.setLayout(new GridLayout(3,2));
+	//p1.setLayout(new BorderLayout());
         p1.add(new JButton("1"));
         p1.add(new JButton("2"));
         p1.add(new JButton("3"));
