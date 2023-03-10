@@ -117,7 +117,7 @@ public class Ex2_Enum {
 package test;
 
 public enum Item {
-	START("시작",">"),STOP("멈춤","<"),EXIT("종료","V");//값을 직접 대입하면 생성자를 만들어줘야 한다.
+	START("시작","s"),STOP("멈춤","p"),EXIT("종료","e");//값을 직접 대입하면 생성자를 만들어줘야 한다.
 	
 	protected String itemStr;
 	protected String symbol;
@@ -157,8 +157,8 @@ public class Ex2_Enum {
 	}
 }
 ```
-
-열거형을 일반적인 클래스로 만들고 상수로 정의를 한다면... 아래와 같은 결과가 된다.
+사실은 열거형 상수 하나하나가 객체이다.<br>
+열거형을 일반적인 클래스로 만들고 상수로 정의를 한다면... 아래와 같은 결과가 된다.<br>
 
 ```java
 public enum Item {
@@ -168,8 +168,8 @@ public class Item {
 	public static final Item START =  new ITEM("시작","s");
 	public static final Item STOP =  new ITEM("멈춤","p");
 	public static final Item EXIT =  new ITEM("종료","e");
-	
-
+		
+	정적 상수로 만들어지는 정적 객체이기 때문에 메모리에 한번만 올라간다.
 ```
 
 ### 열거형에 추상메서드 추가하기
@@ -231,7 +231,8 @@ public enum Transportaion {
 		this.fare = fare;
 	}
 	
-	abstract int totalFare(int distance);//사실 추상클래스로 정의할 필요는 없긴하지만 추상클래스가 있을 때 어떻게 작성해야 하는지 보여주기 위한 예제
+	abstract int totalFare(int distance);
+	//사실 추상클래스로 정의할 필요는 없긴하지만 추상클래스가 있을 때 어떻게 작성해야 하는지 보여주기 위한 예제
 	//추상클래스가 들어갈 수 있다는 것은 enum도 추상클래스이다.
 }
 
