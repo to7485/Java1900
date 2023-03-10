@@ -13,32 +13,37 @@
 
 - 자바스크립트의 예시 인터넷창 개발자도구 -> console탭에서 작성하기
 ```java
-funtion add(num1,num2){
+function add(num1,num2){
 	return num1+num2;
 }
 
 add(10,20)
 30
 ```
+![image](https://user-images.githubusercontent.com/54658614/224224980-44b27fa7-25b3-4d2d-95ec-ad3a425798c7.png)
+
+
 자바에서도 이렇게 독립적으로 함수를 사용하는 방법이 없겠느냐 해서 개발된 것
 
 ## 함수형 프로그래밍의 특징
 1. 함수를 매개변수로 사용
 
-예시 인터넷창 개발자도구 -> console탭에서 작성하기
+인터넷 브라우저 -> f12눌러 개발자도구 열기 -> console탭으로 이동
 ```java
-var fruits = [“apple”,”orange”,”melon”,”mango”]
+var fruits = ["apple","orange","melon","mango"]
 
-fruits.forEach(function(fruits){
+fruits.forEach(function(fruit){
 	console.log(fruit);
 });
 ```
+![image](https://user-images.githubusercontent.com/54658614/224224761-5a22b9ff-29c7-4e9a-90db-174535e80a53.png)
+
 
 2. 함수를 반환값으로 사용
 
 반환값 이라고 하는건 return인데 우리가 자바에서 함수를 공부하면서 return값에 함수를 넣어본적은 없다.
 ```java
-funciton outerFunc(x){
+function outerFunc(x){
 	return function innerFunc(y) {
 		return x + y;
 	}
@@ -49,6 +54,9 @@ innerFunc(20);
 
 30
 ```
+![image](https://user-images.githubusercontent.com/54658614/224225240-1beb89d4-9e93-4f71-9660-53b8be840fad.png)
+
+
 함수를 단축하여 표현하는것도 가능하다.
 ```
 fruits.forEach(fruit => console.log(fruit));
@@ -65,7 +73,9 @@ fruits.forEach(fruit => console.log(fruit));
 ## 람다식 사용하기
 1. 인터페이스
 2. 구현할 메서드 선언
-3. 메서드는 한 개만 정의 => 함수형 프로그래밍에서는 함수가 독립적으로 사용되기 때문, 함수 하나에 기능 하나 자바에서는 클래스 내부에 정의하게 되면 메서드가 한 개 이상 정의될 수 있다. 그래서 제한을 두고 있다.
+3. 메서드는 한 개만 정의 => 함수형 프로그래밍에서는 함수가 독립적으로 사용되기 때문, 
+함수 하나에 기능 하나 자바에서는 클래스 내부에 정의하게 되면 메서드가 한 개 이상 정의될 수 있다. 그래서 제한을 두고 있다.<br>
+	- 정적 메서드, default 메서드는 여러개 정의 가능
 
 프로젝트 생성하기<br>
 
@@ -98,27 +108,43 @@ public class CalculatorImpl {
 인터페이스를 왜 구현하는 클래스를 만들지 않고 사용할 수 있는가??
 
 
+
 #### Calculator2 클래스 만들기
 ```java
 package calculator;
 
 public class Calculator2 {
 	public static void main(String[] args) {
+	
+		//지역 내부 익명 클래스
+		//익명 클래스는 내부 클래스(inner class)의 일종으로 이름이 없는 클래스를 말한다.
+		//나중에 다시 불러질 이유가 없다는 뜻을 내포하고 있다.
+		//즉, 프로그램에서 일시적으로 한번만 사용되고 버려지는 객체라고 보면 된다.(일회용 클래스)
+		
+		보통 어느 클래스의 자원을 상속 받아 재정의하여 사용하기 위해서는 먼저 자식이 될 클래스를 만들고
+		상속(extends) 후에 객체 인스턴스 초기화를 통해 가능하다.
+		하지만 익명 클래스는 클래스 정의와 동시에 객체를 생성할 수 있다.
+		익명클래스는 이름이 없기 때문에 생성자를 가질 수 없으며, 가질 필요도 없다.
+		
 		MyCalculator cal = new MyCalculator() {
 			
 			@Override
 			public int plus(int num1, int num2) {
-				// TODO Auto-generated method stub
-				return 0;
+				return num1 + num2;
 			}
 		};
 	}
 }
 ```
+
 #### 인터페이스에 함수를 하나만 정의해야 하는 이유
 - 클래스에서 람다식으로 사용할 때 이름을 사용하지 않기 때문에 어떤 함수인지 모른다.
 
-어노테이션<br>
+![image](https://user-images.githubusercontent.com/54658614/224226019-2b79461e-208f-4815-8563-ace38207c754.png)
+
+하지만 인터페이스에 여러개의 추상메서드를 정의해도 오류가 나지는 않는다.<br>
+만약 람다식용으로 인터페이스를 사용할 것이라면 어노테이션을 지정해놔야 한다.<br>
+
 @FunctionalInterface<br>
 내가 컴파일러에게 이 인터페이스를 람다식용 인터페이스로 쓸거다 라고 알려주는 것.<br>
 그렇게 되면 인터페이스에 함수를 두개 쓰게 되면 오류가 난다.<br>
@@ -133,7 +159,7 @@ public class Calculator2 {
 		MyCalculator cal = new MyCalculator() {
 			
 			@Override
-			public int plus(int num1, int num2) {
+			public int plus(int num1, int num2) {//내부 익명클래스로 만들었더라도 인터페이스 이기 때문에
 				//num3 = 40; -> final int num3 -> 지역변수의 상수화
 				// TODO Auto-generated method stub
 				return 0;
@@ -142,13 +168,18 @@ public class Calculator2 {
 	}
 }
 ```
+
+우리가 알던 방식과 다른 축약형으로 함수를 만들어보자<br>
+
+4.람다식을 이용하면서 가능한 부분은 최대한 생략하기
+
 #### Calculrator3 클래스만들기
 ```java
 package calculator;
 
 public class Calculator3 {
 	public static void main(String[] args) {
-		MyCalculator calc = (num1, num2) ->{
+		MyCalculator calc = (int num1,int num2) ->{
 			return num1 + num2;
 		};
 
@@ -185,12 +216,12 @@ public class Calculator3 {
 		
 		//매개변수가 하나일 때는 소괄호가 생략이 가능하다.
 		MyFunction myfunction = num -> System.out.println(num);
+		
+		MyFunction myfunc = System.out::println;
 	}		
 }
 ```
-
-4.람다식을 이용하면서 가능한 부분은 최대한 생략하기
-- 람다식을 매개변수로 사용하기
+### 람다식을 매개변수로 사용하기
 
 #### Calculrator4 클래스 만들기
 ```java
@@ -202,9 +233,8 @@ public class Calculrator4 {
 		int result = myCalc(calc);
 		System.out.println(result);
 		
+		//위 방법보다 간단하게 표현할 수 있다.
 		int result2 = myCalc((num1,num2) -> num1 + num2);
-		위 방법보다 간단하게 표현할 수 있다.
-
 		System.out.println(result2);
 	}
 	
@@ -214,30 +244,28 @@ public class Calculrator4 {
 }
 ```
 #### Calculrator5 클래스 만들기
-```java
-package calculator;
 
-import java.util.*; java.util패키지에 있는 모든 것 import 하겠다.
+#### 컬렉션 프레임워크와 함수형 인터페이스
+컬렉션 프레임워크의 인터페이스에 다수의 디폴트 메서드가 추가 되었고 그 중 일부는 함수형 인터페이스를 사용한다.<br>
+ArrayList에 forEach()메서드가 있고 Consumer 라는 매개변수를 받는다 자바 공식문서에서 검색해보면 FunctionalInterface라는걸 알 수 있다.<br>
+때문에 람다식으로 표현할 수 있다.<br>
 
-public class Calculrator5 {
-	public static void main(String[] args) {
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("이름1");
-		list.add("이름2");
-		list.add("이름3");
-		list.add("이름4");
-		list.add("이름5");
-		
-		list.forEach();
-	}
+-forEach()메서드 사용
+
+```
+void forEach(Consumer<? super T> action)
+	↓↓↓↓
+@FunctionalInterface
+public interface Consumer {
+    void accept(T t);
 }
 ```
-ArrayList에 forEach()메서드가 있고 Consumer 라는 매개변수를 받는다 자바 공식문서에서 검색해보면 FunctionalInterface라는걸 알 수 있다. 때문에 람다식으로 표현할 수 있다.
 
- 
+
 https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html
 
-#### Calculrator5 클래스에 코드 추가하기
+
+#### Calculrator5 클래스 생성하기
 ```java
 package calculator;
 
@@ -257,4 +285,53 @@ public class Calculrator5 {
 	}
 }
 ```
+### 람다식을 반환값으로 사용하기
+
+#### Calculrator6 클래스 생성하기
+
+```java
+package test;
+
+public class Calculator6 {
+	public static void main(String[] args) {
+		MyCalculator calc = myCalc();
+		System.out.println(calc.plus(30, 50));
+		
+	}
+	
+	static MyCalculator myCalc() {
+		//MyCalculator calc = (num1,num2) -> num1 + num2;
+		//return calc;
+		
+		return (num1,num2) -> num1 + num2;
+	}
+}
+
+```
+## java.util.function패키지
+- 대부분의 메서드는 타입이 비슷하다
+- 매개변수가 없거나 한 개, 두 개, 반환값이 없거나 한 개이다.
+- 제네릭 메서드로 정의하면 매개변수나 반환 타입이 달라도 문제가 되지 않는다. 
+- java.util.function 패키지에 일반적으로 자주 쓰는 형식의 메서드를 함수형 인터페이스로 미리 정의해 놓았다.
+- 매번 함수형 인터페이스를 정의하기 보다는 가능하면 이 패키지의 인터페이스를 활용하는 것이 좋다.
+#### java.util.function  패키지의 주효 함수형 인터페이스
+|함수형 인터페이스|메서드|설명|
+|----|-----|-----|
+|java.lang.Runnable|void() run()|매개변수도 없고 반환값도 없음|
+|Supplier<T>|T get()|매개변수는 없고 반환값만 있음|
+|Consumer<T>|void accept(T t)|Supplier와 반대로 매개변수만 있고, 반환값이 없음|
+|Function<T,R>|R apply(T t)|일반적인 함수. 하나의 매개변수를 받아서 결과를 반환|
+|Predicate<T>|boolean test(T t)|조건식을 표현하는데 사용됨.   매개변수는 하나. 반환값은 boolean|
+###### 참고) 타입문자 'T'는 'Type'을 'R'은 'Return Type'을 의미한다.
+
+#### 매개변수가 두 개인 함수형 인터페이스
+매개변수가 두 개인 함수형 인터페이스는 이름 앞에 접두사 'Bi'가 붙는다.
+|함수형 인터페이스|메서드|설명|
+|----|-----|-----|
+|BiConsumer<T,U>| void accept(T t, U u)|두개의 매개변수만 있고 반환값이 없음|
+|BiPredicate<T,U>|boolean test(T t, U u)|조건식을 표현하는데 사용됨.   매개변수는 둘, 반환값은 boolean|
+|BiFunction<T,U,R>|R apply(T t, U u)|두 개의 매개변수를 받아서 하나의 결과를 반환|
+- 참고) Supplier는 매개변수는 없고 반환값만 존재하는데, 매서드는 두 개의 값을 반환할 수 없으므로 BiSupplier가 없다.
+- 두 개 이상의 매개변수를 갖는 함수형 인터페이스가 필요하면 직접 만들어 써야 한다.
+
 
