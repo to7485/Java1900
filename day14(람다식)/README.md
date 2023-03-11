@@ -369,6 +369,7 @@ public class Test {
 #### 컬렉션 프레임워크와 함수형 인터페이스
 
 컬렉션 프레임워크의 인터페이스에 다수의 디폴트 메서드가 추가 되었고 그 중 일부는 함수형 인터페이스를 사용한다.
+	
 |인터페이스|메서드|설명|
 |----|-----|-----|
 |Collection|boolean removeIf(Predicate<E> filter)|조건에 맞는 요소를 삭제|
@@ -428,6 +429,7 @@ public class Test {
 - Function의 변형이다
 - 매개변수의 타입과 반환타입의 타입이 모두 일치한다.
 - UnaryOperator와 BinaryOperator의 상위 인터페이스는 각각 Function, BiFunction이다.
+	
 |함수형 인터페이스|메서드|설명|
 |----|-----|-----|
 |UnaryOperator<T>|T apply(T t)|Function의 하위 인터페이스, Function과 달리 매개변수와 결과의 타입이 같다.|
