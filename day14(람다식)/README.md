@@ -461,3 +461,204 @@ public class Test {
 }
 ```
 https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/package-summary.html
+
+## Function의 합성과 Predicate의 결합
+### Function의 합성
+```
+default <V> Function<T, V> andThen(Function<? super R, ? extends V> after)
+default <V> Function<V, R> compose(Function<? super V, ? extends T> before)
+static <T> Function<T, T> identity() 
+```
+- 두 람다식을 합성해서 새로운 람다식을 만들 수 있다.
+- f.andThen(g) - 함수 f를 먼저 적용하고 그 다음에 함수 g를 적용한다.
+- f.compose(g) - g를 먼저 적용하고 f를 적용한다.
+- Function.identity() - 함수를 적용하기 이전과 동일한 항등함수, x -> x
+f.andThen(g)
+```
+Function<String, Integer> f = (s) -> Integer.parseInt(s, 16);
+Function<Integer, String> g = (i) -> Integer.toBinaryString(1);
+Function<String, String> h = f.andThen(g);
+System.out.println(h.apply("FF")); "FF" -> 255 -> "11111111"
+```
+f.compose(g)
+```
+Function<Integer, String> g = (i) -> Integer.toBinaryString(i);
+Function<String, Integer> f = (s) -> Integer.parseInt(s, 16); 
+Function<Integer, Integer> h = f.compose(g);
+System.out.println(h.apply(2)); // 2 -> "10" -> 16
+```
+Function.identity()
+```
+Function<String, String> f = x -> x;
+Function<String, String> f = Function.identity(); // 위 문장과 동일
+System.out.println(f.apply("Hello")); // Hello가 그대로 출력됨
+```
+#### Ex4_function 클래스 생성
+```
+package day18;
+import java.util.function.*;
+public class FunctionComposeExam {
+	public static void main(String[] args) {
+						//Integer.parseInt(값, 진수);
+		Function<String, Integer> f = (s) -> Integer.parseInt(s, 16);
+						//이진수로 값 바꿔줌
+		Function<Integer, String> g = (i) -> Integer.toBinaryString(i);
+		
+		Function<String, String> h = f.andThen(g);
+		Function<Integer, Integer> h2 = f.compose(g);
+		
+		System.out.println(h.apply("FF")); // "FF" -> 255 -> "11111111"
+		System.out.println(h2.apply(2)); // 2 -> "10" -> 16
+		
+		Function<String, String> f2 = x -> x; // 항등 함수(identity function)
+		System.out.println(f2.apply("Hello")); // Hello가 그대로 출력됨
+	}
+}
+```
+### Predicate의 결합
+```
+default Predicate<T> and(Predicate<? super T> other)
+default Predicate<T> or(Predicate<? super T> other)
+default Predicate<T> negate()   // 조건식 전체가 부정이 된다.
+static <T> Predicate<T> isEqual(Object targetRef)
+```
+- Predicate를 and(), or(), negate()로 연결해서 하나의 새로운 Predicate로 결합할 수 있다.
+- Predicate의 끝에 negate()를 붙이면 조건식 전체가 부정이 된다.
+- static 메서드인 isEqual()은 두 대상을 비교하는 Predicate를 만들때 사용한다. 
+```
+package day18;
+import java.util.function.*;
+public class PredicateExam {
+	public static void main(String[] args) {
+		Predicate<Integer> p = i -> i < 100;
+		Predicate<Integer> q = i -> i < 200;
+		Predicate<Integer> r = i -> i % 2 == 0;
+		Predicate<Integer> notP = p.negate(); // i >= 100
+		
+		Predicate<Integer> all = notP.and(q.or(r));
+		System.out.println(all.test(150)); // true
+		
+		String str1 = "abc";
+		String str2 = "abc";
+		
+		// str1과 str2가 같은지 비교한 결과를 반환
+		Predicate<String> p2 = Predicate.isEqual(str1);
+		boolean result = p2.test(str2);
+		System.out.println(result);
+	}
+}
+```
+## 메서드 참조
+- 람다식을 더욱 간결하게 표현할 수 있다.
+- 람다식이 하나의 메서드만 호출하는 경우에는 메서드 참조(method reference)라는 방법으로 람다식을 간결하게 할 수 있다.
+- 하나의 메서드만 호출하는 람다식은 **클래스이름::메서드이름** 또는 **참조변수::메서드이름**으로 바꿀 수 있다.
+
+※참조 타입 : (byte,short,char,int,long,float,double,boolean)기본 타입을 제외하고 배열, 열거, 클래스,인터페이스 등을 말한다.<br>
+참조 타입의 변수에는 객체(메모리)의 주소가 저장된다.
+ 
+```
+Function<String, Integer> f = (String s) -> Integer.parseInt(s);
+Function<String, Integer> f = Integer::parseInt; // 메서드 참조
+```
+```
+BiFunction<String, String, Boolean> f = (s1, s2) -> s1.equals(s2);
+BiFunction<String, String, Boolean> f = String::equals; // 메서드 참조
+```
+#### Ex5_function 클래스 만들기
+```java
+package test;
+
+import java.util.function.BiPredicate;
+
+public class Test {
+	public static void main(String[] args) {
+		
+		//boolean result = isEqualString("abc", "abc", (s1,s2) -> s1.equals(s2));
+		boolean result = isEqualString("abc", "abc", String::equals);
+		System.out.println(result);	
+	}
+	
+	static boolean isEqualString(String s1, String s2, BiPredicate<String, String> predicate) {
+		return predicate.test(s1, s1);
+	}	
+}
+
+```
+
+- 이미 생성된 객체의 메서드를 람다식에서 사용한 경우에는 클래스 이름 대신 그 객체의 참조변수를 적어야 한다.
+
+```
+MyClass Obj = new MyClass();
+Function<String, Boolean> f = (x) -> obj.equals(x); // 람다식
+Function<String, Boolean> f2 = obj::equals; // 메서드 참조
+```
+### 생성자의 메서드 참조
+```
+Supplier<MyClass> s = () -> new MyClass(); // 람다식
+Supplier<MyClass> s = MyClass::new; // 메서드 참조
+```
+```
+Function<Integer, MyClass> f = (i) -> new MyClass(i); // 람다식
+Function<Integer, MyClass> f2 = MyClass::new;  // 메서드 참조
+BiFunction<Integer, String, MyClass> bf = (i, s) -> new MyClass(i, s);
+BiFunction<Integer, String, MyClass> bf2 = MyClass::new;  // 메서드 참조
+```
+
+#### Ex5_function 클래스 코드 추가하기
+```java
+package test;
+
+import java.util.function.BiPredicate;
+import java.util.function.Supplier;
+
+public class Test {
+	public static void main(String[] args) {
+		
+		//boolean result = isEqualString("abc", "abc", (s1,s2) -> s1.equals(s2));
+		boolean result = isEqualString("abc", "abc", String::equals);
+		System.out.println(result);
+		
+		//Object obj = getObject(()->new Object());
+		Object obj = getObject(Object::new);
+			
+	}
+	
+	static boolean isEqualString(String s1, String s2, BiPredicate<String, String> predicate) {
+		return predicate.test(s1, s1);
+	}
+	
+	static Object getObject(Supplier<Object> supplier) {
+		return supplier.get();
+	}
+}
+
+```
+
+```
+Function<Integer, int[]> f = x -> new int[x];
+Function<Integer, int[]> f2 = int[]::new;
+```
+#### Ex6_function 클래스 생성
+```java
+package test;
+
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+public class Test {
+	public static void main(String[] args) {
+		
+		//int[] nums = createArray(10, x -> new int[x]);
+		int[] nums = createArray(10, int[]::new);
+	}
+	
+	static int[] createArray(int x, Function<Integer, int[]> function) {
+		return function.apply(x);
+	}
+}
+
+```
+
+
+
