@@ -53,7 +53,6 @@ Stream<String> strStream = Stream.of(new String[] {"a", "b", "c"});
 Stream<String> strStream = Arrays.stream(new String[]{"a", "b","c"});
 Stream<String> strStream = Arrays.stream(new String[]{"a", "b", "c", "d"}, 0, 3);
 ```
-
 int, long, double과 같은 기본형 배열을 소스로 하는 스트림을 생성하는 메서드
 ```
 IntStream IntStream.of(int... values)
@@ -61,10 +60,51 @@ IntStream IntStream.of(int[])
 IntStream Arrays.stream(int[])
 IntStream Arrays.stream(int[] array, int startInclusive, inbt endExclusive) // startInclusive이상 endExclusive 미만 범위의 스트림 생성
 ```
+
+```java
+package ex1_stream;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+public class StudentMain {
+	public static void main(String[] args) {
+		String[] strArray = {"홍길동","신용권","김미나"};
+		Stream<String> strStream = Arrays.stream(strArray);
+		strStream.forEach(item -> System.out.print(item+","));
+		System.out.println();
+		
+		int[] intArray = {1,2,3,4,5};
+		IntStream intStream = Arrays.stream(intArray);
+		intStream.forEach(item -> System.out.print(item+","));
+		System.out.println();
+	}
+}
+```
+
 ### 특정 범위의 정수
 ```
 IntStream IntStream.range(int begin, int end)  // begin이상 ~ end 미만
 IntStream IntStream.rangeClosed(int begin, int end) // begin 이상 ~ end 이하
+```
+```java
+package ex1_stream;
+
+import java.util.stream.IntStream;
+
+public class StudentMain {
+	
+	public static int sum;
+	
+	public static void main(String[] args) {
+		IntStream stream = IntStream.rangeClosed(1, 100);
+		stream.forEach(a -> sum+=a);
+		System.out.println("총합 : "+ sum);
+	}
+}
 ```
 
 ### 임의의 수
