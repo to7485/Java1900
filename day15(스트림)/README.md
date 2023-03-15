@@ -105,6 +105,13 @@ Stream<T> Stream.of(T[])
 Stream<T> Arrays.stream(T[])
 Stream<T> Arrays.stream(T[] array, int startInclusive, int endExclusive)  // startInclusive이상 endExclusive 미만 범위의 스트림 생성
 ```
+```
+사용 예)
+Stream<String> strStream = Stream.of("a", "b", "c"); // 가변인자
+Stream<String> strStream = Stream.of(new String[] {"a", "b", "c"});
+Stream<String> strStream = Arrays.stream(new String[]{"a", "b","c"});
+Stream<String> strStream = Arrays.stream(new String[]{"a", "b", "c", "d"}, 0, 3);
+```
 
 int, long, double과 같은 기본형 배열을 소스로 하는 스트림을 생성하는 메서드
 
@@ -114,13 +121,7 @@ IntStream IntStream.of(int[])
 IntStream Arrays.stream(int[])
 IntStream Arrays.stream(int[] array, int startInclusive, inbt endExclusive) // startInclusive이상 endExclusive 미만 범위의 스트림 생성
 ```
-```
-사용 예)
-Stream<String> strStream = Stream.of("a", "b", "c"); // 가변인자
-Stream<String> strStream = Stream.of(new String[] {"a", "b", "c"});
-Stream<String> strStream = Arrays.stream(new String[]{"a", "b","c"});
-Stream<String> strStream = Arrays.stream(new String[]{"a", "b", "c", "d"}, 0, 3);
-```
+
 
 ### 기본타입형 스트림
 
