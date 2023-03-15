@@ -40,6 +40,181 @@ void forEach(Consumer<? super T> action) {
 	}
 }
 ```
+### 스트림 사용 과정
+1. 생성하기 : 스트림 객체 생성
+2. 가공하기 : 필터링(filtering) 및 맵핑(mapping)등 원하는 결과를 만들어가는 중간작업
+3. 결과만들기 : 최종적으로 결과를 만들어내는 작업
+
+
+## 스트림 만들기
+보통 배열과 컬렉션을 이용해서 스트림을 만들지만 이 외에도 다양한 방법으로 스트림을 만들수 있다.
+
+- 배열
+    - Arrays 클래스 -> static stream()
+    - Stream.of(T[] t)
+    - Stream.of(T...values)
+
+
+![image](https://user-images.githubusercontent.com/54658614/225211207-6d063c3c-8a79-43cb-9643-a5cb12a816b3.png)
+
+
+- 컬렉션
+    - Collection 인터페이스 - stream()
+
+![image](https://user-images.githubusercontent.com/54658614/225211299-91e01eb1-70c0-4d81-9bea-167bc31f9479.png)
+
+- 기본자료형
+    - IntStream, LongStream, DoubleStream
+    - 기본자료형에 유용하게 사용할 수 있는 메서드를 제공한다. 
+
+- 특정 범위의 수
+    - IntStream, LongStream
+    	- range(int start, int end)  start값 이상 end값 미만의 범위
+    	- rangeClosed(int start, int end) start값 이상 end값 이하의 범위
+    
+- 임의의 수
+    - java.util.Random() : 무한스트림이 만들어진다.
+    	- ints()
+    	- longs()
+    	- doubles()
+  
+- 람다식
+    - iterate(), generate();
+    
+ ![image](https://user-images.githubusercontent.com/54658614/225215406-7d544837-ea30-49c3-938a-197445713d7b.png)
+
+
+### 배열 스트림
+스트림을 이용하기 위해서는 먼저 생성을 해야한다. 스트림은 배열 또는 컬렉션 객체를 이용해서<br>
+생성할 수 있다. 배열은 다음과 같이 Arrays.stream 메서드를 사용한다.
+
+```
+Stream<T> Stream.of(T... values) // 가변인자
+Stream<T> Stream.of(T[])
+Stream<T> Arrays.stream(T[])
+Stream<T> Arrays.stream(T[] array, int startInclusive, int endExclusive)  // startInclusive이상 endExclusive 미만 범위의 스트림 생성
+```
+```
+사용 예)
+Stream<String> strStream = Stream.of("a", "b", "c"); // 가변인자
+Stream<String> strStream = Stream.of(new String[] {"a", "b", "c"});
+Stream<String> strStream = Arrays.stream(new String[]{"a", "b","c"});
+Stream<String> strStream = Arrays.stream(new String[]{"a", "b", "c", "d"}, 0, 3);
+```
+
+int, long, double과 같은 기본형 배열을 소스로 하는 스트림을 생성하는 메서드
+
+```
+IntStream IntStream.of(int... values)
+IntStream IntStream.of(int[])
+IntStream Arrays.stream(int[])
+IntStream Arrays.stream(int[] array, int startInclusive, inbt endExclusive) // startInclusive이상 endExclusive 미만 범위의 스트림 생성
+```
+
+ex1_stream 패키지 생성
+
+#### Ex1_stream 클래스 생성
+
+```java
+package ex1_stream;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+public class Ex1_stream {
+	public static void main(String[] args) {
+		String[] strArray = {"홍길동","신용권","김미나"};
+		Stream<String> strStream = Arrays.stream(strArray);
+		strStream.forEach(item -> System.out.print(item+","));
+		System.out.println();
+		
+		int[] intArray = {1,2,3,4,5};
+		IntStream intStream = Arrays.stream(intArray);
+		intStream.forEach(item -> System.out.print(item+","));
+		System.out.println();
+	}
+}
+```
+
+### 컬렉션 스트림
+컬렉션 타입(Collection,List,Set)의 경우 인터페이스에 추가된 디폴트 메서드 stream을 이용해서 스트림을 만들 수 있다.
+
+```
+모든 컬렉션 프레임워크의 조상인 Collection 인터페이스에 default 메서드로 되어있다.
+public interface Collection<E> extends Iterable<E> {
+  default Stream<E> stream() {
+    return StreamSupport.stream(spliterator(), false);
+  } 
+  // ...
+}
+```
+https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/stream/Stream.html
+
+```
+List<Integer> list = Arrays.asList(1,2,3,4,5);
+Stream<Integer> intStream = list.stream();
+intStream.forEach(i -> System.out.println(i));  // 또는 메서드 참조 방식으로 람다식 정의 intStream.forEach(System.out::println);
+```
+
+#### Ex2_stream 클래스 생성
+```java
+package test;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Stream;
+
+public class Test{
+	public static void main(String[] args) {
+
+		//Set 컬렉션 생성
+		Set<String> set = new HashSet<>();
+		set.add("홍길동");
+		set.add("신용권");
+		set.add("김미나");
+		
+		//Stream을 이용한 요소 반복 처리
+		Stream<String> stream = set.stream();
+		stream.forEach(System.out::println);
+		
+		//Stream은 Iterator와 비슷한 반복자이지만, 다음과 같은 차이점을 가지고 있다.
+		//1) 내부 반복자이므로 처리 속도가 빠르고 병렬처리에 효율적이다.
+		//2) 람다식으로 다양한 요소 처리를 정의할 수 있다.
+		//3) 중간 처리와 최종 처리를 수행하도록 파이프 라인을 형성할 수 있다.
+	}
+}
+```
+![KakaoTalk_20230314_134831767](https://user-images.githubusercontent.com/54658614/224896237-82f20589-728b-4ee4-804f-e9500cfad2a6.jpg)
+
+#### Ex3_stream 클래스 생성
+```java
+package test;
+import java.util.ArrayList;
+import java.util.stream.Stream;
+
+public class Test{
+	public static void main(String[] args) {
+
+		ArrayList<String> names = new ArrayList<String>();
+		names.add("홍길동");
+		names.add("신용권");
+		names.add("김자바");
+		names.add("람다식");
+		names.add("김미나");
+		
+		Stream<String> stream = names.stream();
+		stream.forEach(System.out::println);
+		
+		stream.forEach(System.out::println);
+	}
+}
+```
+![image](https://user-images.githubusercontent.com/54658614/224905502-555a7ab2-29d2-4b3e-a377-ec8b39806964.png)
+
+
+
 ### 스트림의 연산
 #### 중간연산 
 연산 결과가 스트림인 연산, 스트림에 연속해서 중간 연산할 수 있다.
@@ -81,151 +256,24 @@ forEach - 최종연산
 |Optional\<T\> reduce(BinaryOperator\<T\> accumulator)<br>T reduce(T identity, BinaryOperator\<T\> accumulator)|스트림 요소를 하나씩 줄여가면서(리듀싱) 계산한다.|
 |R collect(Collector\<T,A,B\> collector)|스트림의 요소를 수집한다.<br>주로 요소를 그룹화하거나 분할한 결과를 컬렉션에 담아 반환하는데 사용한다.|
 
-### 지연된연산
-- 최종 연산이 수행되기 전까지는 중간 연산이 수행되지 않는다.
-- 중간 연산을 호출하는 것은 단순히 어떤 작업이 수행되어야하는 지를 지정해주는 것이다.
-- 최종 연산이 수행되어야 스트림의 요소들이 중간 연산을 거처 최종 연산에서 소모된다.
-
-### 스트림 사용 과정
-1. 생성하기 : 스트림 객체 생성
-2. 가공하기 : 필터링(filtering) 및 맵핑(mapping)등 원하는 결과를 만들어가는 중간작업
-3. 결과만들기 : 최종적으로 결과를 만들어내는 작업
-
-
-## 스트림 만들기
-보통 배열과 컬렉션을 이용해서 스트림을 만들지만 이 외에도 다양한 방법으로 스트림을 만들수 있다.
-
-### 배열 스트림
-스트림을 이용하기 위해서는 먼저 생성을 해야한다. 스트림은 배열 또는 컬렉션 객체를 이용해서<br>
-생성할 수 있다. 배열은 다음과 같이 Arrays.stream 메서드를 사용한다.
-
-```
-Stream<T> Stream.of(T... values) // 가변인자
-Stream<T> Stream.of(T[])
-Stream<T> Arrays.stream(T[])
-Stream<T> Arrays.stream(T[] array, int startInclusive, int endExclusive)  // startInclusive이상 endExclusive 미만 범위의 스트림 생성
-```
-```
-사용 예)
-Stream<String> strStream = Stream.of("a", "b", "c"); // 가변인자
-Stream<String> strStream = Stream.of(new String[] {"a", "b", "c"});
-Stream<String> strStream = Arrays.stream(new String[]{"a", "b","c"});
-Stream<String> strStream = Arrays.stream(new String[]{"a", "b", "c", "d"}, 0, 3);
-```
-
-int, long, double과 같은 기본형 배열을 소스로 하는 스트림을 생성하는 메서드
-
-```
-IntStream IntStream.of(int... values)
-IntStream IntStream.of(int[])
-IntStream Arrays.stream(int[])
-IntStream Arrays.stream(int[] array, int startInclusive, inbt endExclusive) // startInclusive이상 endExclusive 미만 범위의 스트림 생성
-```
-
-
-### 기본타입형 스트림
-
-제네릭을 사용하지 않고 직접적으로 해당 타입의 스트림을 다룰 수도 있습니다.
-
-- 요소의 타입이 T인 스트림은 기본적으로 Stream<T>인데, 기본 자료형을 다루려면 오토박싱&언박싱이 발생하여 비효율성이 증가한다(예 - Integer <-> int)
-- 비효율성을 줄이기 위해 데이터 소스의 요소를 기본형으로 다루는 스트림이 제공된다.
-- IntStream, LongStream, DoubleStream
-- 기본자료형에 유용하게 사용할 수 있는 메서드를 제공한다.
-
-```
-IntStream intStream = IntStream.range(1,5); //[1,2,3,4]
-LongStream longStream = LongStream.rangeClosed(1,5); // [1,2,3,4,5]
-```
-
-제네릭을 사용하지 않기 때문에 불필요한 오토박싱(auto-boxing)이 일어나지 않습니다.
-
-### 문자열 스트림
-
-String을 이용해서 스트림을 생성할수도 있습니다. 
-
-```
-IntStream charStream = "Stream".char(); // [83, 116, 114, 101, 97, 109]
-```
-
-### 컬렉션 스트림
-컬렉션 타입(Collection,List,Set)의 경우 인터페이스에 추가된 디폴트 메서드 stream을 이용해서 스트림을 만들 수 있다.
-
-```
-모든 컬렉션 프레임워크의 조상인 Collection 인터페이스에 default 메서드로 되어있다.
-public interface Collection<E> extends Iterable<E> {
-  default Stream<E> stream() {
-    return StreamSupport.stream(spliterator(), false);
-  } 
-  // ...
-}
-```
-https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/stream/Stream.html
-
-```
-List<Integer> list = Arrays.asList(1,2,3,4,5);
-Stream<Integer> intStream = list.stream();
-intStream.forEach(i -> System.out.println(i));  // 또는 메서드 참조 방식으로 람다식 정의 intStream.forEach(System.out::println);
-```
-
-
-ex1_stream 패키지 생성
-
-#### Ex1_stream 클래스 생성
-
+#### Ex4_stream 클래스 생성
 ```java
-package ex1_stream;
+package test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-public class Ex1_stream {
-	public static void main(String[] args) {
-		String[] strArray = {"홍길동","신용권","김미나"};
-		Stream<String> strStream = Arrays.stream(strArray);
-		strStream.forEach(item -> System.out.print(item+","));
-		System.out.println();
-		
-		int[] intArray = {1,2,3,4,5};
-		IntStream intStream = Arrays.stream(intArray);
-		intStream.forEach(item -> System.out.print(item+","));
-		System.out.println();
-	}
-}
-```
-
-#### Ex2_stream 클래스 생성
-```java
-package test;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Stream;
 
 public class Test{
 	public static void main(String[] args) {
 
-		//Set 컬렉션 생성
-		Set<String> set = new HashSet<>();
-		set.add("홍길동");
-		set.add("신용권");
-		set.add("김미나");
-		
-		//Stream을 이용한 요소 반복 처리
-		Stream<String> stream = set.stream();
-		stream.forEach(System.out::println);
-		
-		//Stream은 Iterator와 비슷한 반복자이지만, 다음과 같은 차이점을 가지고 있다.
-		//1) 내부 반복자이므로 처리 속도가 빠르고 병렬처리에 효율적이다.
-		//2) 람다식으로 다양한 요소 처리를 정의할 수 있다.
-		//3) 중간 처리와 최종 처리를 수행하도록 파이프 라인을 형성할 수 있다.
+		int[] nums = {1,44,33,21,35,67,99,4,5,6,1,1,1,2,2,2};
+		Arrays.stream(nums).distinct().sorted().limit(5).forEach(System.out::println);
 	}
 }
 ```
-![KakaoTalk_20230314_134831767](https://user-images.githubusercontent.com/54658614/224896237-82f20589-728b-4ee4-804f-e9500cfad2a6.jpg)
 
-#### Ex3_stream 클래스 생성
+#### Ex5_stream 클래스 생성
 ```java
 package test;
 
@@ -270,7 +318,45 @@ public class Test{
 }
 
 ```
-#### Ex4_stream 클래스 생성
+
+### 지연된연산
+- 최종 연산이 수행되기 전까지는 중간 연산이 수행되지 않는다.
+- 중간 연산을 호출하는 것은 단순히 어떤 작업이 수행되어야하는 지를 지정해주는 것이다.
+- 최종 연산이 수행되어야 스트림의 요소들이 중간 연산을 거처 최종 연산에서 소모된다.
+
+#### Ex6_stream 클래스 생성
+```java
+package test;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
+public class Test{
+	public static void main(String[] args) {
+
+		Integer[] nums = {1,2,3,4,5,6,7,8,9,10};
+		
+		Stream<Integer> stream = Arrays.stream(nums);
+		int total = stream.reduce(0,(x,y)->x+y);
+	}
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/225209478-ee701e04-1dd7-4034-8e32-22202a7fa318.png)
+
+### 기본타입형 스트림
+
+제네릭을 사용하지 않고 직접적으로 해당 타입의 스트림을 다룰 수도 있습니다.
+
+- 요소의 타입이 T인 스트림은 기본적으로 Stream<T>인데, 기본 자료형을 다루려면 오토박싱&언박싱이 발생하여 비효율성이 증가한다(예 - Integer <-> int)
+- 비효율성을 줄이기 위해 데이터 소스의 요소를 기본형으로 다루는 스트림이 제공된다.
+- IntStream, LongStream, DoubleStream
+- 기본자료형에 유용하게 사용할 수 있는 메서드를 제공한다.
+	
+![image](https://user-images.githubusercontent.com/54658614/225210056-42f96d3e-368a-456e-a586-73be73e09b33.png)
+
+	
+#### Ex7_stream 클래스 생성
 
 ```java
 package test;
@@ -290,34 +376,53 @@ public class Test{
 		System.out.printf("1~10까지의 합 : %d\n",total2);
 	}
 }
-
 ```
-#### Ex5_stream 클래스 생성
+
+#### Ex8_stream 클래스 수정하기
+				      
 ```java
 package test;
-import java.util.ArrayList;
-import java.util.stream.Stream;
+
+import java.util.Arrays;
+import java.util.stream.IntStream;
 
 public class Test{
 	public static void main(String[] args) {
 
-		ArrayList<String> names = new ArrayList<String>();
-		names.add("홍길동");
-		names.add("신용권");
-		names.add("김자바");
-		names.add("람다식");
-		names.add("김미나");
+		//Integer클래스
+//		Integer[] nums = {1,2,3,4,5,6,7,8,9,10};
+		int[] nums = {1,2,3,4,5,6,7,8,9,10};
 		
-		Stream<String> stream = names.stream();
-		stream.forEach(System.out::println);
+//		Stream<Integer> stream = Arrays.stream(nums);
+//		int total = stream.reduce(0,(x,y)->x+y);//기본자료형으로 바꿔줘야 해서 언박싱이 발생한다.
+//		System.out.println(total);
 		
-		stream.forEach(System.out::println);
+		IntStream stream = Arrays.stream(nums);
+		int total = stream.reduce(0, (x,y)->x+y);//기본자료형이기 때문에 언박싱이 일어나지 않는다.
+		System.out.println(total);
 	}
 }
+
 ```
-![image](https://user-images.githubusercontent.com/54658614/224905502-555a7ab2-29d2-4b3e-a377-ec8b39806964.png)
+
+제네릭을 사용하지 않기 때문에 불필요한 오토박싱(auto-boxing)이 일어나지 않습니다.
 
 
+- 지정된 범위의 난수를 발생시키는 스트림을 얻는 메서드
+```
+begin이상 end 미만 범위에서 난수 발생
+IntStream  ints(int begin, int end)
+LongStream longs(long begin, long end)
+DoubleStream doubles(double begin, double end)
+IntStream ints(long streamSize, int begin, int end)
+LongStream longs(long streamSize, long begin, long end)
+DoubleStream doubles(long streamSize, double begin, double end)
+```
+	
+```
+IntStream intStream = IntStream.range(1,5); //[1,2,3,4]
+LongStream longStream = LongStream.rangeClosed(1,5); // [1,2,3,4,5]
+```
 
 ### 임의의 수
 Random 클래스에는 난수들로 이루어진 스트림을 반환하는 메서드를 가지고 있다.
@@ -343,17 +448,29 @@ DoubleStream doubles(long streamSize)
 ```
 IntStream intStream = new Random().ints(5); // 크키가 5인 난수 스트림 반환
 ```
+	
+#### Ex9_stream 클래스 수정하기
+```java
+package test;
 
-- 지정된 범위의 난수를 발생시키는 스트림을 얻는 메서드
+import java.util.Random;
+import java.util.stream.IntStream;
+
+public class Test{
+	public static void main(String[] args) {
+
+//		Random rnd = new Random();
+//		IntStream stream = rnd.ints();
+//		stream.limit(6).forEach(System.out::println);
+		
+		Random rnd = new Random();
+		IntStream stream = rnd.ints(1,46); //범위 정하기
+		stream.limit(6).forEach(System.out::println);
+	}
+}
 ```
-begin이상 end 미만 범위에서 난수 발생
-IntStream  ints(int begin, int end)
-LongStream longs(long begin, long end)
-DoubleStream doubles(double begin, double end)
-IntStream ints(long streamSize, int begin, int end)
-LongStream longs(long streamSize, long begin, long end)
-DoubleStream doubles(long streamSize, double begin, double end)
-```
+
+
 
 ### 람다식 - iterate(), generate()
 람다식을 매개변수로 받아서 람다식에 의해 계산되는 값들을 요소로 하는 무한 스트림을 생성
@@ -366,6 +483,8 @@ static<T> Stream<T> generate(Supplier<T> s)
 ```
 Stream<Integer> evenStream = Stream.iterate(0, n->n+2); // 0, 2, 4, 6 ... 
 ```
+![image](https://user-images.githubusercontent.com/54658614/225216473-2bf9aad5-cb24-4cef-97c6-f6ec33527936.png)
+
 
 - generate()는 이전 결과를 사용하지 않고 람다식에 의해 계산되는 값을 요소로 하는 무한 스트림을 생성하여 반환
 - generate()는 이전 결과를 사용하지 않으므로 매개변수 타입이 Suppiler<T> 이다. 
@@ -374,7 +493,27 @@ Stream<Integer> evenStream = Stream.iterate(0, n->n+2); // 0, 2, 4, 6 ...
 Stream<Double> randomStream = Stream.generate(Math::random);
 Stream<Integer> oneStream = Stream.generate(() -> 1);
 ```
+#### Ex10_stream 클래스 생성
+```java
+package test;
 
+import java.util.Arrays;
+import java.util.stream.IntStream;
+
+public class Test{
+	public static void main(String[] args) {
+
+		int[] nums = IntStream.iterate(1, x->x*2).limit(10).toArray();
+		System.out.println(Arrays.toString(nums));
+		
+							//0~100 사이의 난수
+		int[] nums2 = IntStream.generate(() ->(int)(Math.random()*101)).limit(10).toArray();
+		System.out.println(Arrays.toString(nums2));
+	}
+}
+
+```
+	
 ### 빈 스트림
 - 요소가 하나도 없는 비어있는 스트림 
 - 스트림에서 연산을 수행한 결과가 하나도 없을 때, null 보다 빈 스트림을 반환하는 것이 좋다.
@@ -436,51 +575,6 @@ Stream<String> strStream = Stream.of("dd", "aaa", "CC", "cc", "b");
 strStream.sort().forEach(System.out::println); 
 ```
 
-#### Ex1_student
-```java
-package ex1_stream;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
-
-public class StudentMain {
-	public static void main(String[] args) {
-		List<Student> list = new ArrayList<>();
-				list.add(new Student("홍길동",10));
-				list.add(new Student("신용권",20));
-				list.add(new Student("유미선",30));
-				
-		
-		//방법1
-		/*
-		//student스트림
-		Stream<Student> students = list.stream();
-		
-		//중간 처리(학생 객체를 점수로 매핑)
-		//score스트림
-		IntStream scoreStream = students.mapToInt(student -> student.getScore());
-		
-		//최종처리 (평균점수)
-		double avg = scoreStream.average().getAsDouble();
-		*/
-		
-		//방법2
-		//.mapToInt() : 스트림을 IntStream으로 변환해주는 메서드
-		//.average() : 요소의 평균 반환
-		//.getAsDouble() : 최종 집계된 average의 값을 double형 변수에 넣기 위해 추출하는 메서드
-		double avg = list.stream()
-				.mapToInt(student -> student.getScore())
-				.average()
-				.getAsDouble();
-		
-		System.out.println("평균 점수 : " +avg);
-		
-	}
-}
-```
 
 
 
