@@ -530,6 +530,26 @@ Stream<String> strs1 = Stream.of(str1);
 Stream<String> strs2 = Stream.of(str2);
 Stream<String> strs3 = Stream.concat(strs1, strs2); 
 ```
+#### Ex11_stream 클래스 생성
+```java
+package test;
+
+import java.util.stream.Stream;
+
+public class Test{
+	public static void main(String[] args) {
+		String[] str1 = {"123","456","789"};
+		String[] str2 = {"abc","def","ghi"};
+		
+		Stream<String> str3 = Stream.of(str1);
+		Stream<String> str4 = Stream.of(str2);
+		
+		Stream<String> str5 = Stream.concat(str3, str4);
+		str5.forEach(x -> System.out.print(x+" "));
+	}
+}
+```
+	
 
 ## 스트림의 중간 연산
 
@@ -562,6 +582,19 @@ intStream.distinct().forEach(System.out::print); // 123456
 IntStream intStream = IntStream.rangeClosed(1, 10); // 1 ~ 10
 IntStream.filter( i -> i % 2 == 0).forEach(System.out::print); // 246810
 ```
+#### Ex11_stream 클래스 생성
+```java
+package test;
+
+import java.util.stream.Stream;
+
+public class Test{
+	public static void main(String[] args) {
+		Stream.of("ab","a","abc","abcd","abcdef","abcdefg").filter(x -> x.length() > 2).forEach(System.out::println);
+	}
+}
+
+```
 
 ### 정렬 - sorted()
 ```
@@ -574,10 +607,631 @@ Comparator를 지정하지 않으면 스트림 요소의 기본 정렬 기준(Co
 Stream<String> strStream = Stream.of("dd", "aaa", "CC", "cc", "b");
 strStream.sort().forEach(System.out::println); 
 ```
+보통은 한가지 기준으로 정렬을 하는것이 아닌 여러가지 기준을 세우고 정렬을 한다.
+
+#### Student 클래스 생성
+```java
+package test;
+
+import java.util.stream.Stream;
+
+public class Student implements Comparable<Student>{
+	String name;
+	int ban;
+	int totalScore;
+	Student(String name, int ban, int totalScore) {
+		this.name = name;
+		this.ban = ban;
+		this.totalScore = totalScore;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("[%s, %d, %d]", name, ban, totalScore).toString();
+	}
+	
+	String getName() { return name; }
+	int getBan() { return ban; }
+	int getTotalScore() { return totalScore; }
+	
+	@Override
+	public int compareTo(Student s) {//성적이 높은 순으로 정렬
+		return s.totalScore - this.totalScore;
+	}
+}
+```
+#### StudentMain 클래스 생성
+```java
+package test;
+
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+public class StudentMain {
+	public static void main(String[] args) {
+		Student[] students = {
+				new Student("이자바", 3, 300),
+				new Student("김자바", 1, 200),
+				new Student("안자바", 2, 100),
+				new Student("박자바", 2, 150),
+				new Student("소자바", 1, 200),
+				new Student("나자바", 3, 290),
+				new Student("강자바", 3, 180)	
+		};
+	
+		Stream.of(students).sorted(Comparator.comparing(Student::getBan)// 반별 정렬
+				.thenComparing(Student::getTotalScore)).forEach(System.out::println); 
+				//성적순 정렬	
+	}
+}
+
+```
+comparing메서드의 반환형이 Comparator<T>라서 뒤에 더 조건을 달 수 있는 것
+
+![image](https://user-images.githubusercontent.com/54658614/225517289-4b2ad218-6f32-4242-818c-dbf859b5b3ec.png)
+
+조건을 더 달 때는 thenComparing을 사용한다.
+
+![image](https://user-images.githubusercontent.com/54658614/225517908-6a3e2e89-d28b-43dc-855c-3ef5e0e99344.png)
+
+thenComparing은 파라미터로 Function을 가지고 있고 Function은 apply 메서드를 가지고 있다.
+
+![image](https://user-images.githubusercontent.com/54658614/225517967-f77bc62f-83e5-4d63-91de-5d7f666eb73b.png)
+
+### 변환 - map()
+스트림의 요소에서 저장된 값 중에서 원하는 필드만 뽑아내거나 특정 형태로 변환해야 하는 경우
+```
+Stream<R> map(Function<? super T, ? extends R> mapper)
+```
+
+```
+Stream<File> fileStream = Stream.of(new File("Ex1.java"), new File("Ex1"), new File("Ex1.bak"), 
+new File("Ex2.java"), new File("Ex1.txt"));
+// map()으로 Stream<File>을 Stream<String>으로 변환
+Stream<String> filenameStream = fileStream.map(File::getName);
+filenameStream.forEach(System.out::println); // 스트림의 모든 파일이름을 출력
+```
+
+### 변환 - map()
+스트림의 요소에서 저장된 값 중에서 원하는 필드만 뽑아내거나 특정 형태로 변환해야 하는 경우
+```
+Stream<R> map(Function<? super T, ? extends R> mapper)
+```
+
+#### StudentMain에 코드 추가하기
+```java
+package test;
+
+import java.util.Comparator;
+import java.util.stream.Stream;
+
+public class StudentMain {
+	public static void main(String[] args) {
+		Student[] students = {
+				new Student("이자바", 3, 300),
+				new Student("김자바", 1, 200),
+				new Student("안자바", 2, 100),
+				new Student("박자바", 2, 150),
+				new Student("소자바", 1, 200),
+				new Student("나자바", 3, 290),
+				new Student("강자바", 3, 180)	
+		};
+	
+		Stream.of(students).sorted(Comparator.comparing(Student::getBan)// 반별 정렬
+				.thenComparing(Student::getTotalScore)).forEach(System.out::println); 
+				//성적순 정렬
+
+		System.out.println();
+
+		//Students스트림을 score스트림으로 변환하고 점수를 콘솔에 출력하기
+		Stream.of(students).mapToInt(x -> x.getTotalScore()).forEach(score -> System.out.println(score));
+	}
+}
+```
+
+### 조회 - peek()
+- forEach와 비슷하나 스트림의 요소를 소모하지 않는 중간 연산
+- 중간연산이므로 연산 사이에 여러번 넣어도 된다.
+
+### mapToInt(), mapToLong(), mapToDouble()
+map()은 연산결과로 Stream<T> 타입입의 스트림을 반환하지만 기본자료형인 int, long, double으로 반환해 주는 기본 스트림을 반환
+```
+DoubleStream mapToDouble(ToDoubleFunction<? super T> mapper)
+IntStream mapToInt(ToIntFunction<? super T> mapper)
+LongStream mapToLong(ToLongFunction<? super T> mapper)
+```
+![image](https://user-images.githubusercontent.com/54658614/225520614-99c8faa3-5a87-4f16-85e3-f59ae9774409.png)
+
+##### 참고) 기본형 스트림은 숫자를 다루는 편리한 메서드를 제공
+
+|메서드|메서드 설명|
+|-------|------------|
+|int sum()|스트림의 모든 요소의 총합|
+|OptionalDouble average()|스트림 요소의 평균|
+|OptionalInt max()|스트림 요소 중 제일 큰 값|
+|OptionalInt min()|스트림 요소 중 제일 작은 값|
+|IntSummaryStatistics summaryStatistics()|스트림의 통계 요약 정보|
+
+#### StudentMain에 코드 추가하기
+```java
+package test;
+
+import java.util.Comparator;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
+
+public class StudentMain {
+	public static void main(String[] args) {
+		Student[] students = {
+				new Student("이자바", 3, 300),
+				new Student("김자바", 1, 200),
+				new Student("안자바", 2, 100),
+				new Student("박자바", 2, 150),
+				new Student("소자바", 1, 200),
+				new Student("나자바", 3, 290),
+				new Student("강자바", 3, 180)	
+		};
+	
+		Stream.of(students).sorted(Comparator.comparing(Student::getBan)// 반별 정렬
+				.thenComparing(Student::getTotalScore)).forEach(System.out::println); 
+				//성적순 정렬
+		System.out.println();
+		
+		//Students스트림을 score스트림으로 변환하고 점수를 콘솔에 출력하기
+		Stream.of(students).mapToInt(x -> x.getTotalScore()).forEach(score -> System.out.println(score));
+		
+		System.out.println();
+		//학생들의 총합을 구하는 스트림 생성하기
+		IntStream stream = Stream.of(students).mapToInt(x -> x.getTotalScore());
+		//int total = stream.reduce(0,(x,y)-> x+y);
+		
+		System.out.println(total);
+	}
+}
+```
+mapToIntStream에는 여러가지 편리한 계산이 들어있는 summaryStatistics() 메서드가 있다.
+
+![image](https://user-images.githubusercontent.com/54658614/225522075-fc190b42-1644-46a9-98a8-30323de7a7b0.png)
 
 
+![image](https://user-images.githubusercontent.com/54658614/225522041-93420e05-5407-465e-806d-cba915fe1203.png)
 
+#### StudentMain에 코드 수정하기
+```java
+package test;
 
+import java.util.Comparator;
+import java.util.IntSummaryStatistics;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
+public class StudentMain {
+	public static void main(String[] args) {
+		Student[] students = {
+				new Student("이자바", 3, 300),
+				new Student("김자바", 1, 200),
+				new Student("안자바", 2, 100),
+				new Student("박자바", 2, 150),
+				new Student("소자바", 1, 200),
+				new Student("나자바", 3, 290),
+				new Student("강자바", 3, 180)	
+		};
+	
+		Stream.of(students).sorted(Comparator.comparing(Student::getBan)// 반별 정렬
+				.thenComparing(Student::getTotalScore)).forEach(System.out::println); 
+				//성적순 정렬
+		System.out.println();
+		
+		//Students스트림을 score스트림으로 변환하고 점수를 콘솔에 출력하기
+		Stream.of(students).mapToInt(x -> x.getTotalScore()).forEach(score -> System.out.println(score));
+		
+		System.out.println();
+		
+		//학생들의 총합을 구하는 스트림 생성하기
+//		IntStream stream = Stream.of(students).mapToInt(x -> x.getTotalScore());
+//		//int total = stream.reduce(0,(x,y)-> x+y);
+//		int total = stream.sum();
+//		System.out.println(total);
+//		
+//		System.out.println();
+		//평균구하기
+		
+//		stream = Stream.of(students).mapToInt(Student::getTotalScore);
+//		double avg = stream.average().getAsDouble();
+//		System.out.println(avg);
+		
+		IntStream stream = Stream.of(students).mapToInt(Student::getTotalScore);
+		IntSummaryStatistics stat = stream.summaryStatistics();
+		System.out.println(stat);
+		//개수, 총합, 최대값, 최소값, 평균 다 구해준다.
 
+	}
+}
+```
+### flatMap() - Stream<T[]>를 Stream<T>로 변환
+스트림의 타입이 Stream<T[]>인 경우 Stream<T>로 변환해 준다.
+```
+Stream<String> strStrm = Stream.of("abc", "def", "jklmn");
+Stream<String> strStrm2 = Stream.of("ABC", "GHI", "JKLMN");
+Stream<Stream<String>> strmStrm = Stream.of(strStrm, strStrm2);
+Stream<String> strStream = strmStrm.map(s -> s.toArray(String[]::new)) // Stream<Stream<String>> -> Stream<String[]>
+												.flatMap(Arrays::stream); // Stream<String[]> -> Stream<String>
+```
+#### Ex12_stream 클래스 생성
+```java
+package day19;
+import java.util.*;
+import java.util.stream.*;
+public class StreamEx4 {
+	public static void main(String[] args) {
+		Stream<String[]> strArrStrm = Stream.of(
+				new String[] {"abc", "def", "jkl"},
+				new String[] {"ABC", "GHI", "JKL"}
+		);
+		// Stream<Stream<String>> strStrmStrm = strArrStrm.map(Arrays::stream);
+		Stream<String> strStrm = strArrStrm.flatMap(Arrays::stream);
+		
+		strStrm.map(String::toLowerCase)
+			.distinct()
+			.sorted()
+			.forEach(System.out::println);
+		System.out.println();
+		
+		String[] lineArr = {
+				"Believe or not It is true",
+				"Do or do not There is no try",
+		};
+		
+		Stream<String> lineStream = Arrays.stream(lineArr);
+		lineStream.flatMap(line -> Stream.of(line.split(" +")))
+			.map(String::toLowerCase)
+			.distinct()
+			.sorted()
+			.forEach(System.out::println);
+		System.out.println();
+		
+		Stream<String> strStrm1 = Stream.of("AAA", "ABC", "bBb", "Dd");
+		Stream<String> strStrm2 = Stream.of("bbb", "aaa", "ccc", "dd");
+		
+		Stream<Stream<String>> strStrmStrm = Stream.of(strStrm1, strStrm2);
+		Stream<String> strStream = strStrmStrm
+						.map(s -> s.toArray(String[]::new))
+						.flatMap(Arrays::stream);
+		strStream.map(String::toLowerCase)
+			.distinct()
+			.forEach(System.out::println);
+	}
+}
+```
+- 실행결과
+```
+abc
+def
+ghi
+jkl
+believe
+do
+is
+it
+no
+not
+or
+there
+true
+try
+aaa
+abc
+bbb
+dd
+ccc
+```
+## Optional<T>와 OptionalInt
+- Optional<T>은 제네릭 클래스로 "T타입의 객체"를 감싸는 래퍼 클래스이다.
+- Optional 타입의 객체에는 모든 타입의 참조변수를 담을 수 있다.
+- 보통 값이 없을 때를 처리하기 위해 사용한다.
+```
+public final class Optional<T> {
+	private final T value;  // T 타입의 참조변수
+	...
+}
+```
+- 스트림에서 최종연산의 결과를 Optional 객체에 담아서 반환
+- 객체에 담아서 반환을 하므로 결과가 null인지를  간단하게 체크하는 메서드를 제공한다.
+- if로 따로 체크하지 않아도 NullPointException이 발생하지 않는 보다 간결하고 안전한 코드 작성이 가능해 진다.
+
+### Optional 객체 생성하기
+- of() 또는 ofNullable()을 사용 
+- 참조변수의 값이 null일 가능성이 있으면 of()대신 ofNullable()을 사용해야 한다.
+- Optional<T>타입의 참조 변수를 기본값으로 초기화 할때는 empty()를 사용한다.
+```
+String str = "abc";
+Optional<String> optVal = Optional.of(str);
+Optional<String> optVal = Optional.of("abc");
+Optional<String> optVal = Optional.of(new String("abc"));
+```
+```
+Optional<String> optVal = Optional.of(null); // NullPointException 발생
+Optional<String> optVal = Optional.ofNullable(null);//null값이 있을 때도 있으니 주의해라
+```
+```
+Optional<String> optVal = Optional.<String>empty(); // 빈 객체로 초기화
+```
+### Optional 객체의 값 가져오기
+- get()을 사용하여 Optional 객체에 저장된 값을 가져온다. 값이 null일 때는 NoSuchElementException이 발생한다.
+- orElse("기본값")을 사용하면 값이 null일때 "기본값"으로 대체할 수 있다.
+- 람다식을 매개변수로 하여 저장된 값을 가져올 수 있다.
+```
+T orElseGet(Supplier<? extends T> other)
+T orElseThrow(Supplier<? extends X> exceptionSupplier)
+```
+```
+String str3 = optVal2.orElseGet(String::new);
+String str4 = optVal2.orElseThrow(NullPointerException::new);
+```
+### OptionalInt, OptionalLong, OptionalDouble
+- IntStream과 같은 기본형 스트림에는 Optional도 기본형을 값으로 하는 OptionalInt, OptionalLong, OptionalDouble을 반환한다. 
+- IntStream에 정의된 메서드 예
+```
+OptionalInt findAny()
+OptionalInt findFirst()
+OptionalInt reduce(IntBinaryOperator op)
+OptionalInt max()
+OptionalInt min()
+OptionalDouble average()
+```
+- 반환타입이 Optional<T>가 아니라는 것을 제외하고는 Stream에 정의된 것과 비슷하나 Optional에 저장된 값을 꺼낼 때 사용하는 메서드의 이름이 조금씩 다르다
+
+|Optinal클래스|값을 반환하는 메서드|
+|-------|---------|
+|Optional<T>|T get()|
+|OptionalInt|int getAsInt()|
+|OptionalLong|long getAsLong()|
+|OptionalDouble|double getAsDouble()|
+
+#### Ex13_stream 클래스 생성
+```java
+package day19;
+import java.util.*;
+public class OptionalEx1 {
+	public static void main(String[] args) {
+		Optional<String> optStr = Optional.of("abcde");
+		Optional<Integer> optInt = optStr.map(String::length);
+		System.out.println("optStr=" + optStr.get());
+		System.out.println("optInt=" + optInt.get());
+		
+		int result1 = Optional.of("123")
+						.filter(x->x.length() > 0)
+						.map(Integer::parseInt).get();
+		
+		int result2 = Optional.of("")
+						.filter(x->x.length() > 0)
+						.map(Integer::parseInt).orElse(-1);
+		
+		System.out.println("result1=" + result1);
+		System.out.println("result2=" + result2);
+		
+		Optional.of("456").map(Integer::parseInt)
+				.ifPresent(x->System.out.printf("result3=%d%n", x));
+		
+		OptionalInt optInt1 = OptionalInt.of(0); // 0을 저장
+		OptionalInt optInt2 = OptionalInt.empty(); // 빈 객체를 생성
+		
+		System.out.println(optInt1.isPresent()); // true
+		System.out.println(optInt2.isPresent()); // false;
+		
+		System.out.println(optInt1.getAsInt()); // 0
+		// System.out.println(optInt2.getAsInt()); // NoSuchElementException
+		System.out.println("optInt1=" + optInt1);
+		System.out.println("optInt2=" + optInt2);
+		System.out.println("optInt1.equals(optInt2)?" + optInt1.equals(optInt2)); // false
+		
+		Optional<String> opt = Optional.ofNullable(null); // null을 저장
+		Optional<String> opt2 = Optional.empty(); // 빈 객체를 생성
+		System.out.println("opt = " + opt);
+		System.out.println("opt2 = " + opt2);
+		System.out.println("opt.equals(opt2)?" + opt.equals(opt2)); // true
+		
+		int result3 = optStrToInt(Optional.of("123"), 0);
+		int result4 = optStrToInt(Optional.of(""), 0);
+		
+		System.out.println("result3=" + result3);
+		System.out.println("result4=" + result4);
+	}
+	
+	static int optStrToInt(Optional<String> optStr, int defaultValue) {
+		try {
+			return optStr.map(Integer::parseInt).get();
+		} catch (Exception e) {
+			return defaultValue;
+		}
+	}
+}
+```
+- 실행결과
+```
+optStr=abcde
+optInt=5
+result1=123
+result2=-1
+result3=456
+true
+false
+0
+optInt1=OptionalInt[0]
+optInt2=OptionalInt.empty
+optInt1.equals(optInt2)?false
+opt = Optional.empty
+opt2 = Optional.empty
+opt.equals(opt2)?true
+result3=123
+result4=0
+```
+## 스트림의 최종 연산
+- 최종 연산은 스트림의 요소를 소모해서 결과를 
+- 최종 연산후에는 스트림이 닫히게 되고 더 이상 사용할 수 없다.
+
+### forEach()
+- forEach()는 peek()와 달리 스트림의 요소를 소모하는 최종연산이다
+- 반환 타입이 void이므로 스트림의 요소를 출력하는 용도로 사용된다.
+
+```
+void forEach(Consumer<? super T> action)
+```
+
+### 조건 검사 - allMatch(), anyMatch(), noneMatch(), findFirst(), findAny()
+- allMatch() : 지정된 조건에 모든 요소가 일치하는지
+- anyMatch() : 지정된 조건에 일부 요소가 일치하는지
+- noneMatch() : 지정된 조건에 어떤 요소도 일치하지 않는지 
+- findFirst() : 지정된 조건에 일치하는 첫 번째 것을 반환
+- findAny() : 지정된 조건에 일치하는 첫 번째 것을 반환(병렬 스트림에서 사용)
+
+```
+boolean allMatch(Predicate<? super T> predicate)
+boolean anyMatch(Predicate<? super T> predicate)
+boolean noneMatch(Predicate<? super T> predicate)
+```
+```
+boolean noFailed = stuStream.anyMatch(s->s.getTotalScore() <= 100);
+```
+```
+Optional<Student> stu = stuStream.filter(s->s.getTotalScore() <= 10).findFirst();
+```
+
+### 통계 - count(), sum(), average(), max(), min()
+- IntStream과 같은 기본형 스트림에는 스트림의 요소들에 대한 통계 정보를 얻을 수 있는 메서드들이 있다.
+- 기본형 스트림이 아닌 경우에는 통계 관련 메서드가 3개만 있다(count(), max(), min())
+
+### 리듀싱 - reduce()
+- 스트림의 요소를 줄여나가면서 연산을 수행하고 최종결과를 반환한다.
+- 매개변수의 타입은 BinaryOperator<T>이다.
+- 처음 두 요소를 가지고 연산한 결과를 가지고 그 다음 요소를 연산한다.
+
+```
+Optional<T> reduce(BinaryOperator<T> accumulator)
+T reduce(T identity, BinaryOperator<T> accumulator)
+```
+
+**참고** BinaryOperator<T>는 BiFunction의 하위 인터페이스이며 BiFunction<T,T,T>와 동등하다.
+- 최종연산 count(), sum(), max(), min() 등은 내부적으로 모두 reduce()를 이용해서 작성된 것이다.
+
+```
+int count = intStream.reduce(0, (a, b) -> a + 1);
+int sum = intStream.reduce(0, (a,b) -> a + b);
+int max = intStream.reduce(Integer.MIN_VALUE, (a, b) -> a>b?a:b);
+int min = intStream.reduce(Integer.MAX_VALUE, (a, b) -> a<b?a:b);
+```
+
+#### day19/StreamEx5.java
+```java
+package day19;
+import java.util.*;
+import java.util.stream.*;
+public class StreamEx5 {
+	public static void main(String[] args) {
+		String[] strArr = {
+			"Inheritance", "Java", "Lambda", "stream",
+			"optionalDouble", "IntStream", "count", "sum"
+		};
+		Stream.of(strArr).forEach(System.out::println);
+		
+		boolean noEmptyStr = Stream.of(strArr).noneMatch(s->s.length() == 0);
+		Optional<String> sWord = Stream.of(strArr)
+					.filter(s->s.charAt(0) == 's').findFirst();
+		
+		System.out.println("noEmptyStr=" + noEmptyStr);
+		System.out.println("sWord=" + sWord.get());
+		
+		// Stream<String[]>을 IntStream으로 변환
+		IntStream intStream1 = Stream.of(strArr).mapToInt(String::length);
+		IntStream intStream2 = Stream.of(strArr).mapToInt(String::length);
+		IntStream intStream3 = Stream.of(strArr).mapToInt(String::length);
+		IntStream intStream4 = Stream.of(strArr).mapToInt(String::length);
+		
+		int count = intStream1.reduce(0, (a,b) -> a + 1);
+		int sum = intStream2.reduce(0,  (a,b) -> a + b);
+		
+		OptionalInt max = intStream3.reduce(Integer::max);
+		OptionalInt min = intStream4.reduce(Integer::min);
+		
+		System.out.println("count=" + count);
+		System.out.println("sum=" + sum);
+		System.out.println("max=" + max.getAsInt());
+		System.out.println("min=" + min.getAsInt());
+	}
+}
+```
+- 실행결과
+```
+Inheritance
+Java
+Lambda
+stream
+optionalDouble
+IntStream
+count
+sum
+noEmptyStr=true
+sWord=stream
+count=8
+sum=58
+max=14
+min=3
+```
+
+## collect()
+- 스트림의 최종연산, 매개변수로 컬렉터를 필요로 한다.
+```
+Object collect(Collector collector) // Collector를 구현한 클래스의 객체를 매개변수로
+```
+```
+collect() 스트림의 최종연산, 매개변수로 컬렉터를 필요로 한다.
+Collector 인터페이스, 컬렉터는 이 인터페이스를 구현해야 한다.
+Collectors 클래스, static 메서드로 미리 작성된 컬렉터를 제공한다.
+```
+### 스트림 컬렉션과 배열로 변환 - toList(), toSet(), toMap(), toCollection(), toArray()
+- 스트림의 모든 요소를 컬렉션에 수집하고자 할때는 Collectors클래스의 toList()와 같은 메서드를 사용한다.
+- List나 Set이 아닌 특정 컬렉션을 지정하려면 toCollection()에 해당하는 컬렉션의 생성자 참조를 매개변수로 넣어준다.
+```
+List<String> names = stuStream.map(Student::getName).collect(Collectors.toList());
+ArrayList<String> list = names.stream().collect(Collectors.toCollection(ArrayList::new));
+```
+- toMap()
+```
+Map<String, Person> map = personStream.collect(Collectors.toMap(p->p.getRegId(), p->p));
+Map<String, Person> map = personStream.collect(Collectors.toMap(p->p.getRegId(), Function.identity()));
+```
+- toArray()
+	- 매개변수로 해당타입의 생성자를 지정해야 한다. 
+	- 매개변수를 지정하지 않으면 반환되는 배열의 타입은 'Object[]'이다.
+```
+Student[] stuNames = studentStream.toArray(Student[]::new);  // OK
+Student[] stuNames = studentStream.toArray(); // 에러 발생
+Object[] stuNames = studentStream.toArray(); // OK
+```
+### 통계 - counting(), summingInt(), averagingInt(), maxBy(), minBy()
+```
+long count = stuStream.count();
+long count = stuStream.collect(Collectors.counting());
+long totalScore = stuStream.mapToInt(Student::getTotalScore).sum();
+long totalScore = stuStream.collect(Collectors.summingInt(Student::getTotalScore));
+OptionalInt toScore = studentStream.mapToInt(Student::getTotalScore).max();
+Optional<Student> topStudent = stuStream.max(Comparator.comparingInt(Student::getTotalScore));
+Optional<Student> topStudent = stuStream.collect(maxBy(Comparator.comparingInt(Student::getTotalScore)));
+IntSummaryStatistics stat = stuStream.mapToInt(Student::getTotalScore).summaryStatistics();
+IntSummaryStatistics stat = stuStream.collect(summarizingInt(Student::getTotalScore));
+```
+### 리듀싱 - reducing()
+```
+Collector reducing(BinaryOperator<T> op)
+Collector reducing(T identity, BinaryOperator<T> op)
+Collector reducing(U identity, Function<T, U> mapper, BinaryOperator<U> op)
+```
+```
+IntStream intStream = new Random().ints(1, 46).distinct().limit(6);
+OptionalInt max = intStream.reduce(Integer::max);
+Optional<Integer> max = intStream.boxed().collect(Collectors.reducing(Integer::max));
+long sum = intStream.reduce(0, (a, b) -> a + b);
+long sum = intStream.boxed().collect(Collectors.reducing(0, Student::getTotalScore, Integer::sum)));
+```
+IntStream에는 매개변수 3개짜리 collect()만 정의되어 있으므로 매개변수 1개짜리 collect()를 쓰려면 boxed()를 통해 IntStream을 Stream<Integer>로 변환해야 한다.
 
