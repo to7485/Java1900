@@ -979,7 +979,7 @@ import javax.swing.ScrollPaneConstants;
 
 public class Test{
 	public static void main(String[] args) {
-		JFrame f = new JFrame("콤보박스만들기");
+		JFrame f = new JFrame("");
 		f.setLayout(new BorderLayout());
 		
 		JPanel jp = new JPanel();
@@ -1039,7 +1039,7 @@ import javax.swing.ScrollPaneConstants;
 
 public class Test{
 	public static void main(String[] args) {
-		JFrame f = new JFrame("콤보박스만들기");
+		JFrame f = new JFrame("테이블만들기");
 		f.setLayout(new BorderLayout());
 		
 		String[] title = {"사번", "성명", "부서"};
@@ -1357,3 +1357,5 @@ public class ImgText {
 	}
 }
 ```
+
+
