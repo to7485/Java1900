@@ -191,95 +191,116 @@ ex2_frame_exam 패키지 생성
 
 #### FrameExamMain클래스 생성
 ```java
-public class FrameExamMain {
+package test;
+
+import java.awt.Color;
+import java.awt.FileDialog;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.io.FileWriter;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentListener;
+
+public class Memo {
 	public static void main(String[] args) {
-		Frame frame = new Frame(“메모장”);
-		frame.setBounds(700,200,250,400);
-		frame.setBackground(Color.CYAN);
-		frame.setLayout(null);//자동배치 끄기
+		JFrame frame = new JFrame("메모장");
+		JPanel jp = new JPanel();
+		jp.setBackground(Color.CYAN);
+		jp.setLayout(null);
 
-		Font font = new Font(“”,Font.PLAIN,20);
+		Font font = new Font("", Font.PLAIN, 20);
 
-		//키보드에서 넘어온 값을 입력받기 위한 객체 스캐너를 안쓴다고 한 이유
-		TextField tf = new TextField();
-		tf.setBounds(10,35,180,30);
+		JTextField tf = new JTextField();
+		tf.setBounds(10, 15, 180, 30);
 		tf.setFont(font);
 
-		Button btn_input = new Button(“확인”);
-		btn_input.setBounds(190,35,45,30);
-		btn_input.setEnabled(false);//버튼 클릭 비활성화
+		JButton btn_input = new JButton("확인");
+		btn_input.setBounds(190, 15, 60, 50);
+		btn_input.setEnabled(false);// 버튼 클릭 비활성화
 
-		//키보드에서 여러줄을 동시에 입력받을 수 있도록 하는 클래스
-		TextArea ta = new TextArea(미리 입력될 글,0,0,가로,세로 스크롤);
-		TextArea ta = new TextArea(“안녕”,0,0,TextArea.SCROLLBARS_VERTICAL_ONLY);
+		JTextArea ta = new JTextArea();
 		ta.setBounds(10, 70, 230, 280);
-		ta.setEditable(false); //ta에 임의로 값을 추가할 수 없도록 하는 기능
-		
-		Button btnSave = new Button(“저장”);
-		Button btnSave = new Button(“종료”);
-		btnSave.setBounds(10,356,110,30);
-		btnClose.setBounds(130,356,110,30);
+		ta.setEditable(false); // ta에 임의로 값을 추가할 수 없도록 하는 기능
 
-		//tf에 값이 들어가 있는지 확인하여 ‘확인’버튼을 활성화 또는 비활성화
-		tf.addTextListener( new TextAdapter(tf, btn_input));
-		//확인버튼 클릭시 tf의 값을 ta로 복사해서 넣어주자!
-		btn_input.addActionListener(new InputButtonAdapter(tf,ta));
+		JButton btnSave = new JButton("저장");
+		JButton btnClose = new JButton("종료");
+		btnSave.setBounds(10, 356, 110, 30);
+		btnClose.setBounds(130, 356, 110, 30);
 
-		//종료버튼에 이벤트감지자 등록
+		// tf에 값이 들어가 있는지 확인하여 ‘확인’버튼을 활성화 또는 비활성화
+		tf.addKeyListener(new TextAdapter(tf,btn_input));
+		// 확인버튼 클릭시 tf의 값을 ta로 복사해서 넣어주자!
+		btn_input.addActionListener(new InputButtonAdapter(tf, ta));
+		// 종료버튼에 이벤트감지자 등록
 		btnClose.addActionListener(new ActionListener() {
-			//System.exit(0); 모든 프레임들을 종료
-			frame.dispose(); //현재 프레임만 종료
-		}
-	});
 
-		//저장 버튼을 눌렀을 때  ta의 값을 저장하는 이벤트 감지자 등록
-		btn.Save.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// System.exit(0); 모든 프레임들을 종료
+				frame.dispose(); // 현재 프레임만 종료
+			}
+
+		});
+
+		// 저장 버튼을 눌렀을 때 ta의 값을 저장하는 이벤트 감지자 등록
+		btnSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//ta에 쓰여진 내용을 가져오자
+				// ta에 쓰여진 내용을 가져오자
 				String message = ta.getText();
 
-				//경로를 설정하는 FileDialog
-				FileDialog fd = new FileDialog( frame,“ 저장”, FileDialog.SAVE);
-				//FileDialog.SAVE 오른쪽 아래 버튼이 저장으로 변경
+				// 경로를 설정하는 FileDialog
+				FileDialog fd = new FileDialog(frame, "저장", FileDialog.SAVE);
+				// FileDialog.SAVE 오른쪽 아래 버튼이 저장으로 변경
 
 				fd.setVisible(true);
 
-				//fd를 통해 지정한 저장경로와 파일명을 알아내자
-				//(fd.setVisible()보다 아래쪽에 작성할 것!!)
+				// fd를 통해 지정한 저장경로와 파일명을 알아내자
+				// (fd.setVisible()보다 아래쪽에 작성할 것!!)
 				String path = fd.getDirectory() + fd.getFile();
 				System.out.println(path);
 
-				//char기반의 스트림을 생성하여 path경로에 저장
-				try{
-				FileWriter fw = new FileWriter(path);
-				fw.write(message);
-				fw.close();
-				} catch(Exception e) {
-					
+				// char기반의 스트림을 생성하여 path경로에 저장
+				try {
+					FileWriter fw = new FileWriter(path);
+					fw.write(message);
+					fw.close();
+				} catch (Exception e1) {
+
 				}
-			}
-		}
-	});
-
-		frame.add(tf) //frame에 TextField추가
-		frame.add(btn_input);//frame에 Button추가
-		frame.add(ta); //frame에 TextArea를 추가
-		frame.add(btnSave);
-		frame.add(btnClose);
-
-		//생성된 프레임의 사이즈 변경을 막는다.
-		frame.setResizable(false);
-		frame.setVisible(true);
-
-		f.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				System.exit(0);
 			}
 		});
 
-	}//main
+		jp.add(tf);
+		jp.add(btn_input);
+		jp.add(ta);
+		jp.add(btnSave);
+		jp.add(btnClose);
+		frame.add(jp);
+		
+		
+
+		
+		frame.setBounds(700, 200, 270, 440);
+	
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+
 }
 ```
 ![image](https://user-images.githubusercontent.com/54658614/223325096-72963286-ad91-487d-949d-c2bb8acfdf5d.png)
@@ -287,57 +308,94 @@ public class FrameExamMain {
 ---------------------------------------------------------------------------------
 ##### TextAdapter 클래스 생성
 ```java
-public class TextAdapter implements TextListener {
+package test;
 
-	private TextField tf;
-	private Button btn_input;
 
-	public TextAdapter(TextField tf, Button btn_input) {
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+
+public class TextAdapter implements KeyListener{
+
+
+	private JTextField tf;
+	private JButton btn_input;
+
+	public TextAdapter(JTextField tf, JButton btn_input) {
 		this.tf =tf ;
 		this.btn_input = btn_input;
 	}
+	
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+
+	}
+
+
 
 	@Override
-	안에 들어가는 값이 지워지든 추가가 되든 변경되면 호출되는 메서드
-	public void textValueChanged(TextEvent e) {
-
-		if(tf.getText().equals(“”) ) {
+	public void keyReleased(KeyEvent e) {
+		if(tf.getText().equals("") ) {
 			//tf에 아무것도 쓰여있지 않으면 버튼 비활성
 			btn_input.setEnabled(false);	
 		} else {
 			//tf에 뭔가 쓰여있으면 버튼을 활성
 			btn_input.setEnabled(true);
 		}
-		//System.out.println(“hihi”);
+		
 	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+
+
 }
+
 ```
 
 #### InputButtonAdapter 클래스 생성
 ```java
-public class InputButtonAdapter implements TextListener {
+package test;
 
-	private TextField tf;
-	private TextArea ta;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
 
-	public nputButtonAdapter(TextField tf, TextArea ta) {
-		this.tf =tf ;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class InputButtonAdapter implements ActionListener {
+	
+	private JTextField tf;
+	private JTextArea ta;
+
+	public InputButtonAdapter(JTextField tf, JTextArea ta) {
+		this.tf =tf;
 		this.ta = ta;
 	}
 
 	@Override
-	안에 들어가는 값이 지워지든 추가가 되든 변경되면 호출되는 메서드
 	public void actionPerformed(ActionEvent e) {
 		//ta내부의 모든 값을 변경하는 메서드 setText	
 		//ta.setText(tf.getText());
 
 		//ta가 가진 기존 값에 새로운 값을 이어붙이자(append)
-		ta.append( tf.getText() + “\n”);
+		ta.append( tf.getText() + "\n");
 		
 		tf.requestFocus(); //tf로 커서를 이동시킨다.
-		tf.setText(“”);
-
+		tf.setText("");
+		
 	}
+
 }
 ```
 
