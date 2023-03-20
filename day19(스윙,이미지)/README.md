@@ -389,9 +389,6 @@ public class JButtonTest extends JFrame {
 - 스윙은 AWT에서 제공하는 이벤트(java.awt.event 패키지로 제공)를 처리할 수 있을 뿐 아니라 스윙 컴포넌트에서 발생하는 이벤트를 따로 정의해 두었다.
 - 스윙의 이벤트 클래스는 javax.swing.event 패키지에서 제공한다.
 
-### JCheckBoxs
-- JCheckBox 클래스는 체크 박스 기능을 제공하며, AbstractButton 클래스로부터 상속받는다. 
-
 #### 컴포넌트별 발생 이벤트
 
 ![이벤트2](https://raw.githubusercontent.com/yonggyo1125/curriculum300H/main/1.JAVA(84%EC%8B%9C%EA%B0%84)/23%EC%9D%BC%EC%B0%A8(3h)%20-%20%EC%82%AC%EC%9A%A9%EC%9E%90%20%EC%9D%B8%ED%84%B0%ED%8E%98%EC%9D%B4%EC%8A%A4(%EC%8A%A4%EC%9C%99)/images/%EC%9D%B4%EB%B2%A4%ED%8A%B82.png)
@@ -643,6 +640,10 @@ public class Test{
 }
 
 ```
+
+### JCheckBoxs
+- JCheckBox 클래스는 체크 박스 기능을 제공하며, AbstractButton 클래스로부터 상속받는다. 
+
 #### JCheckBox 클래스의 생성자
 
 |생성자|설명|
