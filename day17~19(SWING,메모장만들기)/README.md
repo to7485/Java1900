@@ -1460,6 +1460,9 @@ public class Memo {
 
 ```
 
+![image](https://user-images.githubusercontent.com/54658614/226518191-13b6882e-8e32-40ff-9aaf-39d82ec35581.png)
+
+
 #### InputButtonAdapter 클래스 생성
 
 ```java
