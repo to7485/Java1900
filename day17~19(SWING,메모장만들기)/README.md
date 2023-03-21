@@ -102,224 +102,6 @@ public class JFrameTest extends JFrame {
 }
 ```
 
-
-### 패널 : JPanel
-- JPanel은 JFrame에 붙히는 중간 컨테이너 역할을 한다.
-- 화면이 복잡한 형태인 경우 요소를 그룹별로 묶어서 표현할 수 있는데, 이러한 경우 JPanel에다 묶어서 Frame에다 붙힐 수 있다.
-
-#### JPanel의 생성자
-|생성자|설명|
-|---|---|
-|JPanel()|레이아웃 매니저가 FlowLayout인 JPanel을 생성한다|
-|JPanel(LayoutManger layout)|레이아웃 매니저가 layout인 JPanel을 생성한다.|
-
-#### 배치관리자
-- FlowLayout : 왼쪽에서 오른쪽으로 배치, 오른쪽 공간이 없으면 아래로 배치
-- BorderLayout : 동,서,남,북,중앙 5개의 영역으로 나눠준다.
-- GridLayout : 2차원 표 모양으로서 n X n으로 설정해주며 왼쪽에서 오른쪽, 위에서 아래 순으로 배치
-- CardLayout : 컴포넌트를 포개어 배치
-- Null : 레이아웃을 쓰지 않고 각 컴포넌트마다 수동으로 위치를 설정
-
-#### JPanel의 주요 메서드
-|메서드|설명|
-|---|---|
-|void add(Component c)|지정된 컴포넌트를 패널에 추가한다.|
-|void remove(Component c)|패널에 지정된 컴포넌트를 제거한다.|
-|void setLayout(LayoutManager layout)|배치관리자를 지정한다(디폴트는 FlowLayout 배치관리자이다.)|
-|void setLocation(int x, int y)|패널의 x좌표, y좌표를 지정한다.|
-|void setSize(int width, int height)|패널의 크기를 설정한다.|
-|void setToolTipText(String text)|패널의 빈곳에 마우스를 올려놓으면 툴팁을 표시한다.|
-
-#### Ex2_JPanel 클래스 생성
-
-```java
-package test;
-
-import java.awt.Color;
-import java.awt.FlowLayout;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-public class Test extends JFrame {
-	
-	public Test() {
-        super("FlowLayout 예제");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        JPanel p1 = new JPanel();
-        p1.setBackground(Color.YELLOW);
-        p1.setLayout(new FlowLayout());
-        //p1.setLayout(new GridLayout(3,2));
-	//p1.setLayout(new BorderLayout());
-        p1.add(new JButton("1"));
-        p1.add(new JButton("2"));
-        p1.add(new JButton("3"));
-        p1.add(new JButton("4"));
-        p1.add(new JButton("5"));
-        
-        this.add(p1);
-        setSize(300, 200);
-        setVisible(true);
-    }
-    
-    public static void main(String[] args) {
-    	Test frame = new Test();
-    	
-    }
-}
-
-```
-### FlowLayout()
-![image](https://user-images.githubusercontent.com/54658614/223475784-5ac7e8ee-df9f-4538-8a32-8d447fcb07b8.png)
-
-### GridLayout(3,2)
-![image](https://user-images.githubusercontent.com/54658614/223476144-85248fb5-26e1-4fbb-9a52-39eece07a235.png)
-
-#### Ex3_Panel클래스 생성
-```java
-package test;
-
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-public class Test extends JFrame {
-	
-	public Test() {
-        super("FlowLayout 예제");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        JPanel p1 = new JPanel();
-        p1.setBackground(Color.YELLOW);
-
-        p1.setLayout(new BorderLayout());
-	
-        p1.add("North",new JButton("위"));
-        p1.add("West",new JButton("왼쪽"));
-        p1.add("Center",new JButton("가운데"));
-        p1.add("East",new JButton("오른쪽"));
-        p1.add("South",new JButton("아래"));
-        
-        this.add(p1);
-        setSize(300, 200);
-        setVisible(true);
-    }
-    
-    public static void main(String[] args) {
-    	Test frame = new Test();
-    	
-    }
-}
-
-```
-![image](https://user-images.githubusercontent.com/54658614/223477273-d219a48f-0423-4277-bd0a-0db1127fbde6.png)
-
-
-
-### JLabel
-- JLabel 클래스는 정보 또는 텍스트를 위한 라벨을 생성한다.
-- JLabel 클래스는 문자열이나 아이콘을 사용하여 객체를 생성한다.
-
-#### JLabel 클래스와 생성자
-|생성자|설명|
-|---|---|
-|JLabel()|text와 이미지를 사용하지 않는 JLabel을 생성한다.|
-|JLabel(Icon image)|image를 Icon으로 사용하는 JLabel을 생성한다.|
-|JLabel(Icon image, int horizontalAlignment)|image를 Icon으로 사용하고, horizontalAlignment의 값에 따라 정렬하는 JLabel을 생성한다.|
-|JLabel(String text)|text를 사용하는 JLabel을 생성한다.|
-|JLabel(String text, Icon icon, int horizontalAlignment)|text와 icon을 사용하고, horizontalAlignment의 값에 따라 정렬하는 JLabel을 생성한다.|
-|JLabel(String text, int horizontalAlignment)|text를 사용하고, horizontalAlignment의 값에 따라 정렬하는 JLabel을 생성한다.|
-
-### JTextField
-JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌트이다.
-
-#### JTextField 클래스의 생성자
-|생성자|설명|
-|---|---|
-|JTextField()|초기 문자열이 null이고 길이가 0인 텍스트 필드를 생성한다.|
-|JTextField(String text)|초기 문자열이 text이고 길이가 0인 텍스트 필드를 생성한다.|
-|JTextField(int column)|초기 문자령리 null이고 길이가 columns인 텍스트 필드를 생성한다.|
-|JTextField(String text, int columns)|초기 문자열이 text이고 길이가 columns인 텍스트 필드를 생성한다.|
-
-#### JTextField의 주요 메서드
-|메서드|설명|
-|---|---|
-|String getText()|텍스트 필드에 입력된 문자열을 구한다.|
-|void setText(String text)|지정된 문자열을 텍스트 필드에 쓴다.|
-|void setEditable(boolean)|텍스트를 입력할 수 있는지 없는지 설정한다.|
-|boolean isEditable()|텍스트를 입력할 수 있는지 없는지 반환한다.|
-
-### JTextArea
-- JTextArea 클래스는 여러 줄의 문자열을 입력할 수 있는 컴포넌트이다.
-- JTextArea는 창의 크기보다 많은 문자열을 입력하더라도 자동으로 스크롤바가 생기지 않는다.
-- 따라서 스크롤바의 기능을 사용하기 위해서는 JScrollPane 클래스를 사용해서 표시해야 한다.
-
-#### JTextArea 클래스의 생성자
-|생성자|설명|
-|-----|------|
-|JTextArea()|초기 문자열이 null이고 행과 열이 각각 0인 텍스트에어리어를 생성한다.|
-|JTextArea(String text)|초기 문자열이 text이고 행과 열이 각각 0인 텍스트에어리어를 생성한다.|
-|JTextArea(int rows, int columns)|초기 문자열이 null이고 행이 rows이고 열이 columns인 텍스트에어리어를 생성한다.|
-|JTextArea(String text, int rows, int columns)|초기 문자열이 text이고 행이 rows이고 열이 columns인 텍스트에어리어를 생성한다.|
-
-#### JPasswordFIeld 
-- JPasswordField  클래스는 비밀번호와 같이 입력받은 글자를 보여주지 않아야 할 때 사용하는 컴포넌트이다.
-
-|생성자|설명|
-|-----|------|
-|JPasswordField()|JPasswordFIeld를 생성한다.|
-|JPasswordField(String text)|초기 문자열이 text인 패스워드인 필드를 생성한다.|
-|JPasswordFIeld(int columns)|열의 수(길이)가 columns인 패스워드 필드를 생성한다.|
-|JPasswordField(String text, int columns)|초기 문자열이 text이고, 열의 수가 columns인 패스워드 필드를 생성한다.|
-
-ex2_component 패키지 생성
-#### Ex1_JText클래스 생성
-```java
-package test;
-
-import java.awt.FlowLayout;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-
-public class Test {
-	public static void main(String[] args) {
-		JFrame f = new JFrame();
-		f.setLayout(new FlowLayout());
-		JLabel lb1 = new JLabel("이름");
-		JLabel lb2 = new JLabel("나이");
-		JLabel lb3 = new JLabel("비밀번호");
-		
-		JTextField tf = new JTextField(20);
-		JTextArea ta = new JTextArea(7,20);
-		JPasswordField pf = new JPasswordField(20);
-		
-		f.add(lb1);
-		f.add(tf);
-		f.add(lb2);
-		f.add(ta);
-		f.add(lb3);
-		f.add(pf);
-		
-		f.setBounds(400,400,305,250);
-		f.setVisible(true);
-		f.setDefaultCloseOperation(f.EXIT_ON_CLOSE);
-	}
-}
-
-```
-![image](https://user-images.githubusercontent.com/54658614/223490882-f5da6467-f1b4-4ea5-a061-a2a401075466.png)
-
 ### JButton
 - JButton은 클릭 기능을 제공한다.
 - JButton클래스는 문자열 또는 아이콘을 사용하여 버튼을 생성할 수가 있으며, AbstractButton 클래스로부터 상속받는다.|
@@ -641,6 +423,221 @@ public class Test{
 
 ```
 
+### 패널 : JPanel
+- JPanel은 JFrame에 붙히는 중간 컨테이너 역할을 한다.
+- 화면이 복잡한 형태인 경우 요소를 그룹별로 묶어서 표현할 수 있는데, 이러한 경우 JPanel에다 묶어서 Frame에다 붙힐 수 있다.
+
+#### JPanel의 생성자
+|생성자|설명|
+|---|---|
+|JPanel()|레이아웃 매니저가 FlowLayout인 JPanel을 생성한다|
+|JPanel(LayoutManger layout)|레이아웃 매니저가 layout인 JPanel을 생성한다.|
+
+#### 배치관리자
+- FlowLayout : 왼쪽에서 오른쪽으로 배치, 오른쪽 공간이 없으면 아래로 배치
+- BorderLayout : 동,서,남,북,중앙 5개의 영역으로 나눠준다.
+- GridLayout : 2차원 표 모양으로서 n X n으로 설정해주며 왼쪽에서 오른쪽, 위에서 아래 순으로 배치
+- CardLayout : 컴포넌트를 포개어 배치
+- Null : 레이아웃을 쓰지 않고 각 컴포넌트마다 수동으로 위치를 설정
+
+#### JPanel의 주요 메서드
+|메서드|설명|
+|---|---|
+|void add(Component c)|지정된 컴포넌트를 패널에 추가한다.|
+|void remove(Component c)|패널에 지정된 컴포넌트를 제거한다.|
+|void setLayout(LayoutManager layout)|배치관리자를 지정한다(디폴트는 FlowLayout 배치관리자이다.)|
+|void setLocation(int x, int y)|패널의 x좌표, y좌표를 지정한다.|
+|void setSize(int width, int height)|패널의 크기를 설정한다.|
+|void setToolTipText(String text)|패널의 빈곳에 마우스를 올려놓으면 툴팁을 표시한다.|
+
+#### Ex2_JPanel 클래스 생성
+
+```java
+package test;
+
+import java.awt.Color;
+import java.awt.FlowLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Test extends JFrame {
+	
+	public Test() {
+        super("FlowLayout 예제");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JPanel p1 = new JPanel();
+        p1.setBackground(Color.YELLOW);
+        p1.setLayout(new FlowLayout());
+        //p1.setLayout(new GridLayout(3,2));
+	//p1.setLayout(new BorderLayout());
+        p1.add(new JButton("1"));
+        p1.add(new JButton("2"));
+        p1.add(new JButton("3"));
+        p1.add(new JButton("4"));
+        p1.add(new JButton("5"));
+        
+        this.add(p1);
+        setSize(300, 200);
+        setVisible(true);
+    }
+    
+    public static void main(String[] args) {
+    	Test frame = new Test();
+    	
+    }
+}
+
+```
+### FlowLayout()
+![image](https://user-images.githubusercontent.com/54658614/223475784-5ac7e8ee-df9f-4538-8a32-8d447fcb07b8.png)
+
+### GridLayout(3,2)
+![image](https://user-images.githubusercontent.com/54658614/223476144-85248fb5-26e1-4fbb-9a52-39eece07a235.png)
+
+#### Ex3_Panel클래스 생성
+```java
+package test;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Test extends JFrame {
+	
+	public Test() {
+        super("FlowLayout 예제");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        JPanel p1 = new JPanel();
+        p1.setBackground(Color.YELLOW);
+
+        p1.setLayout(new BorderLayout());
+	
+        p1.add("North",new JButton("위"));
+        p1.add("West",new JButton("왼쪽"));
+        p1.add("Center",new JButton("가운데"));
+        p1.add("East",new JButton("오른쪽"));
+        p1.add("South",new JButton("아래"));
+        
+        this.add(p1);
+        setSize(300, 200);
+        setVisible(true);
+    }
+    
+    public static void main(String[] args) {
+    	Test frame = new Test();
+    	
+    }
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223477273-d219a48f-0423-4277-bd0a-0db1127fbde6.png)
+
+### JLabel
+- JLabel 클래스는 정보 또는 텍스트를 위한 라벨을 생성한다.
+- JLabel 클래스는 문자열이나 아이콘을 사용하여 객체를 생성한다.
+
+#### JLabel 클래스와 생성자
+|생성자|설명|
+|---|---|
+|JLabel()|text와 이미지를 사용하지 않는 JLabel을 생성한다.|
+|JLabel(Icon image)|image를 Icon으로 사용하는 JLabel을 생성한다.|
+|JLabel(Icon image, int horizontalAlignment)|image를 Icon으로 사용하고, horizontalAlignment의 값에 따라 정렬하는 JLabel을 생성한다.|
+|JLabel(String text)|text를 사용하는 JLabel을 생성한다.|
+|JLabel(String text, Icon icon, int horizontalAlignment)|text와 icon을 사용하고, horizontalAlignment의 값에 따라 정렬하는 JLabel을 생성한다.|
+|JLabel(String text, int horizontalAlignment)|text를 사용하고, horizontalAlignment의 값에 따라 정렬하는 JLabel을 생성한다.|
+
+### JTextField
+JTextField 클래스는 한 줄의 문자열을 입력할 수 있는 컴포넌트이다.
+
+#### JTextField 클래스의 생성자
+|생성자|설명|
+|---|---|
+|JTextField()|초기 문자열이 null이고 길이가 0인 텍스트 필드를 생성한다.|
+|JTextField(String text)|초기 문자열이 text이고 길이가 0인 텍스트 필드를 생성한다.|
+|JTextField(int column)|초기 문자령리 null이고 길이가 columns인 텍스트 필드를 생성한다.|
+|JTextField(String text, int columns)|초기 문자열이 text이고 길이가 columns인 텍스트 필드를 생성한다.|
+
+#### JTextField의 주요 메서드
+|메서드|설명|
+|---|---|
+|String getText()|텍스트 필드에 입력된 문자열을 구한다.|
+|void setText(String text)|지정된 문자열을 텍스트 필드에 쓴다.|
+|void setEditable(boolean)|텍스트를 입력할 수 있는지 없는지 설정한다.|
+|boolean isEditable()|텍스트를 입력할 수 있는지 없는지 반환한다.|
+
+### JTextArea
+- JTextArea 클래스는 여러 줄의 문자열을 입력할 수 있는 컴포넌트이다.
+- JTextArea는 창의 크기보다 많은 문자열을 입력하더라도 자동으로 스크롤바가 생기지 않는다.
+- 따라서 스크롤바의 기능을 사용하기 위해서는 JScrollPane 클래스를 사용해서 표시해야 한다.
+
+#### JTextArea 클래스의 생성자
+|생성자|설명|
+|-----|------|
+|JTextArea()|초기 문자열이 null이고 행과 열이 각각 0인 텍스트에어리어를 생성한다.|
+|JTextArea(String text)|초기 문자열이 text이고 행과 열이 각각 0인 텍스트에어리어를 생성한다.|
+|JTextArea(int rows, int columns)|초기 문자열이 null이고 행이 rows이고 열이 columns인 텍스트에어리어를 생성한다.|
+|JTextArea(String text, int rows, int columns)|초기 문자열이 text이고 행이 rows이고 열이 columns인 텍스트에어리어를 생성한다.|
+
+#### JPasswordFIeld 
+- JPasswordField  클래스는 비밀번호와 같이 입력받은 글자를 보여주지 않아야 할 때 사용하는 컴포넌트이다.
+
+|생성자|설명|
+|-----|------|
+|JPasswordField()|JPasswordFIeld를 생성한다.|
+|JPasswordField(String text)|초기 문자열이 text인 패스워드인 필드를 생성한다.|
+|JPasswordFIeld(int columns)|열의 수(길이)가 columns인 패스워드 필드를 생성한다.|
+|JPasswordField(String text, int columns)|초기 문자열이 text이고, 열의 수가 columns인 패스워드 필드를 생성한다.|
+
+ex2_component 패키지 생성
+#### Ex1_JText클래스 생성
+```java
+package test;
+
+import java.awt.FlowLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class Test {
+	public static void main(String[] args) {
+		JFrame f = new JFrame();
+		f.setLayout(new FlowLayout());
+		JLabel lb1 = new JLabel("이름");
+		JLabel lb2 = new JLabel("나이");
+		JLabel lb3 = new JLabel("비밀번호");
+		
+		JTextField tf = new JTextField(20);
+		JTextArea ta = new JTextArea(7,20);
+		JPasswordField pf = new JPasswordField(20);
+		
+		f.add(lb1);
+		f.add(tf);
+		f.add(lb2);
+		f.add(ta);
+		f.add(lb3);
+		f.add(pf);
+		
+		f.setBounds(400,400,305,250);
+		f.setVisible(true);
+		f.setDefaultCloseOperation(f.EXIT_ON_CLOSE);
+	}
+}
+
+```
+![image](https://user-images.githubusercontent.com/54658614/223490882-f5da6467-f1b4-4ea5-a061-a2a401075466.png)
+
 ### JCheckBoxs
 - JCheckBox 클래스는 체크 박스 기능을 제공하며, AbstractButton 클래스로부터 상속받는다. 
 
@@ -923,7 +920,6 @@ public class Test{
 |JScrollPane(int vsb, int hsb)|vsb와 hsb의 값에 따라 수직, 수평 스크롤바를 표시하는 스크롤판을 생성한다.|
 
 
-
 #### vsb와 hsb의 상수 값
 
 <table>
@@ -1066,7 +1062,6 @@ public class Test{
 ![image](https://user-images.githubusercontent.com/54658614/223495069-9f9f3539-cb58-4c08-b9e5-87cc9a20a71d.png)
 
 
-
 ### 메뉴 - JMenuBar, JMenu, JMenuItem
 - 스윙에서 메뉴 관련 클래스는 JMenuBar, JMenu, JMenuItem, JCheckBoxMenuItem, JRadioButtonMenuItem이 있다.
 - 메뉴는 setJMenuBar() 메서드를 제공하는 컨테이너의 객체에만 사용할 수 있다. 이러한 컨테이너는 최종 컨테이너로 사용되는 JFrame 컨테이너만 가능하다.
@@ -1084,7 +1079,6 @@ public class Test{
 |JMenu()|레이블인 문자열이 없는 메뉴를 생성한다.|
 |JMenu(String s)|레이블로 문자열 s를 사용하는 메뉴를 생성한다.|
 |JMenu(String s, boolean b)|레이블로 문자열 s를 사용하는 메뉴를 생성한다. b의 값이 true인 경우 메뉴를 분리할 수 있다.|
-
 
 #### JMenuItem 클래스의 생성자
 
@@ -1147,7 +1141,6 @@ public class Test{
 		f.setVisible(true);
 	}
 }
-
 
 ```
 ![image](https://user-images.githubusercontent.com/54658614/225821525-44000a71-22d0-4f4c-ba94-d82578a8db8a.png)
@@ -1358,4 +1351,199 @@ public class ImgText {
 }
 ```
 
+## 메모장 만들기
 
+memo 패키지 만들기
+
+#### MemoMain 클래스
+```java
+package test;
+
+import java.awt.Color;
+import java.awt.FileDialog;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileWriter;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class Memo {
+	public static void main(String[] args) {
+		JFrame frame = new JFrame("메모장");
+		JPanel jp = new JPanel();
+		jp.setBackground(Color.CYAN);
+		jp.setLayout(null);
+
+		Font font = new Font("", Font.PLAIN, 20);
+
+		JTextField tf = new JTextField();
+		tf.setBounds(10, 15, 180, 30);
+		tf.setFont(font);
+
+		JButton btn_input = new JButton("확인");
+		btn_input.setBounds(190, 15, 60, 30);
+		btn_input.setEnabled(false);// 버튼 클릭 비활성화
+
+		JTextArea ta = new JTextArea();
+		ta.setBounds(10, 70, 230, 280);
+		//ta.setEditable(false); // ta에 임의로 값을 추가할 수 없도록 하는 기능
+
+		JButton btnSave = new JButton("저장");
+		JButton btnClose = new JButton("종료");
+		btnSave.setBounds(10, 356, 110, 30);
+		btnClose.setBounds(130, 356, 110, 30);
+
+		// tf에 값이 들어가 있는지 확인하여 ‘확인’버튼을 활성화 또는 비활성화
+		tf.getDocument().addDocumentListener(new TextAdapter(tf,btn_input));
+		// 확인버튼 클릭시 tf의 값을 ta로 복사해서 넣어주자!
+		btn_input.addActionListener(new InputButtonAdapter(tf, ta));
+		// 종료버튼에 이벤트감지자 등록
+		btnClose.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// System.exit(0); 모든 프레임들을 종료
+				frame.dispose(); // 현재 프레임만 종료
+			}
+
+		});
+
+		// 저장 버튼을 눌렀을 때 ta의 값을 저장하는 이벤트 감지자 등록
+		btnSave.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// ta에 쓰여진 내용을 가져오자
+				String message = ta.getText();
+
+				// 경로를 설정하는 FileDialog
+				FileDialog fd = new FileDialog(frame, "저장", FileDialog.SAVE);
+				// FileDialog.SAVE 오른쪽 아래 버튼이 저장으로 변경
+
+				fd.setVisible(true);
+
+				// fd를 통해 지정한 저장경로와 파일명을 알아내자
+				// (fd.setVisible()보다 아래쪽에 작성할 것!!)
+				String path = fd.getDirectory() + fd.getFile();
+				System.out.println(path);
+
+				// char기반의 스트림을 생성하여 path경로에 저장
+				try {
+					FileWriter fw = new FileWriter(path);
+					fw.write(message);
+					fw.close();
+				} catch (Exception e1) {
+
+				}
+			}
+		});
+
+		jp.add(tf);
+		jp.add(btn_input);
+		jp.add(ta);
+		jp.add(btnSave);
+		jp.add(btnClose);
+		frame.add(jp);
+		
+		frame.setBounds(700, 200, 270, 440);
+	
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+	}
+
+}
+
+```
+
+#### InputButtonAdapter 클래스 생성
+
+```java
+package test;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.TextEvent;
+import java.awt.event.TextListener;
+
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
+public class InputButtonAdapter implements ActionListener {
+	
+	private JTextField tf;
+	private JTextArea ta;
+
+	public InputButtonAdapter(JTextField tf, JTextArea ta) {
+		this.tf =tf;
+		this.ta = ta;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		//ta내부의 모든 값을 변경하는 메서드 setText	
+		//ta.setText(tf.getText());
+
+		//ta가 가진 기존 값에 새로운 값을 이어붙이자(append)
+		ta.append( tf.getText() + "\n");
+		
+		tf.requestFocus(); //tf로 커서를 이동시킨다.
+		tf.setText("");
+		
+	}
+
+}
+```
+
+#### TextAdapter 클래스 생성
+```java
+package test;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import javax.swing.JButton;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+public class TextAdapter implements DocumentListener{
+
+
+	private JTextField tf;
+	private JButton btn_input;
+
+	public TextAdapter(JTextField tf, JButton btn_input) {
+		this.tf =tf ;
+		this.btn_input = btn_input;
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent arg0) {
+		change();
+		
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent arg0) {
+		change();
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent arg0) {
+		change();
+	}
+	
+	public void change() {
+		if(tf.getText().length() == 0) {
+			btn_input.setEnabled(false);
+		} else {
+			btn_input.setEnabled(true);
+		}
+	}
+}
+```
