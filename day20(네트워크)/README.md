@@ -165,7 +165,7 @@ url.toURI():http://dm.n-mk.kr:80/board/list.html?referer=kim#index1
 ```
 
 ## URLConnection 
-- URLConnection은 어플리케이션과 URL간의 통신연결을 나타내는 클래스의 최상위 클래스로 추상클래스이다. URLConnection을 상속받아 구현한 클래스로는 상위 클래스로 추상클래스이다. 
+- URLConnection은 어플리케이션과 URL간의 통신연결을 나타내는 클래스의 최상위 클래스로 추상클래스이다.
 - URLConnection을 상속받아 구현한 클래스로는 HttpURLConnection과 JarURLConnection이 있으며,
 - URL의 프로토콜이 http 프로토콜이라면 openConnection()은 HttpURLConnection을 반환한다. 
 - URLConnection을 사용해서 연결하고자 하는 자원에 접근하고 읽고 쓰기를 할 수 있다.
