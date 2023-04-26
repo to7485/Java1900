@@ -219,15 +219,13 @@ public static void main(String[] args){
 ```java
 public class FileInput {
 	public static void main(String[] args) {
-	String path = "d:/test.txt";
 
-File f = new File(path);
-byte [] keyboard = new byte[100];
+	byte [] keyboard = new byte[100];
 
 	try {
-	System.out.print(“값: ”);
-		//키보드에 값을 입력받기 위한 표준입력장치 스트림
-		System.in.read(keboard);
+	System.out.print("값: ");
+	//키보드에 값을 입력받기 위한 표준입력장치 스트림
+	System.in.read(keboard);
 	 
 	String s = new String(keboard).trim();
 	System.out.println(s)
@@ -235,7 +233,7 @@ byte [] keyboard = new byte[100];
 	Scanner sc = new Scanner(System.in);
 	//sc.close();
 
-	System.in이 스테틱이라서 메모리에 한번만 올라가고 close로 닫게 되면 다른 클래	스에서도 닫아진다.
+	System.in이 스테틱이라서 메모리에 한번만 올라가고 close로 닫게 되면 다른 클래스에서도 닫아진다.
 	} catch ( IOException e) {
 
 	}
@@ -243,7 +241,8 @@ byte [] keyboard = new byte[100];
 	
 처음부터 스캐너를 사용하지 않고 이렇게 먼저 알려줬으면 멘탈 나가서 자바 그만뒀을 것이다.
 
-문자와 정수를 나누는 것도 쉽지가 않기 때문이다. 이렇게 어렵게 받을 바에야 클래스를 하나 만들어서 쉽게 쓰자 라는 느낌으로 스캐너 클래스를 사용하게 된 것이다.
+문자와 정수를 나누는 것도 쉽지가 않기 때문이다. 이렇게 어렵게 받을 바에야 클래스를 하나 만들어서 쉽게 쓰자 라는 느낌으로
+스캐너 클래스를 사용하게 된 것이다.
 ```
 
 #### 자바 강의 3주차(1) 문제(회문수) 풀기
