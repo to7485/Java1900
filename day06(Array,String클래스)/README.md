@@ -1,20 +1,20 @@
-## 배열(Array)
+# 배열(Array)
 배열은 같은 자료형의 변수들로 이루어진 유한 집합이라고 정의할 수 있다<br>
 데이터를 효율적으로 관리하기 위해서는 배열이 꼭필요하다.<br>
 
-ex1_array 패키지 생성
+## ex1_array 패키지 생성
 
-### 배열의 선언
+## 배열의 선언
 ![image](https://user-images.githubusercontent.com/54658614/215389995-4398cf1e-78c8-4969-8478-1a3fb9a741a1.png)
 
-### 배열의 생성
+## 배열의 생성
 ![image](https://user-images.githubusercontent.com/54658614/215390064-8eaa5306-29c6-4aa4-9acb-86f377d1f8d2.png)
 
-### 선언과 생성을 동시에 하는것도 가능하다.
+## 선언과 생성을 동시에 하는것도 가능하다.
 ![image](https://user-images.githubusercontent.com/54658614/215390219-ebbe71be-fd12-46b5-8d31-a12f98307c21.png)
 
 
-### 1차원배열
+## 1차원배열
 ```java
 //ArrayEx1클래스 생성
 public class ArrayEx1 {
@@ -80,7 +80,7 @@ public class Ex2_array {
 	}//main
 }
 ```
-### 문자형 배열
+## 문자형 배열
 ```java
 //ArrayEx2클래스 생성
 public class ArrayEx3 {
@@ -123,7 +123,7 @@ public class ArrayEx3 {
 }
 ```
 
-### 실습문제
+## 실습문제
 ```java
 //배열 arr에 담겨있는 모든 값의 합을 출력하시오
 //결과 : 150
@@ -213,7 +213,7 @@ public class MyLotto {
 }
 ```
 
-### 다차원 배열
+## 다차원 배열
 다차원 배열이란 2차원 이상의 배열을 의미하며, 배열의 요소로 또 다른 배열을 가지는것을 의미합니다.<br>
 
 2차원 배열은 배열의 요소로 1차원 배열을 가지고,
@@ -289,7 +289,7 @@ for(int i = 0; i < num.length; i++){
 }
 ```
 
-### 실습문제
+## 실습문제
 ```java
 학생들의 수학과 영어성적을 등록하는 프로그램이 있다.
 프로그램을 실행하면 몇 명의 정보를 저장 할 것인지를 입력받은 후,
