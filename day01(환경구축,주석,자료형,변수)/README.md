@@ -373,6 +373,10 @@ int yourAge = myAge; //myAge에 저장된 20이 복사되어 yourAge에 저장�
 int su1 = 20;
 int su2 = 30;
 
+System.out.println("변경전");
+System.out.println("su1 : " + su1);
+System.out.println("su2 : " + su2);
+
 //컵 두개에 들어있는 내용물을 서로 교환한다고 생각을 해보자.
 //컵 두개로는 서로 바꾸는게 불가능하다.
 //내용물을 임시로 담아놓을 컵이 하나 필요하다.
@@ -380,6 +384,10 @@ int temp;
 temp = su1;
 su1 = su2;
 su2 = temp;
+
+System.out.println("변경후");
+System.out.println("su1 : " + su1);
+System.out.println("su2 : " + su2);
 
 ```
 
