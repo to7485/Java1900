@@ -221,6 +221,66 @@ public class Test{
 }
 ```
 
+### System.out.printf() 
+```java
+System.out.printf()
+```
+- System.out.printf() 출력문은 값의 자료형에 따라 서식문자를 이용해 문자열속에서 데이터를 출력할 수 있다.
+
+|서식문자|출력형태|
+|-----|------|
+|%d|정수(10진수)|
+|%o|정수(8진수)|
+|%x|정수(16진수)|
+|%f|실수|
+|%s|문자열|
+|%c|문자형|
+|%b|논리형|
+
+```java
+package test;
+
+public class Test{
+	public static void main(String[] args) {
+		System.out.printf("저는 대학교 %d학년에 재학중입니다.",3);
+		
+		//서식문자를 한번에 여러개를 넣을 수 있다.
+		System.out.printf("%d은 첫 번째, %f은 두 번째, %s은 세 번째.",1,2.0,"셋");
+	}
+}
+```
+### 출력값의 정렬
+- 정수의 정렬
+```java
+%3d, %5d //주어진 숫자 칸 만큼 확보한후, 오른쪽 정렬하여 출력
+예) (%5d,1) -> XXXX1
+
+System.out.printf("%5d",1);
+System.out.println();
+System.out.printf("%5d",12);
+System.out.println();
+System.out.printf("%5d",123);
+System.out.println();
+System.out.printf("%5d",1234);
+System.out.println();
+System.out.printf("%5d",12345);
+System.out.println();
+```
+- 실수의 정렬
+
+```java
+%.2f //소수점 아래 정수번째 자리까지 출력(반올림)
+
+System.out.printf("%.1f",1.1234567);
+System.out.println();
+System.out.printf("%.2f",1.1234567);
+System.out.println();
+System.out.printf("%.3f",1.1234567);
+System.out.println();
+System.out.printf("%.4f",1.1234567);
+System.out.println();
+System.out.printf("%.5f",1.1234567);
+```
 # 자료형(기본자료형)
 - 현실에서는 물을 종이컵에다 마시든, 플라스틱 컵에다 마시든, 유리컵에다 마시든 전혀 문제가 되지 않습니다.
 - 하지만 프로그래밍에서는 '물은 종이컵에 담아먹겠다' 라고 약속을 했으면 무조건 지켜야 합니다.
@@ -327,67 +387,7 @@ phone_number
 - 개발자가 데이터 값이 필요할 때 데이터의 값을 직접 쓰는 대신
 - 데이터를 변수에 저장해두고 변수의 이름을 불러서 그 값을 사용할 수 있게 해준다.
 
-### 문자열과 데이터 함께 출력하기
-```java
-System.out.printf()
-```
-- System.out.printf() 출력문은 값의 자료형에 따라 서식문자를 이용해 문자열속에서 데이터를 출력할 수 있다.
 
-|서식문자|출력형태|
-|-----|------|
-|%d|정수(10진수)|
-|%o|정수(8진수)|
-|%x|정수(16진수)|
-|%f|실수|
-|%s|문자열|
-|%c|문자형|
-|%b|논리형|
-
-### System.out.printf() 실습
-```c
-package test;
-
-public class Test{
-	public static void main(String[] args) {
-		System.out.printf("저는 대학교 %d학년에 재학중입니다.",3);
-		
-		//서식문자를 한번에 여러개를 넣을 수 있다.
-		System.out.printf("%d은 첫 번째, %f은 두 번째, %s은 세 번째.",1,2.0,"셋");
-	}
-}
-```
-### 출력값의 정렬
-- 정수의 정렬
-```java
-%3d, %5d //주어진 숫자 칸 만큼 확보한후, 오른쪽 정렬하여 출력
-예) (%5d,1) -> XXXX1
-
-System.out.printf("%5d",1);
-System.out.println();
-System.out.printf("%5d",12);
-System.out.println();
-System.out.printf("%5d",123);
-System.out.println();
-System.out.printf("%5d",1234);
-System.out.println();
-System.out.printf("%5d",12345);
-System.out.println();
-```
-- 실수의 정렬
-
-```java
-%.2f //소수점 아래 정수번째 자리까지 출력(반올림)
-
-System.out.printf("%.1f",1.1234567);
-System.out.println();
-System.out.printf("%.2f",1.1234567);
-System.out.println();
-System.out.printf("%.3f",1.1234567);
-System.out.println();
-System.out.printf("%.4f",1.1234567);
-System.out.println();
-System.out.printf("%.5f",1.1234567);
-```
 ### 변수 만들기 실습
 ```java
 -------------------------------------------------------------------------------
