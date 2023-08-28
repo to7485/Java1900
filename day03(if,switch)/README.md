@@ -1,36 +1,52 @@
-## 제어문
-- 프로그램의 흐름을 제어하는 문장
+# 제어문
+- 일반적으로 프로그램에 포함된 실행문은 순차적으로 실행이 된다.
+- 하지만 순차적으로만 실행한다면 프로그램이 매우 길어지거나 표현하기 어려운 상황이 발생할 수 있다.
+- 예를 들어, 어떤 변수에 10을 더하는 명령을 1,000번 수행해야 하는 경우, 순차적으로만 실행하면 실행문을 1,000번 적어야 한다.
+- 또한 선택의 개념을 구현하기가 힘듭니다.
+- 제어문은 실행문의 순서를 변경하는 것으로 조건문과 반복문이 존재합니다.
   - 조건문 : if,switch
   - 반복문 : for,while, do-while
 
-## if문
+## 조건문
+- 조건식에 따라서 프로그램의 흐름을 제어할 수 있는 문법이다.
+- 삼항연산자에서 미리 살펴봤듯이, 조건식의 true 또는 false라는 결과에 따라서 어떤 구문을 실행할지 결정한다.
+
+### 단순 if문
+- 기본형
+
 ```java
 기본형
 if(조건식){
   조건식이 참일 때 실행할 문장.
 }
+
+//만약 실행해야 하는 명령이 하나라면 중괄호를 생략할 수 있다.
+if(조건식)
+  조건식이 참일 때 실행할 문장.
+
+if(조건식)조건식이 참일 때 실행할 문장;
+
 ```
 
-### 단순 if문
-```java
+- 조건식에는 논리형으로 결과를 확인할 수 있는 모든 식을 넣을 수 있다.
+- 조건식의 값이 true라면 {}안에 있는 코드를 실행한다.
 
-int n = 50;
-String str = null; 
-//String은 처음이지? 일단 똑같이 쓰고 쌍따옴표 안에 문자열 넣는거야
-//String의 기본값은 null, String은 기본자료형이 아니라는것만 일러두자.
-		
-if(n == 50){
-    str = "n은 50입니다."; 
+```java
+int result = 0;
+if(3 > 2) {
+	result = 3;
 }
-//괄호안의 값이 true일 경우엔 그 아래쪽 연산을 수행
-//괄호안의 값이 false일 경우엔 아래쪽 연산을 수행하지 않음
-//괄호안에는 무조건 true나 false의 결과를 가지는 연산이 들어와야 함
-		
-//위에 결과 보여주고 if추가, n값 51로 변경후 다시 보여주기
-if(n != 50){
-    str = "n은 50이 아닙니다.";
-}		
-System.out.println(str);
+System.out.println(result);
+```
+
+```java
+Scanner sc = new Scanner(System.in);
+
+int age = sc.nextInt();
+if(age > 19) {
+	System.out.println("성인입니다.");
+}
+System.out.println("프로그램을 종료합니다.");
 ```
 
 ### if - else문
@@ -43,45 +59,69 @@ if(조건식){
 }
 ```
 ```java
-if ~ else문 : 
+int num = 5;
 
-int n = 49;
-String str = null;//
-		
+if(num > 4) {
+	System.out.println(num+"은 4보다 큽니다.");
+} else {
+	System.out.println(num+"은 4보다 작습니다.");
+}
+---------------------------------------------------------
+int a = 4;
+int b = 10;
 
-if(++n >= 50){
-    str = "n은 50이상의 수";
+if(a > b) {
+	System.out.println("a가 b보다 큽니다.");
+} else {
+	System.out.println("a가 b보다 작거나 같습니다.");
 }
-else{
-    str = "n은 50미만의 수";
+---------------------------------------------------------
+int x = 10;
+int y = 7;
+int max = 0;
+if(x > y) {
+	max = x;
+} else {
+	max = y;
 }
-		
-System.out.println(str);
+
+System.out.printf("%d 와 %d 중에 큰 수는 %d 입니다.",x,y,max);
 ```
 
 #### 문제
-변수 age에 나이를 대입하고, 30세 이상이면...<br>
-“드실만큼 드셨네요”, 그렇지 않으면 “더 드세요”를 출력하는 if문을 구현 한 후<br>
-마지막으로 “감사합니다”라는 문장을 출력해보자.<br>
+- 키보드에서 나이를 입력받아 age라는 변수에 저장한다.
+- 나이가 20살 이상이면 성인입니다.
+- 나이가 20살 보다 어리면 미성년자 입니다. 출력하기.
 
 ```java
-int age = 30;
+Scanner sc = new Scanner(System.in);
+System.out.print("나이를 입력하세요 : ");
+int age = sc.nextInt();
 
-if(age >= 30){
-	System.out.println("드실만큼 드셨네요ㅋ");
-}else{	
-	System.out.println("좀 더 드셔야겠어요ㅋ");
+if(age > 19) {
+	System.out.println("성인입니다.");
+}else {
+	System.out.println("미성년자입니다.");
 }
-System.out.println("감사합니다.");
 ```
 
 #### 문제2
-위 코드를 삼항연산자로 작성해보세요.
+- 삼항연산자로 만들었던 X개의 농구공을 담기 위한 박스의 개수 구하기
+- 키보드에서 값을 입력받아 ball 변수에 저장하기
+- 입력받은 공의 개수에 따라 보관에 필요한 박스의 개수를 구하기
+
 ```java
-//if-else문을 배운 순간 삼항연산자는 사용하지 않아도 됨
-//모든 if – else문은 삼항연산자로 바꿀수 있고 반대로도 됨
-//if-else를 썼을 때 보다 코드가 짧아지는 경우가 있어서 알고 있으면 좋다.
-age >= 30 ? “드실만큼 드셨군요” : “더 드셔도...”;
+Scanner sc = new Scanner(System.in);
+System.out.print("공의 개수를 입력하세요 : ");
+int ball = sc.nextInt();
+int box = 0;
+if(ball % 5 == 0) {
+	box = ball /5;
+	System.out.printf("필요한 박스의 개수는 %d개 입니다.",box);
+}else {
+	box = ball /5+1;
+	System.out.printf("필요한 박스의 개수는 %d개 입니다.",box);
+}
 ```
 
 ### if - else if
