@@ -55,7 +55,88 @@ int b3 = b1 + b2; //이렇게 수정
 byte의 표현 범위가 127까지 밖에 되지 않다보니, byte끼리의 연산은 127을 넘어가버릴 가능성이 높다.<br>
 이런 상황을 대비하여 java개발자들은 byte끼리의 연산이 수행될 때, int형 변수로 값을 받도록 만듦.<br>
 
-<hr>
+# 데이터의 입력
+- 키보드를 통해 다양한 데이터를 자유롭게 입력하는 방법이 있다.
+- 키보드를 통해 입력하는 데이터를 문자열로 얻기 위해서는 'java.util'패키지에 있는 Scanner클래스를 이용해야 한다.
+```java
+import java.util.Scanner;
+Scanner 객체명 = new Scanner(System.in);
+```
+<table>
+<tr>
+	<th>자료형</th>
+	<th>메서드</th>
+	<th>설명</th>
+</tr>
+<tr>
+	<td rowspan = "4">정수형</td>
+	<td>byte nextByte()</td>
+	<td>입력받은 값을 byte형으로 반환</td>
+</tr>
+<tr>
+	<td>short nextShort()</td>
+	<td>입력받은 값을 short형으로 반환</td>
+</tr>
+<tr>
+	<td>int nextInt()</td>
+	<td>입력받은 값을 int형으로 반환</td>
+</tr>
+<tr>
+	<td>long nextLong()</td>
+	<td>입력받은 값을 long형으로 반환</td>
+</tr>
+<tr>
+	<td rowspan = "2">실수형</td>
+	<td>float nextFloat()</td>
+	<td>입력받은 값을 float형으로 반환</td>
+</tr>
+<tr>
+	<td>double nextDouble()</td>
+	<td>입력받은 값을 double형으로 반환</td>
+</tr>
+<tr>
+	<td rowspan="2">문자형</td>
+	<td> String nextLine()</td>
+	<td>입력받은 라인 전체를 문자열 타입으로 반환.enter키로 구분</td>
+</tr>
+<tr>
+	<td>String next()</td>
+	<td>입력받은 값을 문자열 타입으로 반환. 띄어쓰기로 구분</td>
+</tr>
+ 
+</table>
+
+## 데이터 입력받기
+```java
+//Scanner 객체명 = new Scanner(System.in);
+Scanner sc = new Scanner(System.in);
+System.out.print("나이를 입력해주세요");
+
+//자료형 변수명 = 객체명.Scanner함수();
+int age = sc.nextInt();
+
+System.out.printf("제 나이는 %d세 입니다.",age);
+```
+```java
+//Scanner 객체명 = new Scanner(System.in);
+Scanner sc = new Scanner(System.in);
+String name,address;
+int age;
+double weight;
+System.out.print("이름 : ");
+name = sc.next();
+System.out.print("나이 : ");
+age = sc.nextInt();
+System.out.print("주소 : ");
+address = sc.next();
+System.out.print("체중 : ");
+weight = sc.nextDouble();
+
+System.out.printf("당신의 이름은 %s입니다.\n",name);
+System.out.printf("당신의 나이는 %d입니다.\n",age);
+System.out.printf("당신의 주소는 %s입니다.\n",address);
+System.out.printf("당신의 체중은 %.1fkg입니다.\n",weight);
+```
 
 # 연산자(Operator)
 - 연산이란 데이터를 처리하고 결과를 산출하는 작업을 말한다.
