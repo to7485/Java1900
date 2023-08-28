@@ -192,6 +192,8 @@ public class Test {
 System.out.print() : 괄호안의 내용을 출력한다.
 System.out.println() : 괄호안의 내용을 출력하고 줄을 바꿔준다(개행)
 ```
+- System.out.print(),System.out.println() 출력문은 모든 데이터를 문자열로 인식하여 있는 그대로 출력하는 메서드이다.
+
 ### System.out.print()
 ```java
 package test;
@@ -325,7 +327,68 @@ phone_number
 - 개발자가 데이터 값이 필요할 때 데이터의 값을 직접 쓰는 대신
 - 데이터를 변수에 저장해두고 변수의 이름을 불러서 그 값을 사용할 수 있게 해준다.
 
-## 변수 만들기 실습
+### 문자열과 데이터 함께 출력하기
+```java
+System.out.printf()
+```
+- System.out.printf() 출력문은 값의 자료형에 따라 서식문자를 이용해 문자열속에서 데이터를 출력할 수 있다.
+
+|서식문자|출력형태|
+|-----|------|
+|%d|정수(10진수)|
+|%o|정수(8진수)|
+|%x|정수(16진수)|
+|%f|실수|
+|%s|문자열|
+|%c|문자형|
+|%b|논리형|
+
+### System.out.printf() 실습
+```c
+package test;
+
+public class Test{
+	public static void main(String[] args) {
+		System.out.printf("저는 대학교 %d학년에 재학중입니다.",3);
+		
+		//서식문자를 한번에 여러개를 넣을 수 있다.
+		System.out.printf("%d은 첫 번째, %f은 두 번째, %s은 세 번째.",1,2.0,"셋");
+	}
+}
+```
+### 출력값의 정렬
+- 정수의 정렬
+```java
+%3d, %5d //주어진 숫자 칸 만큼 확보한후, 오른쪽 정렬하여 출력
+예) (%5d,1) -> XXXX1
+
+System.out.printf("%5d",1);
+System.out.println();
+System.out.printf("%5d",12);
+System.out.println();
+System.out.printf("%5d",123);
+System.out.println();
+System.out.printf("%5d",1234);
+System.out.println();
+System.out.printf("%5d",12345);
+System.out.println();
+```
+- 실수의 정렬
+
+```java
+%.2f //소수점 아래 정수번째 자리까지 출력(반올림)
+
+System.out.printf("%.1f",1.1234567);
+System.out.println();
+System.out.printf("%.2f",1.1234567);
+System.out.println();
+System.out.printf("%.3f",1.1234567);
+System.out.println();
+System.out.printf("%.4f",1.1234567);
+System.out.println();
+System.out.printf("%.5f",1.1234567);
+```
+### 변수 만들기 실습
 ```java
 -------------------------------------------------------------------------------
 논리형
