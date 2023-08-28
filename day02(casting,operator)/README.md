@@ -167,6 +167,7 @@ System.out.println("x != y : " + result);
 ## 논리연산자
 - 피연산자를 두개 필요로 하는 연산자이다.
 - 피연산자로 boolean형 데이터만 사용가능하다.
+
 |연산자|논리식|연산내용|
 |-----|-----|--------|
 |&&|논리곱(AND)|두 항이 모두 참이면 true, 아니면 false)|
@@ -344,15 +345,3 @@ int ball = 23;
 int box = ball % 5 == 0 ? ball/5 : ball/5 + 1;
 System.out.println("필요한 상자의 수 : " + box);
 ```
-
-
-
-
-
-
-
-
-
-
-
-
