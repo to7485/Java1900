@@ -382,20 +382,25 @@ String op = "*";
 	
 switch (op) {
 
-case "+":	System.out.println(num1 + " + " + num2 + " = " + (num1 + num2));
+case "+":
+	System.out.println(num1 + " + " + num2 + " = " + (num1 + num2));
 //(num1 + num2)괄호로 안묶으면 결과값이 더해지지 않고 문자열로 붙어서 나온다.	
     break;
 
-case "-":	System.out.println(num1 + " - " + num2 + " = " + (num1 – num2));	
+case "-":
+	System.out.println(num1 + " - " + num2 + " = " + (num1 – num2));	
     break;
 	
-case "*":	System.out.println(num1 + " * " + num2 + " = " + (num1 * num2));	
+case "*":
+	System.out.println(num1 + " * " + num2 + " = " + (num1 * num2));	
     break;
 	
-case "/":	System.out.println(num1 + " / " + num2 + " = " + (num1 / num2));	
+case "/":
+	System.out.println(num1 + " / " + num2 + " = " + (num1 / num2));	
     break;
 	
-default:	result = "올바른 연산자가 아닙니다.";	
+default:
+	System.out.println("올바른 연산자가 아닙니다.");
     break;
 }	
 ```
