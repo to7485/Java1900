@@ -440,6 +440,37 @@ public class Ex2_array {
 	}//main
 }
 ```
+```java
+package test;
+
+public class Test{
+	public static void main(String[] args) {
+		
+		//단일 문자 배열에 단어와 숫자를 섞어 넣는다.
+		char[] cards = {'1','L','O','2','V','3','E'};
+		String myWord = "";
+		
+		//배열의 전체 순회
+		for(int i = 0; i < cards.length; i++) {
+			
+			//i가 대괄호로 들어가며 index가 된다.
+			//값을 word변수에 대입한다.
+			int word = cards[i];
+			
+			//아스키 코드를 이용한다.
+			//65 ~ 90 는 대문자 A ~ Z
+			//97 ~ 122는 소문자 a ~ z
+			if((word >= 65 && word <= 90) || (word >= 97 && word <= 122)) {
+				
+				//문자를 문자열에 연결한다.
+				myWord += (char)word;
+			}
+		}
+		
+		System.out.println("단어 : " + myWord);
+	}
+}
+```
 ## 실습문제
 - 문제1
 ```java
@@ -454,7 +485,7 @@ for(int I = 0; I <arr.length; I++){
 }
 System.out.printf("배열의 총 합 : %d\n",total);
 ```
--문제2
+- 문제2
 ```java
 프로그램이 실행되면 배열의 길이를 몇으로 할 것인지 물어본다.
 예를들어 키보드에서 5를 입력받으면...
@@ -535,14 +566,113 @@ public class MyLotto {
 }
 ```
 
+## Arrays
+- Arrays 클래스는 배열의 복사, 항목 정렬, 항목 검색 등 배열을 다루기 위한 다양한 메서드를 제공한다.
+- 지금 당장은 배열의 도우미 기능을 지닌것으로만 생각하자.
+- Arrays클래스를 이용하면 배열의 기능을 더욱 쉽게 사용할 수 있다.
+- Arrays에 속해있는 기능을 사용할 때는 'Arrays.함수명()'로 작성하여 기능을 호출한다.
 
+### 배열의 출력
+- toString()은 반복문의 도움 없이 배열을 출력할 수 있도록 도와준다.
+- 배열에 정의된 값을 문자열(String)형태로 변환하여 출력해준다.
+```java
+public class Test{
+	public static void main(String[] args) {
+		
+		int[] arr = {1,6,2,3,10,7,4,5,8,9};
+		
+		System.out.println(Arrays.toString(arr));
+	}
+}
+```
 
+### 배열의 정렬
+- sort()는 배열을 정렬해주는 기능이 있다.
+- 기본적으로 오름차순으로 정렬이 된다.
+```java
+public class Test{
+	public static void main(String[] args) {
+		
+		int[] arr = {1,6,2,3,10,7,4,5,8,9};
+		
+		//정렬전
+		System.out.println(Arrays.toString(arr));
+		
+		//정렬후
+		Arrays.sort(arr);
+		System.out.println(Arrays.toString(arr));
+	}
+}
+```
+- Comparator.reverseOrder()를 통해서 내림차순으로 정렬이 가능하다.
+- 하지만 기본자료형 배열로는 불가능하다.
+- 기본자료형의 클래스타입이 필요한데 이를 Wrapper클래스 라고 한다.
 
+```java
+public class Test{
+	public static void main(String[] args) {
+		
+		Integer[] arr = {1,6,2,3,10,7,4,5,8,9};
+		
+		//정렬후
+		Arrays.sort(arr, Comparator.reverseOrder());
+		System.out.println(Arrays.toString(arr));
+	}
+}
+```
 
+### 배열의 복사
+- 자바에서 배열은 한 번 생성하면 그 길이를 변경할 수 없다.
+- 따라서 더 많은 데이터를 저장하거나 기존의 배열과 똑같은 배열을 새로 만드려면 배열을 복사해야 한다.
+- 배열을 복사하는 방법에는 얕은 복사와 깊은 복사 두가지가 있다.
+    - 얕은 복사(Shallow Copy) : 복사된 배열이나 원본 배열이 변경될 때 서로 간의 값이 함께 변경된다.
+    - 깊은 복사(Deep Copy) : 복사된 배열이나 원본 배열이 변경될 때 서로 간의 값은 바뀌지 않는다.
+ 
+```java
+//얕은복사
+public class Test{
+	public static void main(String[] args) {
+		
+		int[] arr01 = {1,2,3};
+		
+		//배열의 얕은 복사
+		int[] arr02 = arr01;
+		
+		System.out.println("arr01 배열 : " + Arrays.toString(arr01));
+		
+		//배열 arr02의 값 변경
+		arr02[1] = 10;
+		
+		//arr01변경 후 배열 출력
+		System.out.println("arr01 배열 : " + Arrays.toString(arr01));
+		System.out.println("arr02 배열 : " + Arrays.toString(arr02));
+	}
+}
+```
 
-
-
-
-
-
-
+```java
+//깊은 복사
+//배열의 깊은 복사는 반복문을 이용해 새로운 배열에 값을 직접 넣어주거나
+//Arrays클래스 또는 System 클래스가 가진 기능을 이용한다.
+public class Test{
+	public static void main(String[] args) {
+		
+		int [] cards = {1,6,4,5,3,2};
+		int [] newCards = new int[cards.length];
+		
+		//Arrays클래스를 이용한 깊은 복사
+		int [] newCards2 = Arrays.copyOf(cards, cards.length);
+		
+		//반복문을 이용한 깊은 복사
+		for(int i =0; i < cards.length; i++) {
+			newCards[i] = cards[i];
+		}
+		
+		newCards[1] = 100;
+		
+		System.out.println("cards 배열 : " + Arrays.toString(cards));
+		System.out.println("newCards 배열 : " + Arrays.toString(newCards));
+		System.out.println("newCards2 배열 : " + Arrays.toString(newCards2));
+	}
+}
+```
