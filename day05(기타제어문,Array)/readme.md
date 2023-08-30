@@ -616,3 +616,117 @@ public class Test{
 	}
 }
 ```
+
+# 다차원배열
+- 다차원 배열이란 2차원 이상의 배열을 의미하며, 배열의 요소로 또 다른 배열을 가지는것을 의미합니다.
+- 2차원 배열은 배열의 요소로 1차원 배열을 가지고,
+- 3차원 배열은 배열의 요소로 2차원 배열을 가지게 됩니다.
+
+## 2차원 배열의 선언
+- 2차원 배열을 선언하는 방법은 1차원방법과 근본적으로는 동일합니다.
+- 다만 대괄호[]가 하나 더 추가됩니다.
+
+![image](https://user-images.githubusercontent.com/54658614/215390509-ba91a4f5-ca52-41e0-bd32-04be2d2e08d8.png)
+
+```java
+int test[][] = new int[2][3];
+test[0][0] = 100;
+test[0][1] = 200;
+test[0][2] = 300;
+		
+test[1][0] = 400;
+test[1][1] = 500;
+test[1][2] = 600;
+System.out.println(test[0][1]);//숫자 바꿔가며 확인
+```
+![image](https://user-images.githubusercontent.com/54658614/215390509-ba91a4f5-ca52-41e0-bd32-04be2d2e08d8.png)
+
+- 2차원 배열은 다양한 방식으로 선언할 수 있는데, 다음과 같이 열을 지정하지 않고 선언할 수 있다.
+```java
+int[][] arr = new int[크기][];
+```
+- 열의 크기를 지정하지 않고 선언한 뒤, 각 행의 열을 각각 선언하여 사용할 수 있다.
+```java
+int[][] arr = new int[3][];
+arr[0] = new int[2];
+arr[1] = new int[3];
+arr[2] = new int[1];
+```
+```java
+↓↓↓이렇게 각 방 사이즈 지정해줘도 됨
+int num[][] = new int[2][];
+num[0] = new int[3];
+num[1] = new int[2];
+int n = 0;
+		
+for(int i = 0; i < num.length; i++){
+			
+	for(int j = 0; j < num[i].length; j++){
+				
+		System.out.print((num[i][j] = n += 100) + " ");
+				
+	}
+	System.out.println();		
+}
+```
+## 실습문제
+```java
+public class FileEx {
+	public static void main(String[] args) throws Exception{
+
+		int arr[][] = {{1, 2, 3, 4, 5},
+				{6, 7, 8, 9, 10},
+				{11, 12, 13, 14, 15},
+				{16, 17, 18, 19, 20}};
+		
+		//int arr[][] = new int[4][5];
+		//int count = 0;
+		int total = 0;
+		float average = 0;
+		int count = 0;
+
+		for(int i = 0; i < arr.length; i++){
+
+			for(int j = 0; j < arr[i].length; j++){
+				//arr[i][j] = ++count;
+				total += arr[i][j];
+				count++;
+			}
+		}
+		System.out.println("total : " + total);
+		average = (float)total / count;
+		System.out.println("평균 : " + average);
+	
+	}
+}
+```
+
+## 향상된 for문
+- 향상된 for문은 JDK 1.5부터 새롭게 추가된 기능으로 배열과 컬렉션의 모든 요소를 참조하기 위한 반복문이다.
+
+```java
+for(변수 : 배열){
+    실행코드
+}
+```
+- for문을 실행할 반복 대상이 있으면 변수는 반복대상이 지닌 자료형과 같은 타입으로 지정해야 한다.
+- 반복 대상의 요소를 하나씩 꺼내서 변수에 대입하면서 진행하고, 반복 대상의 길이만큼 꺼내어 반복한다.
+
+```java
+public class Test{
+	public static void main(String[] args) {
+		
+		int[] score = {90,92,93};
+		
+		int sum = 0;
+		double avg = 0;
+		
+		for(int val : score) {
+			sum += val;
+		}
+		
+		avg = (double)sum/3;
+		System.out.println("총점 : " + sum + ", 평균 : " + avg);
+	}
+}
+```
