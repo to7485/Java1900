@@ -126,17 +126,21 @@ public class CarMain {
 ```
 
 ## 메서드
-- 메서드란 객체의 기능을 담당하는 함수를 이야기한다.
-- 일반적으로 1개의 메서드는 1개의 기능을 수행한다.
+- 메서드란 클래스 안에서 특정 기능을 수행하기 위해 코드들을 따로 하나의 블록으로 묶어놓은 집합이다.
+- 필요에 따라 이 집합을 호출해 사용할 수 있다.
+- 우리는 메서드를 구현함으로써, 같은 내용의 코드를 반복적으로 작성해야 하는 상황을 피할 수 있다.
+- 반복되는 문장들을 묶어서 메서드로 작성해 놓으면 필요할 때마다 재사용이 가능하며 중복된 코드를 제거할 수 있다.
 
 #### 메서드의 선언
+- 메서드는 크게 머리(header)와 몸체(body)로 구성되어 있다.
 ```java
-접근제한자 반환형 메서드명(파라미터){
+접근제한자 반환형 메서드명(파라미터){ //머리
 	작업할 내용
 	return 반환값;
 }
 ```
 ### 접근제한자
+- 접근제한자는 클래스/메서드/필드에 대한 접근을 어디범위까지 제한하느냐에 대한 지시어이다.
 1. public : 모든 접근을 허용. 같은 프로젝트 내의 모든 객체들이 사용할 수 있도록 허용.
 2. private : 현재 클래스 내에서만 사용을 허가.
 3. protected : 상속관계의 객체들에만 사용을 허가.
@@ -151,26 +155,74 @@ public class CarMain {
 - 메서드명은 말그대로 메서드의 이름(첫글자는 소문자로 시작한다.)
 
 ### 파라미터(매개변수,인자,아규먼츠)
-- 파라미터는 외부에서 해당 메서드를 통해 특정 값을 전달하고자 할 때, 그 특정 값을 받아서 처리할 수 있도록 하는 역할.
+- 파라미터는 외부에서 해당 메서드를 통해 특정 값을 전달하고자 할 때, 그 특정 값을 받아서 처리할 수 있도록 하는 역할을 하는 변수
+- 소괄호 안에 어떤 형태로 값을 받을것인지 선언하면 된다.
+
+```java
+package test3;
+
+public class Book {
+	public void count(int bookNum) {
+		System.out.println("책은 " + bookNum+"권 입니다.");
+	}
+}
+```
+
+```java
+package test3;
+
+public class BookMain {
+	public static void main(String[] args) {
+		Book myBook = new Book(); //객체 생성
+		myBook.count(3); //myBook 인스턴스 count메서드 호출
+	}
+}
+```
+- 파라미터의 개수에는 제한이 없다.
+- 2개 이상의 파라미터를 정의할 때는 콤마(,)를 기준으로 변수를 여러개 만들면 된다.
+```java
+접근제한자 반환형 메서드명(자료형 변수명1,자료형 변수명2...){
+
+}
+```
 
 ### return
 - 함수에서 모든 작업을 마치고 경우에 따라 실행한 결과를 호출한곳으로 다시 돌려주기도 한다.
 - 이것을 '반환한다'라고 표현한다
 - 반환하는 결과값을 '반환값'이라고 부르기도 한다.
 - 리턴값이 있을 경우에는 리턴할 데이터의 타입이 무엇인지 반환형에 기재해줘야 한다.
-
+- 리턴값이 없는 경우 메서드를 종료하기 위해 return을 사용할 수 있다.
+#### Bus클래스
 ```java
 package test3;
 
-public class Car {
-	int wheel; //필드 선언
-	
-	public void ride() {
-		System.out.println("달립니다.");
+public class Buss {
+
+	public void take(int m) {
+		while(true) {
+			if(m < 3000) {
+				System.out.println("교통카드를 충전하러 값니다.");
+				return;
+			}
+			System.out.println("버스를 탑니다.");
+			m-=1250;
+		}
 	}
 }
 ```
+#### BusMain클래스
+```java
+package test3;
 
+public class BusMain {
+
+	public static void main(String[] args) {
+		int money = 10000;
+		Bus bus = new Bus();
+		bus.take(money);
+	}
+}
+```
 ## 메서드 사용
 - 구현한 메서드를 사용하는 방법은 필드의 사용법과 동일하다
 - 메서드를 선언한 클래스안에서 메서드를 사용할 때는 단순히 메서드명만 호출하면되지만
@@ -216,7 +268,115 @@ public class CarMain {
 # 메서드 실습
 - Ex2_methodTest 패키지 작성
 
+## MethodTest클래스작성하기
+```java
 
+public class MethodTest {
+//main 함수에서 반지름을 받은 후 원의 넓이를 구하는 메소드 circleArea을 만들고
+//원의 둘레를 구하는 메소드 circleRound를 만들어라
+//단, circleArea 메소드는 함수 안에서 출력문을 출력하고
+//circircleRound 메소드는 round 값을 리턴받아서 main함수에 출력하라
+//(원의 넓이 구하는 공식 : 3.14 * 반지름 * 반지름, 원의 둘레 구하는 공식 : 2 * 3.14 * 반지름)
+	public void circleArea(int radius) {
+		double area = radius*radius*3.14;
+		System.out.println("원의 넓이 : " + area);
+	}
+	
+	public double circleRound(int radius) {
+		double round = 2*3.14*radius;
+		return round;	
+	}
+
+//arithmetic 함수를 만든 후 두 숫자를 입력받고 두 숫자의 덧셈,뺄셈,곱셈,나눗셈,나머지를
+//출력한 후 main함수에서 호출하세요
+	public void arithmetic(int su1, int su2) {
+		System.out.println("덧셈결과 ->" + (su1+su2));
+		System.out.println("뺄셈결과 ->" + (su1-su2));
+		System.out.println("곱셈결과 ->" + (su1*su2));
+		System.out.println("나눗셈몫 ->" + (su1/su2));
+		System.out.println("나눗셈 나머지 ->" + (su1%su2));
+	}
+
+//main 함수에서 섭씨로 변화하고 싶으면 1, 화씨로 변화하고 싶으면 2를 입력받고 
+//fahrenheitToCelsius함수를 통해서 화씨를 섭씨로 celsiusToFahrenheit 함수를 통해서 섭씨를 화씨로 바꿔
+//출력하는 프로그램을 만드시오
+//(화씨 = 1.8 * 섭씨 + 32, 섭씨 = (화씨 - 32) / 1.8)
+
+public void celsiusToFahrenheit() {
+		Scanner scan = new Scanner(System.in);
+		
+		double cel;
+		double faher;
+		
+		System.out.printf("섭씨를 입력하세요 : ");
+		
+		cel = scan.nextInt();
+		
+		faher = 1.8 * cel + 32;
+		
+		System.out.println("화씨로 변화된 온도는 " + faher +"입니다." );
+	}
+	
+	public void fahrenheitToCelsius() {
+		Scanner scan = new Scanner(System.in);
+		
+		double cel;
+		double faher;
+		
+		System.out.printf("화씨를 입력하세요 : ");
+		faher = scan.nextInt();
+		
+		cel = (faher - 32) / 1.8;
+		
+		System.out.println("섭씨로 변화된 온도는 " + cel + "입니다.");
+		
+	}
+}
+```
+## MethodTestMain클래스작성하기
+```java
+package test3;
+
+import java.util.Scanner;
+
+public class MethodTestMain {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		System.out.print("반지름을 입력하세요 : ");
+		int radius = sc.nextInt();
+		MethodTest mt = new MethodTest();
+		
+		mt.circleArea(radius);
+		double round = mt.circleRound(radius);
+		
+		System.out.printf("원의 둘레 : %.2f\n",round);
+	----------------------------------------------------------------
+	
+		System.out.print("첫번째 숫자를 입력하세요 : ");
+		int su1 = sc.nextInt();
+		System.out.print("두번째 숫자를 입력하세요 : ");
+		int su2 = sc.nextInt();
+		
+		mt.arithmetic(su1, su2);
+	}
+
+	----------------------------------------------------------------
+	
+		System.out.print("1을 누르면 섭씨, 2를 누르면 화씨로 변경합니다.");
+		int select = sc.nextInt();
+		
+		switch(select) {
+		case 1:
+			fahrenheitToCelsius();
+			break;
+		case 2:
+			celsiusToFahrenheit();
+			break;
+		}
+}
+
+```
 
 
 
