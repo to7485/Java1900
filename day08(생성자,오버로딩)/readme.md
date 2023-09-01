@@ -60,8 +60,223 @@ public class ConMain {
 - 클래스를 생성하면서 개발자가 직접 생성자를 선언하지 않았지만, 자바 컴파일러가 기본생성자를 자동으로 제공해주고 있다.
 - 다만, 컴파일러의 눈에만 보일 뿐 우리가 보는 코드에는 생략되어 있다.
 
+```java
+public class ConTest {
+
+	public ConTest(){ //기본생성자
+		
+	} 	
+}
+```
+- 기본 생성자는 파라미터가 별도로 없으며, 중괄호{}블록 안에 코드가 없는 비어있는 생성자를 말한다.
+- 기본생성자는 개발자기 직접 선언하지 않았을 때만 컴파일러가 자동으로 추가한다.
+- 만약 개발자가 직접 생성자를 선언한다면, 컴파일러는 선언된 생성자를 사용한다.
+
+## 생성자 선언 이유
+- 생성자는 객체를 생성함과 동시에 객체를 초기화 할 수 있다.
+- 생성자를 통해 객체를 초기화한다는 것은 필드와 메서드를 호출하는 등 객체를 사용하기 위해 객체를 메모리에 올린다는 의미이다.
+- 생성자를 통해 객체를 메모리에 올림과 동시에, 더 나아가 객체 멤버에 접근이 가능하므로 일반적인 메서드처럼 객체 멤버의 데이터를 초기화 할 수 있다.
+- 메서드를 호출해서 파라미터에 값을 전달했던 것처럼, 생성자 역시 파라미터를 통해 값을 전달할 수 있다.
+
+```java
+public class ConTest {
+
+	public ConTest(String name) {
+		System.out.println("name이 " + name + "으로 초기화 됨");
+	} 
+	
+	
+}
+```
+
+```java
+public class ConMain {
+	public static void main(String[] args) {
+		
+	ConTest ct = new ConTest("홍길동");
+
+}
+```
+- 일반적인 메서드와 마찬가지로, 파라미터를 2개 이상 전달할 수 있다.
+
+## Person 클래스
+```java
+public class Person {
+	int age;
+	String name;
+
+	//예를들어서 나이와 이름, 전화번호를 알아야 친구가 된다고 가정을 해볼게요.
+	//이중에 한가지라도 빼먹고 안쓰면 문제가 있는거에요 써먹기 불가능한 객체가 될수도 있다는거죠.
+
+	//똑같은걸 계속 만드려고 한다면 기본생성자에 값을 넣어놓는것도 좋은 방법
+	pbulic Person() {
+		age = 40;
+		name = "노태문";
+	}
+
+	//빈공간에서 cntl + space bar 기본생성자 생성
+	//임의로 새로운 생성자를 정의한 순간부터 기본생성자는 쓸 수 없다.
+	public Person(int age, String) {
+		this.age = age;
+		this.name = name;
+
+	}
+
+	public void introduce() {
+		System.out.printf("안녕하세요. 저는 %d살 %s입니다.", age,name);
+	}
+}
+```
+## PMain 클래스
+```java
+public class PMain{
+	public static void main(String[] args) {
+		
+		Person p1 = new Person(20,"홍길동");
+		Person p2 = new Person(30,"김자바");
+
+		p1.introduce();
+		p2.introduce();
+		
+}
+```
+
+# 오버로딩
+- 오버로딩(Overloading)이라는 뜻은 사전적으로 '과적하다.'라는 뜻이다.
+- 자바에서는 하나의 메소드 이름으로 여러 기능을 구현하기 때문에 '과적하다.'라는 뜻의 이름을 붙여준 것으로 보인다.
+- 자바의 한 클래스 내에 이미 사용하려는 이름과 같은 이름을 가진 메소드가 있더라도 매개변수의 개수 또는 타입이 다르면, 같은 이름을 사용해서 메소드를 정의할 수 있다.
+
+## 오버로딩의 조건
+1. 메서드의 이름이 같아야 한다.
+2. 파라미터의 개수가 달라야 한다.
+3. 파라미터의 개수가 같아도 타입이 달라야 한다
+4. 파라미터의 개수가 같아도 순서가 달라야 한다
+
+## 생성자에 전달할 파라미터가 부족하면 어떤일이 일어날까?
+- Phone 클래스
+```java
+package test3;
+
+public class Phone {
+	String brand;
+	int series;
+	String color = "검정색";
+	
+	public Phone(String b, int s, String c) {
+			brand = b;
+			series = s;
+			color = c;
+	}
+	
+	public void phoneInfo() {
+		System.out.println(color + " " + brand + " " + series);
+	}
+}
+```
+- PhoneMain클래스
+```java
+package test3;
+
+public class PhoneMain {
+	public static void main(String[] args) {
+		Phone p1 = new Phone("갤럭시",1,"흰색");
+		Phone p2 = new Phone("아이폰",1);
+	}
+}
+```
+- 생성자에 전달할 매개변수가 부족하면, 객체를 생성할 수 없다.
+- 선언된 생성자의 형태에 맞게 매개변수를 전달해 줘야 하기 때문이다.
+- 클래스 내부에 선언된 필드의 기본값을 그대로 사용하고 싶다면 파라미터가 부족하다고 생성하지 못할 이유가 없어야 한다.
+- 이 경우 자바에서는 생성자를 여러 개 선언하는 것을 허용하고 있다.
+- 외부에서 제공할 수 있는 데이터만큼만 매개변수로 전달하여 객체를 생성할 수 있다.
+
+- Phone클래스에 color가 없는 생성자 만들기
+```java
+package test3;
+
+public class Phone {
+	String brand;
+	int series;
+	String color = "검정색";
+
+	public Phone(String b, int s) {
+		brand = b;
+		series = s;
+	}
+
+	public Phone(String b, int s, String c) {
+		brand = b;
+		series = s;
+		color = c;
+	}
+
+	public void phoneInfo() {
+		System.out.println(color + " " + brand + " " + series);
+	}
+}
+```
+
+## 여러개의 생성자를 선언해보기
+- Book 클래스
+```java
+package test3;
+
+public class Book {
+	String title = "제목없음";
+	int series = 1;
+	int page = 100;
+	
+	public Book() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public Book(String t) {
+		title = t;
+	}
+	public Book(String t, int p) {
+		title = t;
+		page = p;
+	}
+	public Book(int s, String t) {
+		series = s;
+		title = t;
+	}
+}
+```
+- BookMain클래스
+```java
+package test3;
+
+public class BookMain {
+	public static void main(String[] args) {
+		Book b1 = new Book();
+		System.out.println("b1.title : " + b1.title);
+		System.out.println("b1.series : " + b1.series);
+		System.out.println("b1.page : " + b1.page);
+		
+		Book b2 = new Book("멘토시리즈 자바");
+		System.out.println("b2.title : " + b2.title);
+		System.out.println("b2.series : " + b2.series);
+		System.out.println("b2.page : " + b2.page);
+		
+		Book b3 = new Book("신데렐라",170);
+		System.out.println("b3.title : " + b3.title);
+		System.out.println("b3.series : " + b3.series);
+		System.out.println("b3.page : " + b3.page);
+		
+		Book b4 = new Book(5,"노인과 바다");
+		System.out.println("b4.title : " + b4.title);
+		System.out.println("b4.series : " + b4.series);
+		System.out.println("b4.page : " + b4.page);
+	}
+}
+```
+
+# this와 this()
+
+
 ## 메서드 오버로드
-오버로드은 메서드의 ‘중복정의’ 라고 하며, 하나의 클래스 내에서 같은 이름을 가진 메서드(함수)가 여러개 정의되는 것을 말한다.<br>
+오버로드은 메서드의 '중복정의' 라고 하며, 하나의 클래스 내에서 같은 이름을 가진 메서드(함수)가 여러개 정의되는 것을 말한다.<br>
 메서드명은 대소문자를 비롯해서 반드시 같게 만들어야 하고, 인자들은 인자명을 제외한 인자의 수가 다르든, 인자의 수가 같을 경우 인자의 자료형이 다르든, 다른 메서드에 배치된 인자들과 반드시 다르게 정의되어야 한다.<br>
 오버로드은 다양한 메서드들을 같은 이름으로 작업할 수 있다는 의미. 효율성이 높다.<br>
 
@@ -81,19 +296,19 @@ public class Ex1_Overload {
 오버로드라고 하는 개념을 숙지만 하고 실제로 직접적으로 오버로드 메서드를 만들어서 사용하는 경우가 거의 없기 때문
   
 	public void result() {
-		System.out.println(“인자가 없는 메서드”);
+		System.out.println("인자가 없는 메서드");
 	//return; 강제로 끝내고 싶을 때는 return을 써도 됨. 대신 void 일때는 return에 아무 값도 		실을 수 없음 사실 void일때는 return을 쓰는 경우도 거의 없고 쓸 필요도 없음
 	}
 
 	//메서드 이름이 같기 때문에 오류가 나는게 당연하다.
 	pulic void result( int n ) {
-		System.out.println(“정수를 인자로 받는 메서드”);
+		System.out.println("정수를 인자로 받는 메서드");
 	}
 	public void result( char n) {
-		System.out.println(“문자를 인자로 받는 메서드”);
+		System.out.println("문자를 인자로 받는 메서드");
 	}
 	public void result( String s, int n) {
-		System.out.println(“문자열, 정수를 인자로 받는 메서드”);
+		System.out.println("문자열, 정수를 인자로 받는 메서드");
 	}
 }
 질문 아래 코드는 오버로드로 인정 받을까요 아닐까요?? 답 : 인정된다.
@@ -101,7 +316,7 @@ public void result( int n , String s) {
 
 } 
 	public void result( int n, String s) {
-		System.out.println(“정수, 문자열을 인자로 받는 메서드”);
+		System.out.println("정수, 문자열을 인자로 받는 메서드");
 	}
 
 
@@ -113,12 +328,12 @@ public class Ex2_OverloadingMain {
 	ov.result();
 	ov.result(10);
 	ov.result(‘A’); //인자를 char로 받으면 65를 넣어도 ‘A’가 출력되긴함.
-	ov.result(“hi”,10);
-	ov.result(10,“hi”);
+	ov.result("hi",10);
+	ov.result(10,"hi");
 
 	여러분들이 지금까지 수업을 듣는동안 알게모르게 오버로드메서드가 있다.
 
-	System.out.printString(“안녕하세요”);
+	System.out.printString("안녕하세요");
 	System.out.printInt(10 + 15);
 
 	오버로드의 장점 메서드를 상황에 따라서 구분할 필요가 없음 예를들어서 그냥 print를 쓰면됨
@@ -177,14 +392,14 @@ public class MethodMain {
 		mh.makeBread(); //예제1
 		System.out.println("-------------------------------");
 		
-		System.out.print(“만들고 싶은 빵의 개수: ”);
+		System.out.print("만들고 싶은 빵의 개수: ");
 		int num = sc.nextInt();
 		mh.makeBread(num); //예제2
 		System.out.println("-------------------------------");
 		
-		System.out.print(“만들고 싶은 빵의 개수: ”);
+		System.out.print("만들고 싶은 빵의 개수: ");
 		int num = sc.nextInt();
-		System.out.print(“만들고 싶은 빵의 종류: ”);
+		System.out.print("만들고 싶은 빵의 종류: ");
 		String b = sc.next();
 		mh.makeBread(num, b);//예제3
 	}
@@ -244,8 +459,8 @@ public class Person {
 	//똑같은걸 계속 만드려고 한다면 기본생성자에 값을 넣어놓는것도 좋은 방법
 	pbulic Person() {
 		age = 40;
-		name = “노태문”;
-		tel = “010-1111-1111”; 
+		name = "노태문";
+		tel = "010-1111-1111"; 
 	}
 
 	//빈공간에서 cntl + space bar 기본생성자 생성
@@ -262,13 +477,13 @@ PMain클래스 생성
 public class PMain{
 	public static void main(String[] args) {
 		
-		Person p1 = new Person(20,“홍길동”,“010”);
+		Person p1 = new Person(20,"홍길동","010");
 		p1.age = 40;
-		p1.name = “홍길동”;  --> 인자를 받는생성자 만들고 나서는 주석처리
-		p1.tel = “010”;
+		p1.name = "홍길동";  --> 인자를 받는생성자 만들고 나서는 주석처리
+		p1.tel = "010";
 
 		Person p2 = new Person();
-		p2.name = “홍길순”; //이름만 받고 나이와 전화번호를 받는걸 까먹음
+		p2.name = "홍길순"; //이름만 받고 나이와 전화번호를 받는걸 까먹음
 
 //친구는 다시 물어볼 수라도 있지만 연필,볼펜,마우스,모니터 같은 제품이 만들어질 때 문제가 되요. 길이,모양,단단함,가격 정의를 해야되는데 까먹고 가격을 정의를 안한거야. 이러면 납품되서 팔아야 되는데 못파는 상황이 될 수 있어요. 그냥 폐기물이 되버리는거에요 문제가 되는거죠. 객체를 만들 때 절대로 빼먹으면 안되는 정보들이 있다. 여기서 생성자가 굉장히 좋은 역할을 해줍니다. Person클래스로 이동
 }
@@ -279,7 +494,7 @@ public class PMain{
 public class Pen{
 
 	int price;
-	Stirng brand = “moanmi”;
+	Stirng brand = "moanmi";
 	String color;
 	
 	public Pen(int price, String color){
@@ -290,8 +505,8 @@ public class Pen{
 	
 	public Pen(){
 		price = 1000;
-		brand = “monami”;
-		color = “white”;
+		brand = "monami";
+		color = "white";
 	}
 }
 
@@ -299,7 +514,7 @@ public class Pen{
 public class PenMain{
 	public static void main(String[] args) {
 		Pen p1 = new Pen(); //1000원짜리 일반 모나미펜
-		Pen p2 = new Pen(10000,“gold”); //만원짜리 금으로된 한정 모나미 펜
+		Pen p2 = new Pen(10000,"gold"); //만원짜리 금으로된 한정 모나미 펜
 	
 	}
 }
@@ -319,7 +534,7 @@ Bank클래스 정의
 public class Bank {
 	//static : 객체가 아무리 많이 생성되어도
 	//메모리상에 딱 한 개만 만들어지는 변수나 메서드
-	private String name = “우리은행”;
+	private String name = "우리은행";
 	private String point; //은행 위치
 	private String tel; //은행 전번
 	static float interest = 10f; //은행이자
@@ -335,7 +550,7 @@ public class Bank {
 		System.out.println("이름 : " + name);
 		System.out.println("위치 : " + point);
 		System.out.println("전화번호 : " + tel);  
-		System.out.println("이자율 : " + interest + “%”);
+		System.out.println("이자율 : " + interest + "%");
 		System.out.println("-----------------------");
 	}
 }
@@ -346,7 +561,7 @@ public class BankMain {
 		
 		Bank bk1 = new Bank("강남", "02-111-2222");
 		Bank bk2 = new Bank("분당", "031-333-4444");
-		Bank bk3 = new Bank(“대전”, “042-333-3333”);
+		Bank bk3 = new Bank("대전", "042-333-3333");
 
 		//static 변수 클래스 이름으로 접근하는게 보통의 방식이다.
 		//객체 생성 없이도 언제든 가져다가 사용할 수 있다.
