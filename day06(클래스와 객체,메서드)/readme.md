@@ -264,9 +264,80 @@ public class CarMain {
 	}
 }
 ```
+# 자바의 변수와 생명주기
+- 자바에는 4가지 종류의 변수가 있다.
+
+## 변수의 종류
+1. 지역변수(local variable) : 중괄호 지역 내에서 선언된 변수
+2. 매개변수(parameters) : 메서드에 넘겨주는 변수
+3. 인스턴스(객체)변수(instance variable) : 참조용 클래스 안에서 만들어진 변수
+    - 객체가 생성될 때 객체별로 다른 값을 가질 수 있다.
+5. 클래스변수(class variable) :참조용 클래스 안에서 만들어지지만 타입 앞에 static이 있는 변수
+    - 인스턴스 변수는 객체마다 다른 값을 가지지만 클래스 변수는 모든 객체가 고유한 값을 갖는다. 
+
+## 변수의 생명주기
+1. 지역변수 : 지역변수를 선언한 중괄호 내에서만 유효하다.
+2. 매개변수 : 메서드가 호출될 때 만들어지고, 메서드가 끝나면 소멸한다.
+3. 인스턴스(객체)변수 : 객체가 생성될 때 만들어지고, 그 객체를 참조하고 있는 변수가 없으면 소멸된다.
+    - 가비지 콜렉터(Garbage Collector)가 알아서 메모리를 청소
+4. 클래스변수 : 클래스가 처음 호출될 때 생명이 시작되고, 자바 프로그램이 끝날 때 소멸된다.
+
+## 클래스의 로딩
+- 자바의 클래스들이 언제 어디서 메모리에 올라가고 클래스 멤버들이 초기화 되는 방법
+
+### JVM의 클래스 로더(class Loader)
+- 클래스 로더는 컴파일된 자바의 클래스파일(.class)을 동적으로 로드한다.
+- JVM의 메모리 영역인 데이터 영역에 배치하는 작업을 수행한다.
+- class파일을 로딩하는 순서
+    1. Loading(로드):클래스 파일을 가져와서 JVM의 메모리에 로드한다.
+    2. Linking(링크) : 클래스 파일을 사용하기 위해 검증하는 과정
+    3. Initializtion(초기화) : 클래스 변수들을 적절한 값으로 초기화 한다.
+- 유의할 점은 Loading 기능은 한번에 메모리에 올리지 않고, 어플리케이션에서 필요한 경우 동적으로 메모리에 적재하게 된다는 점이다.
+- 곰곰히 생각해보면 언제 어디서 사용될지 모르는 static 멤버들을 처음에 전부 메모리에 올린다는건 비효율적이다.
+- JVM은 실행될때 모든 클래스를 메모리에 올려놓지 않고, 그때 마다 필요한 클래스를 메모리에 올려 효율적으로 관리하는 것이다.
+
+### 메모리에 올라가는 시점
+1. 객체를 생성했을 때
+2. static 변수의 호출 : 클래스 내부의 static멤버를 호출하면, 객체화 하지 않아도 클래스가 로드된다.
+3. static 메서드 호출 : static변수를 호출한것과 같이 클래스가 로드된다.
+4. 내부클래스 호출 : 내부클래스의 객체를 생성하기 위해선 외부클래스의 객첼르 먼저 생성해야 한다.
+
+- Ex2_valueTest 패키지 생성
+
+## ValueTestMain클래스 작성하기
+```java
+public class ValueTestMain {
+	public static void main(String[] args) {
+		// 변수 선언과 값대입
+		int su = 100;
+
+		// test라는 메서드를 호출하기 위해 test메서드를 가지고 있는
+		// 클래스를 생성한다.
+		ValueTest vt = new ValueTest();//명시적 객체 생성
+		vt.test(su);// su에 있는 값이 복사되어 전달된다.
+
+		System.out.println("su: " + su);
+		
+	}
+}
+```
+
+## ValueTest클래스 작성하기
+```java
+public class ValueTest {
+	
+	public void test(int n){
+		n++;
+		System.out.println("n : " + n);
+	}// 메서드의 기능이 모두 끝났으면 호출한 곳으로 돌아간다.
+	// 이때 반환형이 있으면 반환값을 가지고 돌아가지만
+	// 반환형이 없는 void라면 빈손으로 돌아간다. 그리고 
+	// 지역변수 n은 소멸된다.
+}
+```
 
 # 메서드 실습
-- Ex2_methodTest 패키지 작성
+- Ex3_methodTest 패키지 작성
 
 ## MethodTest클래스작성하기
 ```java
@@ -378,7 +449,90 @@ public class MethodTestMain {
 
 ```
 
+# setter&getter
+- 객체 지향 프로그래밍에서 객체의 데이터는 객체 외부에서 직접적으로 접근하는것을 막는다.
+- 객체 데이터를 외부에서 읽고 변경 시 객체의 무결성이 깨질 수 있기 때문이다.
+- 예를들어 자동차의 속도는 음수가 될 수 없는데, 외부에서 음수로 설정하면 무결성이 깨진다.
+- 따라서 객체 지향 프로그래밍에서는 메서드를 통해 데이터를 변경하는방법을 선호한다.
+- 데이터는 외부에서 접근하지 않도록 막고, 메서드는 공개를 해서 외부에서 메서드를 통해 데이터에 접근하도록 유도한다.
 
+## setter
+- 외부에서 메서드를 통해 데이터에 접근하고 검증할 수 있도록 유도하는 것
+```java
+public void setSpeed(int speed) {
+	if(speed < 0) {
+		this.speed = 0;
+		return;
+	} else {
+		this.speed = speed;
+	}
+	
+}
+```
+## getter
+- private 필드를 객체 외부에서 값을 불러오기 위해 구현하는 메서드를 getter라고한다.
+- private 필드는 객체 외부에서는 접근이 불가능하지만, 필드가 선언된 클래스에서는 어디서든 접근이 가능하다.
+- 따라서 메서드를 통해서 값을 전달해 줄 수 있다.
+```java
+public int getSpeed() {
+	return speed;
+}
+```
+## setter&getter 실습
+```java
+package test3;
 
+public class Car {
+	//필드(인스턴스 변수, 객체 변수, 멤버 변수)
+	private int speed;
+	private boolean stop;
+	
+	public int getSpeed() {
+		return speed;
+	}
+	
+	public void setSpeed(int speed) {
+		if(speed < 0) {
+			this.speed = 0;
+			return;
+		} else {
+			this.speed = speed;
+		}
+		
+	}
+	
+	public boolean isStop() {
+		return stop;
+	}
+	
+	public void setStop(boolean stop) {
+		this.stop = stop;
+		this.speed = 0;
+	}
+}
+```
+```java
+package test3;
 
+public class CarTest {
+	public static void main(String[] args) {
+		Car myCar = new Car();
+		
+		//잘못된 속도 변경
+		myCar.setSpeed(-50);
+		
+		System.out.println("현재 속도 : " + myCar.getSpeed());
+		
+		//올바른 속도 변경
+		myCar.setSpeed(60);
+		
+		//멈춤
+		if(!myCar.isStop()) {
+			myCar.setStop(true);
+		}
+		
+		System.out.println("현재 속도 : " + myCar.getSpeed());
+	}
+}
 
+```
