@@ -468,20 +468,79 @@ public class Child  extends Parent{
 - 메서드 앞에 final을 추가하게 되면 상속은 받더라도, 오버라이딩 할 수 없는 메서드를 뜻한다.
 - 즉, 자식 클래스이더라도 부모 클래스에 final로 선언된 메서드는 자식 클래스에서 오버라이딩 하지 못하고 있는 그대로 사용해야 한다.
 
+### Book클래스
+```java
+package test4;
 
+public class Book {
+	String title;
+	String author;
+	
+	public Book(String title, String author) {
+		this.title = title;
+		this.author = author;
+	}
+	
+	public final void info_title() {
+		System.out.println("책의 제목은 " + title + "입니다.");
+	}
+	
+	public void info_author() {
+		System.out.println("책의 저자는 " + author + "입니다.");
+	}
+}
+```
 
+### Comic클래스
+```java
+package test4;
 
+public class Comic extends Book{
 
+	boolean isColor;
+	
+	public Comic(String title, String author, boolean isColor) {
+		super(title, author);
+		this.isColor = isColor;
+		
+	}
+	
+	//부모클래스에서 final로 선언된 메서드를 오버라이딩 시도하면 에러가 발생한다.
+//	@Override
+//	public void info_title(){
+//		
+//	}
+	
+	@Override
+	public void info_author() {
+		System.out.println("이 만화책의 저자는 " + author+"입니다.");
+	}
+	
+	public void info_color() {
+		if(isColor) {
+			System.out.println("이 만화책은 컬러입니다.");
+		} else {
+			System.out.println("이 만화책은 흑백입니다.");
+		}
+	}
+ 
+}
 
+```
 
+### BookMain
+```java
+package test4;
 
+public class BookMain {
+	public static void main(String[] args) {
+		Comic comicBook = new Comic("주머니 괴물", "미상", true);
+		comicBook.info_title();
+		comicBook.info_author();
+		comicBook.info_color();
+	}
+}
+```
 
-
-
-
-
-
-
-
-
-
+### 생성자에는 final을 추가할 수 없다.
+- 생성자는 접근제한자(public,protected,private)만 추가할 수 있다.
