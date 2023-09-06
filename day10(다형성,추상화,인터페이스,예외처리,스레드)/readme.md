@@ -118,7 +118,291 @@ public class Calendar {
 	}
 }
 ```
+## DeskCalendar클래스
+```java
+package test;
 
+public class DeskCalendar extends Calendar {
+	String color;
+	int months;
+	public DeskCalendar(String color, int months) {
+		super(color,months);
+	}
+	
+	@Override
+	public void info() {
+		System.out.println(color+"달력을 벽에 걸기 위해 고리가 추가로 필요합니다.");
+	}
+	
+	public void onTheDesk() {
+		System.out.println(color+" 달력을 책상에 세울 수 있습니다.");
+	}
+}
+```
+
+## CalendarMain클래스
+```java
+package test;
+
+public class CalendarMain {
+
+	public static void main(String[] args) {
+		DeskCalendar dc = new DeskCalendar("보라색", 6);
+		dc.info();
+		dc.hanging();
+		dc.onTheDesk();
+		
+		System.out.println();
+		
+		Calendar c = new DeskCalendar("검은색", 12);
+		c.info();
+		c.hanging(); //오버라이드된 메서드가 호출된다.
+		//c.onTheDesk(); 에러
+	}
+}
+```
+- 타입 변환으로 생성된 c 객체는 Calendar타입을 가졌지만, DeskCalendar의 객체이기 때문에 DeskCalendar의 hanging()을 호출했다.
+- 클래스 타입 변환을 한 객체는, 더이상 자식 클래스만의 멤버들을 호출할 수 없다.
+- DeskCalendar객체임에도 Calendar타입을 가졌기 때문에, DeskCalendar의 멤버에는 접근할 수 없다.
+
+## 클래스의 강제 타입변환
+- 위의 코드에서 객체 c처럼 자식 타입에서 부모 타입으로 타입 변환을 했지만 자식 클래스의 멤버에게 접근하고 싶을 때가 생길 수 있다.
+- 자바의 규약으로 자식 클래스의 멤버에 접근할 수 없으므로 이러한 경우 다시 DeskCalendar타입으로 변경해서 접근할 수 있도록 해야 한다.
+- 우리는 이를 '클래스의 강제 타입 변환'이라고 부른다.
+- 자식 객체가 부모 타입으로 자동 타입 변환을 한 후, 다시 자식 타입으로 변환하는 것을 말한다.
+
+```java
+일회성으로 타입 변환이 필요할 때는
+((자식클래스명)객체명).메서드명();
+
+자식클래스의 멤버에 접근이 여러번 필요한 경우
+객체명 = (자식클래스명)부모타입;
+```
+## Bike클래스
+```java
+package test;
+
+public class Bike {
+	String riderName;
+	int wheel = 2;
+	
+	public Bike(String riderName) {
+		this.riderName = riderName;
+	}
+	
+	public void info() {
+		System.out.println(riderName + "의 자전거는 " + wheel +"발 자전거입니다.");
+	}
+	
+	public void ride() {
+		System.out.println("씽씽");
+	}
+}
+```
+
+## FourWheelBike클래스
+```java
+package test;
+
+public class FourWheelBike extends Bike{
+
+	public FourWheelBike(String riderName) {
+		super(riderName);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void info() {
+		// TODO Auto-generated method stub
+		super.info();
+	}
+	
+	public void addWheel() {
+		if(wheel == 2) {
+			wheel = 4;
+			System.out.println(riderName+"의 자전거에 보조 바퀴를 부착하였습니다.");
+		} else {
+			System.out.println(riderName+"의 자전거에 이미 보조 바퀴가 부착되어 있습니다.");
+		}
+	}
+}
+```
+
+## BikeMain클래스
+```java
+package test;
+
+public class BikeMain {
+	public static void main(String[] args) {
+		Bike b = new FourWheelBike("윤기");
+		b.info();
+		b.ride();
+		//b.addWheel(); 부모 타입으로는 불가
+		
+		System.out.println();
+		
+		FourWheelBike fwb = (FourWheelBike)b;
+		fwb.addWheel();
+		fwb.info();
+		fwb.ride();
+	}
+}
+```
+- 자식 타입으로 다시 변환을 해줌으로써 부모 타입에서는 사용하지 못했던 자식의 멤버들을 모두 사용할 수 있게 되었다.
+- 단, 모든 부모 타입 객체를 자식 타입으로 변환할 수 있는 것은 아니다.
+- 반드시 부모 타입으로 자동 타입 변환되었던 자식 객체를 다시 자식 타입으로 변환할 때만 강제 타입 변환을 사용할 수 있다.
+
+# 다형성
+- 다형성은 객체 지향 프로그래밍의 대표적인 특징 중 하나로, 하나의 타입으로 다양한 객체를 사용할 수 있다는것을 의미한다.
+- 자바에서는 앞에서 학습한 타입 변환을 통해, 부모 클래스의 타입 하나로 여러 가지 자식 객체들을 참조하여 사용함으로써 다형성을 구현할 수 있다.
+- 클래스의 타입 변환이 존재하는 이유는 다형성을 구현하기 위함이라고 할 수 있다.
+- 완벽한 다형성을 구현하기 위해서는 상속 + 메서드 오버라이딩 + 클래스 타입변환 이 세가지 개념을 합쳐야 한다.
+- 객체가 특정 클래스의 필드가 되면서, 하나의 부품처럼 사용될 수 있다.
+- 이때, 부품을 교체할 일이 생긴다면 우리는 다형성을 구현함으로써 코드 수정을 최소화할 수 있다.
+
+## Computer클래스
+```java
+package test;
+
+public class Computer {
+	public void powerOn() {
+		System.out.println("삑- 컴퓨터가 켜졌습니다.");
+	}
+	
+	public void powerOff() {
+		System.out.println("컴퓨터가 종료됩니다.");
+	}
+}
+```
+
+## Samsung클래스
+```java
+package test;
+
+public class Samsung extends Computer{
+	@Override
+	public void powerOn() {
+		super.powerOn();
+		System.out.println("아이 러브 삼송");
+	}
+	
+}
+```
+## ComputerRoom클래스
+```java
+package test;
+
+public class ComputerRoom {
+	Samsung com1;
+	Samsung com2;
+	
+	public void allPowerOn() {
+		com1.powerOn();
+		com2.powerOn();
+	}
+	
+	public void allPowerOff() {
+		com1.powerOff();
+		com2.powerOff();
+	}
+}
+```
+
+## ComMain클래스
+```java
+package test;
+
+public class ComMain {
+
+	public static void main(String[] args) {
+		ComputerRoom cr = new ComputerRoom();
+		cr.com1 = new Samsung();
+		cr.com2 = new Samsung();
+		
+		cr.allPowerOn();
+		cr.allPowerOff();
+		
+		System.out.println();
+
+	}
+}
+```
+- 지금까지는 사용하는데 아무런 불편함이 없다.
+- 하지만 컴퓨터실에 있는 컴퓨터 두대를 LZ컴퓨터로 바꾸고 싶다면 어떻게 해야할까??
+
+## LZ클래스
+```java
+package test;
+
+public class LZ extends Computer{
+	
+	@Override
+	public void powerOn() {
+		super.powerOn();
+		System.out.println("사랑해요 LZ");
+	}
+}
+```
+
+## ComputerRoom 클래스 수정하기
+```java
+package test;
+
+public class ComputerRoom {
+	//Samsung com1;
+	//Samsung com2;
+	
+	//LZ com1;
+	//LZ com2;
+
+	//매번 다른 브랜드의 컴퓨터로 바꾸기 위해 코드를 수정하면 피곤해지기도 하고
+	//실수를 할 위험성도 커진다.
+
+	//클래스의 타입변환을 사용하면 보다 간결하게 해결할 수 있다.
+	Computer com1;
+	Computer com2;
+	
+	public void allPowerOn() {
+		com1.powerOn();
+		com2.powerOn();
+	}
+	
+	public void allPowerOff() {
+		com1.powerOff();
+		com2.powerOff();
+	}
+}
+
+```
+
+## ComMain클래스 수정하기
+```java
+package test;
+
+public class ComMain {
+
+	public static void main(String[] args) {
+		ComputerRoom cr = new ComputerRoom();
+		//cr.com1 = new Samsung();
+		//cr.com2 = new Samsung();
+		cr.com1 = new LZ();
+		cr.com2 = new LZ();
+		
+		cr.allPowerOn();
+		cr.allPowerOff();
+		
+		System.out.println();
+
+	}
+}
+```
+
+## instancdof연산자
+- 부모 타입으로 타입이 변환되어 저장된 변수는 안에 어떤 객체가 담겨 있는지 직접 확인하지 않는 이상 내부 객체를 알기 쉽지 않다.
+- 오버라이딩된 메서드가 있다면 확인이 쉽겠지만, 부모클래스를 같이 상속받고 있는 다른 클래스 또는 부모클래스와 구별할 수 있는 특정 멤버가 없다면 어떻게 구별해야 할까?
+- instanceof연산자의 특징
+    -  A instanceof B : A 객체가 생성될 때 B 타입으로 생성되었는지 확인하는 연산자
+    -  맞으면 true, 아니면 false를 반환하며 만약 null을 가리키고 있으면 false를 반환한다.
 
 ### 추상 메서드와 추상 클래스
 
