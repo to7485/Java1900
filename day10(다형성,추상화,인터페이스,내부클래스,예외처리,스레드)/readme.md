@@ -472,18 +472,41 @@ public class FarmTest {
 	}
 }
 ```
+# 추상화
+- 바로 전에 작성했던 FarmTest에서 메서드 오버라이딩을 이용하여 처리한 경우를 다시한번 살펴보자.
+- Animal클래스의 cry()메서드가 텅 비어있는 것을 확인할 수 있다.
+- Animal 객체를 통해 직접 cry()메서드를 호출할 일은 없지만,
+- Animal클래스를 상속받은 자식 클래스들이 cry()메서드를 오버라이딩 하여 재정의 하고
+- 타입변환을 통해서 그 메서드를 사용하기 위함이었다.
 
-### 추상 메서드와 추상 클래스
+## 추상메서드
+- 선번부만 작성하고 구현부는 작성하지 않고 남겨둔 미완성 메서드를 '추상 메서드'라고 한다.
+- 다형성을 위해 메서드의 선언은 통일해야 하지만, 실제로 구현하는 내용은 자식클래스마다 달라야 할 때
+- 부모 클래스의 메서드는 비워두고 자식 클래스에서 오버라이딩하여 구현을 할 수 있다.
+- 추상 메서드를 선언할 때 abstract 키워드를 함께 표기해야 한다.
+- 또한 메서드의 구현부인 중괄호{} 대신 구현부가 없다는 의미로 세미콜론(;)를 쓴다.
 
-추상메서드의 구성 : [접근제한] abstract [반환형] [메서드명](); //{ }없이 ;으로 마무리됨<br>
-		               abstract [접근제한] [반환형] [메서드명](); //{ }없이 ;으로 마무리됨<br>
-완성된 단계가 아닌 미완성적 개념으로 두고, 나중에 타 클래스 내에서 재정의하여 사용할 수 있도록 만드는 것.<br>
+```java
+[접근제한] abstract [반환형] [메서드명](파라미터1,파라미터2);
+abstract [접근제한] [반환형] [메서드명](파라미터1,파라미터2);
+```
+## 추상 클래스
+- 추상메서드가 한 개 이상 정의되어 있는 클래스를 추상 클래스라고 한다.
+- 추상 메서드를 포함하고 있다는 것을 제외하고 일반 클래스와 다르지 않다.
+- 추상 클래스에도 생성자가 있으며, 멤버변수와 메서드도 가질 수 있다.
+- 추상 클래스 또한 abstract를 통해 자신이 추상클래스임을 명시해줘야 한다.
+```java
+[접근제한] abstract class [클래스명]{
+	//필드
+	//생성자
+	//메서드(추상메서드 포함)
+}
+```
+### 추상 클래스의 특징
+- 일반 클래스 처럼 독립적으로 생성자를 호출해 객체를 생성할 수 없다.
+- 자식 클래스의 생성자에 super()를 총해 추상 클래스의 생성자를 호출하여 부모 객체를 생성한 후 자식 객체를 생성한다.
 
-추상메서드가 한 개 이상 정의되어 있는 클래스를 추상 클래스라고 하는데,<br>
-추상 클래스 또한 abstract를 통해 자신이 추상클래스임을 명시해줘야 한다.<br>
-추상클래스의 구성 : [접근제한] abstract class [클래스명]{ }<br>
-
-#### AbsParent정의(abstract)
+## AbsParent클래스(abstract)
 ```java
 abstract public class AbsParent {
 	//추상메서드를 한갤라도 가지고 있는 클래스는
@@ -507,7 +530,7 @@ abstract public class AbsParent {
 }
 ```
 
-#### AbsChild클래스 정의
+## AbsChild클래스 정의
 ```java
 public class AbsChild extends AbsParent{
 	
@@ -515,16 +538,16 @@ public class AbsChild extends AbsParent{
 	//부모가 가지고 있는 추상 메서드(미완성)를 무조건 받아두어야 한다.
 	//재정의 할 필요는 없지만 오버라이딩 해서 가지고는 있어야 한다는 의미.
 
-	추상클래스에서 만든 메서드를 몸체까지 강제로 오버라이딩이 됨.
-	무조건 받아야 하고 자식클래스의 상황에 맞게 내용을 정의할 수 있다.
-	재정의할 필요 없다면 그냥 받아만 둬도 상관이 없다.
+	//추상클래스에서 만든 메서드를 몸체까지 강제로 오버라이딩이 됨.
+	//무조건 받아야 하고 자식클래스의 상황에 맞게 내용을 정의할 수 있다.
+
 	@Override
 	public void setValue(int n) {
-		System.out.println(“추상메서드 재정의함”);
+		System.out.println("추상메서드 재정의함");
 	}
 ```	
 	
-#### AbsMain정의
+## AbsMain정의
 ```java
 public class AbsMain {
 	public static void main(String[] args) {
@@ -540,7 +563,8 @@ public class AbsMain {
 	}
 }
 ```
-#### AbsClass정의
+
+## AbsClass정의
 ```java
 public abstract class AbsClass {
 	int value = 100;
@@ -552,263 +576,365 @@ public abstract class AbsClass {
 	public abstract int changeValue(); // 추상메서드
 }
 ```
-#### AbsChild1정의
-```java
-public class AbsChild1 extends AbsClass{
 
-	@Override
-	public int changeValue() {
-		return value += 10; 
-		//value는 부모의 멤버. 상속 받았기 때문에 사용 가능
+## Phone 클래스
+```java
+package test2;
+
+public abstract class Phone {
+	abstract public void openingLogo();
+	
+	public void powerOn() {
+		openingLogo();
+		System.out.println("핸드폰이 켜집니다.");
+	}
+	
+	public void powerOff() {
+		System.out.println("핸드폰이 꺼집니다.");
 	}
 }
 ```
-#### AbsChild2정의
+
+## PineapplePhone클래스
 ```java
-public class AbsChild2 extends AbsClass{
+package test2;
+
+public class PineApplePhone extends Phone{
+
 	@Override
-	public int changeValue() {
-		return value -= 3;
-	}	
+	public void openingLogo() {
+		System.out.println("@@@");
+	}
 }
 ```
-#### AbsMain정의
+
+## ThreeStarPhone클래스
 ```java
-public class AbsMain {
-	
+package test2;
+
+public class ThreeStarPhone extends Phone{
+
+	@Override
+	public void openingLogo() {
+		System.out.println("★★★");
+	}
+}
+```
+
+## PhoneMain클래스
+```java
+package test2;
+
+public class PhoneMain {
 	public static void main(String[] args) {
-		// 추상클래스는 객체화 할 수 없다.
-		AbsClass a1 = new AbsClass(); //확인 후 주석
-
-		//추상 클래스는 자식클래스에 의해 객체화 된다.
-		AbsChild1 ac1 = new AbsChild1();
-		System.out.println(ac1.changeValue());
-		↑여기까지 일단 결과로 110이 나오는 이유먼저 설명
-
+		PineApplePhone pp = new PineApplePhone();
+		pp.powerOn();
+		pp.powerOff();
+		
+		System.out.println();
+		
+		ThreeStarPhone tp = new ThreeStarPhone();
+		
+		tp.powerOn();
+		tp.powerOff();
 	}
 }
 ```
-<hr>
 
-우리가 라면을 끓입니다.<br>
-공통적으로는 면과 스프를 넣죠? 설마 물 안넣진 않았겠죠.<br>
-그 다음에는 치즈를 넣을지 떡을 넣을지 만두를 넣을지 알수가 없기 때문에 각자에 취향에 맞춰서 해야겠죠??<br>
-그래서 공통적인 부분인 스프랑 면만 딱 넣어주는거에요 그리고 알아서 먹고싶은대로 넣는게 추상화입니다.<br>
+# 인터페이스
+- 모든 메서드가 추상 메서드인 일종의 추상 클래스를 '인터페이스'라고 부른다.
+- 인터페이스는 추상 메서드와 상수로만 이루어져 있으며, 추상클래스와 마찬가지로 스스로 객체를 생성할 수 없다.
+- 언뜻 보면 인터페이스와 추상 클래스가 같은 역할을 하는 것처럼 느껴질 수 있지만, 취지는 완전히 다르다.
+- 추상 클래스는 자식클래스들의 공통적인 특징을 추출하고 제공하는것이 주된 역할이었다면
+- 인터페이스는 그뿐 아니라 다른 클래스 코드들과의 중간 매개 역할을 하는 것을 중점으로 생각할 수 있다.
 
-#### Ramen 클래스 생성
+## 인터페이스의 선언
+- 인터페이스는 클래스가 아니다.
+- 추상클래스는 스스로 객체를 생성할 수는 없지만, 자식 클래스의 생성자를 통해 객체를 생성해낼 수 있었다.
+- 하지만 인터페이스는 어떤 형태로도 객체를 만들 수 없기 때문에 클래스라고 부를 수 없다.
+- 인터페이스는 객체의 매개체, 즉, 객체를 사용하는 방법을 제공하는 새로운 블록이라고 할 수 있다.
+
 ```java
-abstract public class Ramen {
-	String nudle = "면";
-	String soup = "스프";
-	
-	abstract public void makeRamen();
+[접근제한자]interface 인터페이스명{
+	//상수
+	//추상메서드
 }
 ```
-#### CheeseRamen 클래스 생성
-```java
-public class CheeseRamen extends Ramen{
 
-	String cheese = "치즈";
+## Phone클래스
+```java
+package test3;
+
+public interface Phone {
+	
+	public static final int MAX_BATTERY_CAPACITY = 100;
+	
+	abstract void powerOn();
+	abstract void powerOff();
+	abstract boolean isOn();
+	abstract void watchUtube();
+	abstract void charge();
+}
+```
+- 추상 클래스는 추상 메서드가 비어있기 때문에 객체 생성을 스스로 할 수 없다.
+- 대신 자식 클래스의 생성자의 힘을 빌려 객체 생성을 할 수 있었다.
+- 인터페이스도 마찬가지로 추상 메서드가 비어있기 때문에 객체 생성을 스스로 할 수 없다.
+- 따라서 인터페이스도 자신이 가지고 있는 추상 메서드를 구현해줄 클래스를 작성해야만 한다.
+- 인터페이스를 구현해주는 클래스를 '구현 클래스'라고 한다.
+
+### implements
+- 구현 클래스는 인터페이스를 사용해 구현하겠다는 선언을 해야 한다.
+- 구현한다는 의미를 가지고 있는 implements키워드를 사용하여 명시할 수 있다.
+```java
+[접근제한자]class 클래스명 implements 인터페이스명{
+	//필드
+	//생성자
+	//메서드(추상메서드 오버라이딩)
+}
+```
+
+## PineApplePhone클래스
+```java
+package test3;
+
+public class PineApplePhone implements Phone{
+	int batteryCapacity = 40;
+	boolean isOn = false;
 	
 	@Override
-	public void makeRamen() {
-		System.out.printf("%s %s %s\n",nudle,soup,cheese);
+	public void powerOn() {
+		if(batteryCapacity > 30) {
+			System.out.println("@@@Power On!!@@@");
+			isOn = true;
+		} else {
+			System.out.println("Low Battery...");
+		}
+		
+	}
+	
+	@Override
+	public void powerOff() {
+		System.out.println("@@@Power Off!!@@@\n");
+		isOn = false;
+		
+	}
+	
+	@Override
+	public boolean isOn() {
+		if(isOn) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public void watchUtube() {
+		if(batteryCapacity > 10) {
+			System.out.println("--- watching Utube ---");
+			batteryCapacity -= 10;
+			System.out.println("battery is..." + batteryCapacity + "%\n");
+		} else {
+			System.out.println("Low Battery...");
+			powerOff();
+		}
+		
+	}
+	
+	@Override
+	public void charge() {
+		if(batteryCapacity < Phone.MAX_BATTERY_CAPACITY - 20) {
+			System.out.println("--- charging ---");
+			batteryCapacity += 5;
+			System.out.println("Charged..." + batteryCapacity + "%\n");
+		} else {
+			System.out.println("You don't have to charge...");
+			System.out.println("It's enough... " + batteryCapacity + "%");
+		}
 		
 	}
 }
 ```
-#### ManduRamen 클래스 생성
+
+## ThreeStarPhone클래스
 ```java
-public class ManduRamen extends Ramen{
-	
-	String mandu = "만두";
+package test3;
+
+public class ThreeStarPhone implements Phone{
+	int batteryCapacity = 40;
+	boolean isOn = false;
 	
 	@Override
-	public void makeRamen() {
-		System.out.printf("%s %s %s\n",nudle,soup,mandu);
+	public void powerOn() {
+		if(batteryCapacity > 30) {
+			System.out.println("★★★폰이켜졌습니다.★★★");
+			isOn = true;
+		} else {
+			System.out.println("배터리가 부족합니다...");
+		}
+		
+	}
+	
+	@Override
+	public void powerOff() {
+		System.out.println("★★★폰이 꺼졌습니다.★★★\n");
+		isOn = false;
+		
+	}
+	
+	@Override
+	public boolean isOn() {
+		if(isOn) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public void watchUtube() {
+		if(batteryCapacity > 10) {
+			System.out.println("--- U튜브 시청 중 ---");
+			batteryCapacity -= 10;
+			System.out.println("잔여 배터리" + batteryCapacity + "%\n");
+		} else {
+			System.out.println("배터리가 부족합니다...");
+			powerOff();
+		}
+		
+	}
+	
+	@Override
+	public void charge() {
+		if(batteryCapacity < Phone.MAX_BATTERY_CAPACITY - 20) {
+			System.out.println("--- 충전중 ---");
+			batteryCapacity += 5;
+			System.out.println("잔여 배터리" + batteryCapacity + "%\n");
+		} else {
+			System.out.println("충전할 필요가 없습니다.");
+			System.out.println("잔여 배터리..." + batteryCapacity + "%");
+		}
 		
 	}
 }
 ```
 
-#### RamenMain 클래스 생성
+## Person클래스
 ```java
+package test3;
 
-public class RamenMain {
+public class Person {
+	Phone p;
+	
+	public Person(Phone p) {
+		this.p = p;
+	}
+	
+	public void buyNewPhone(Phone p) {
+		this.p = p;
+		System.out.println(" = = = = = = == =");
+		System.out.println("새 폰을 샀습니다.");
+	}
+	
+	public void turnOnPhone() {
+		p.powerOn();
+	}
+	
+	public void turnOffPhone() {
+		p.powerOff();
+	}
+	
+	public void watchUtube() {
+		if(p.isOn()) {
+			p.watchUtube();
+		}else {
+			System.out.println("폰이 꺼져 있기 대문에 U튜브를 볼 수 없습니다.");
+		}
+	}
+	
+	public void chargePhone() {
+		p.charge();
+	}
+}
+```
+
+## PhoneMain클래스
+```java
+package test3;
+
+public class PhoneMain {
 	public static void main(String[] args) {
+		Person jimin = new Person(new PineApplePhone());
+		jimin.turnOnPhone();
+		for(int i = 1; i < 6; i++) {
+			jimin.watchUtube();
+			
+			if(i % 3 == 0) {
+				jimin.chargePhone();
+			}
+		}
 		
-		CheeseRamen cr = new CheeseRamen();
-		ManduRamen mr = new ManduRamen();
+		jimin.buyNewPhone(new ThreeStarPhone());
+		jimin.turnOnPhone();
 		
-		cr.makeRamen();
-		mr.makeRamen();
-		
-	}//main
-}
-```
-
-마지막 예제! 책에 아주 잘 나와있는게 있어서 그걸 한번 해볼게요.<br>
-스타크래프트 다들 아시는지 모르겠네요. 전 잘 모릅니다.<br>
-근데 보면 세 개의 종족에 지상, 공중유닛이 분리되어 있고.... 유닛마다 공격력이나 방어력이 모두 다르잖아요???<br>
-
-모든 유닛은 상대방에게 ‘공격을 당한다’라는 액션을 가지고 있지만, 공격당할 때 감소하는 에너지의 수치는 차이가 있을 겁니다.<br>
-
-이렇게 공통적인 기능이 있으나, 내부에서 구현되어야 하는 코드가 다를 때 사용할 수 있는 아주 괜찮은 예제인 것 같습니다.<br>
-
-#### Unit클래스 정의
-```java
-public abstract class Unit {
-	String name;//이름
-	int energy;//체력
-	
-	//유닛이 공격을 당했을 때 체력 감소량을 관리하기 위한 메서드
-	//유닛마다 체력 감소량이 다르기 때문에 추상메서드로 정의했다.
-	abstract public void decEnergy();
-	
-	public int getEnergy() {
-		return energy;
+		for(int i = 1; i < 5; i++) {
+			jimin.watchUtube();
+			
+			if(i % 3 == 0) {
+				jimin.chargePhone();
+			}
+		}
 	}
 }
 ```
-#### Terran클래스 정의
-```java
-public class Terran extends Unit{
+### 인터페이스의 장점
+- 정보은닉 : 실제 구현 클래스의 내용을 전혀 보지 않고도 개발 코드로 객체를 사용할 수 있다.
+- 모듈화 : 구현 클래스들이 독립적으로 구현되고 사용될 수 있다. 개발 코드에서 객체 변경이 필요할 때, 개발코드의 수정을 최소화할 수 있다.
 
-	//공중유닛 이면 true, 지상유닛이면 false
-	boolean fly;
-	
-	public Terran(String name, int energy, boolean fly) {
-		super.name = name;
-		super.energy = energy;
-		this.fly = fly;
-	}//생성자 오버로딩.
-	
-	
-	@Override
-	public void decEnergy() {
-		energy -= 3;
-	}	
+## 다중 인터페이스 구현
+- 우리는 하나의 클래스로 여러 개의 인터페이스를 구현할 수 있다.
+- 선언한 모든 인터페이스에 대한 추상 메서드를 모두 구현해 줘야 한다.
+```java
+[접근제한자]class 클래스명 implements 인터페이스1,인터페이스2{
+	//필드
+	//생성자
+	//인터페이스1에 대한 구현 메서드
+	//인터페이스2에 대한 구현 메서드
+}
+```
+## Menu1 인터페이스 정의
+```java
+public interface Menu1 {
+	abstract String jajang();
+
+	//abstract는 생략되어도 interface안에서는 자동으로 추상으로 인식.
+	String jjambbong();
 }
 ```
 
-#### Protoss클래스 정의
+## Menu2 인터페이스 정의
 ```java
-public class Protoss extends Unit{
-
-	boolean fly;
-	
-	public Protoss(String name, int energy, boolean fly) {
-		super.name = name;
-		super.energy = energy;
-		this.fly = fly;
-	}
-	
-	@Override
-	public void decEnergy() {
-		energy--;
-	}
+public interface Menu2 {
+	abstract String tangsuyuck();//탕수육 철자 모르겠다;;ㅋ
 }
 ```
 
-#### Zerg클래스 정의
+## Menu3 인터페이스 정의
 ```java
-public class Zerg extends Unit{
-
-	boolean fly;
-	
-	public Zerg(String name, int energy, boolean fly) {
-		super.name = name;
-		super.energy = energy;
-		this.fly = fly;
-	}//생성자 오버로딩.
-	
-	@Override
-	public void decEnergy() {
-		energy -= 10;
-	}
+public interface Menu3 extends Menu1, Menu2{
+	//인터페이스는 일반클래스 상속이 불가능하고 인터페이스만 상속이 가능하다.
+	//인터페이스는 구현능력이 없기 때문에 다중상속이 가능하다
+	abstract String boggembab();//보끔밥....
 }
 ```
 
-#### UnitMain클래스 정의
+## Kitchen 클래스 생성
 ```java
-public class UnitMain {
-	public static void main(String[] args) {
-		Terran t1 = new Terran("해병", 100, false);
-		t1.decEnergy();//재정의한 decEnergy()호출
-		System.out.println("t1의 energy : " + t1.getEnergy());
-		
-		Zerg z1 = new Zerg("무리군주", 200, true);
-		z1.decEnergy();
-		System.out.println("z1의 energy : " + z1.getEnergy());
-		
-		Protoss p1 = new Protoss("거신", 250, false);
-		p1.decEnergy();
-		System.out.println("p1의 energy : " + p1.getEnergy());
-	}
-}
-```
-### 인터페이스
-인터페이스는 앞에서 배운 추상클래스와 매우 유사하지만, 서비스 요청에 따른 중개자 역할을 하는 것과 같다.<br>
-
-중국집에 갔다고 치자. 우리가 직접 주방에 가서 메뉴를 주문하지는 않잖아요??<br>
-메뉴판을 통해서 메뉴를 정하고 주문을 해야되요<br>
-
-메뉴를 보고 골라서 직원에게 주문을 하면 주방에서 요리를 만들어서 고객에게 제공하는 것처럼 인터페이스는 고객이 호출할 수 있는 서비스의 목록이라고 할 수 있다.<br>
-
-메뉴판에는 분명 짜장면이 있는데 시켜놓고 보니 주방에 밀가루가 없네요??<br>
-알고 보니까 짜장면을 만들지 못하는 식당이었다. 라는 상황이 발생하면 안되기 때문에,<br>
-식당(인터페이스를 구현할 클래스)에는 메뉴판(인터페이스)에 있는 서비스가 하나도 빠짐없이 구비되어 있어야 한다.<br>
-예제로 확인하시죠. 추상처럼 메서드를 오버라이딩 하는건 맞는데 인터페이스는 조금 더 강제성이 있어요.<br>
-
-```
-인터페이스의 구성
-[접근제한] interface 인터페이스명{
-   상수;
-   추상메서드;
-}
-```
-프로젝트에서 마우스 우측클릭, new -> interface를 통해 인터페이스 생성<br>
-
-#### InterTest 인터페이스 정의
-```java
-public interface InterTest {
-	//인터페이스에는 상수와 추상메서드 이외에는 아무것도 들어갈 수 없다
-	final int A = 100; //final로 만든 변수는 대문자로 만든다.
-	abstract int getA();
-}
-```
-#### InterChild 클래스 정의
-```java
-public class InterChild implements InterTest{
-	//인터페이스를 구현하려면
-	//구현하려는 클래스에서 implements예약어를 사용한다.
-	
-	@Override
-	public int getA() {
-		return A; //InterTest의 상수 A를 반환
-	}
-}
-```
-#### InterMain 클래스 정의
-```java
-public class InterMain {
-	
-	public static void main(String[] args) {
-		
-		InterChild ic = new InterChild();
-		System.out.println("getA() : " + ic.getA());
-	}
-}
-```
-### 인터페이스간의 상속
-
-#### Kitchen 클래스 생성
-```java
-public class Kitchen implements //Menu1, //Menu2, Menu3 {
+public class Kitchen implements Menu1, /*Menu2, Menu3*/ {
 	@Override
 	public String jajang() {
 		// TODO Auto-generated method stub
-		return "중면 + 춘장 + 완두콘";
+		return "중면 + 춘장 + 완두콩";
 	}
 
 	@Override
@@ -831,62 +957,34 @@ public class Kitchen implements //Menu1, //Menu2, Menu3 {
 
 }
 ```
-#### Menu1 인터페이스 정의
-```java
-public interface Menu1 {
-	abstract String jajang();
 
-	//abstract는 생략되어도 interface안에서는 자동으로 추상으로 인식.
-	String jjambbong();
-}
-```
+## InterMain 클래스 정의
+```java
+package test3;
 
-#### Menu2 인터페이스 정의
-```java
-public interface Menu2 {
-	abstract String tangsuyuck();//탕수육 철자 모르겠다;;ㅋ
-}
-```
-#### Menu3 인터페이스 정의
-```java
-public interface Menu3 extends Menu1, Menu2{
-	//인터페이스는 일반클래스 상속이 불가능하고 인터페이스만 상속이 가능하다.
-	//인터페이스는 구현능력이 없기 때문에 다중상속이 가능하다
-	abstract String boggembab();//보끔밥....
-}
-```
-#### InterMain 클래스 정의
-```java
-public class Kitchen implements Inter_Menu3{
+public class KitchenMain {
+
 	public static void main(String[] args) {
-
 		Kitchen k = new Kitchen();
-
-		System.out.println("--우리집 메뉴판--");
-
-		Inter_Menu1 im1 = im;
-		Inter_Menu2 im2 = im;
-		Inter_Menu3 im3 = im;
-		//InterMain의 객체인 im을 Inter_Menu에 대입
-		//오류가 날 것 같지만 그렇지가 않다.
-		//im이 구현하고 있는 Inter_Menu3이라는 인터페이스가
-		//Inter_Menu1과 Inter_Menu2에게서 상속받은 것이므로.
-
-		//하지만 사용 범위가 변환된 각 인터페이스 내에 정의된 메서드들로 
-		//국한됨을 기억하자.
-
-		System.out.println(im.jajang());
-
-		//im1객체에서는 jjambbong()과 jajang()만 호출할 수 있다.
+		
+		Menu1 im1 = k;
+		Menu2 im2 = k;
+		Menu3 im3 = k;
+		
+		//타입 변환된 각 인터페이스 내에 정의된 메서드들로 국한된다.
+		
+		//im1 객체에서는 jjambbong()과 jajang()만 호출할 수 있다.
+		System.out.println(im1.jajang());
 		System.out.println(im1.jjambbong());
-
-		//im2객체에서는 tangsuyuck()만 호출할 수 있다.
+		
+		//im2 객체에서는 tangsuyuck()만 호출할 수 있다.
 		System.out.println(im2.tangsuyuck());
-
-		//im3객체에서는  boggembab(), jjambbong(), 
-		//	jajang(), tangsuyuck()전부 호출 가능
+		
+		//im3객체에서는 boggembab()만 호출할 수 있다.
 		System.out.println(im3.boggembab());
+
 	}
+
 }
 ```
 ### Try – Catch(예외처리)
@@ -953,12 +1051,12 @@ public class Ex2_TryCatch {
 			System.out.println("0으로 나눌 수 없습니다.");
 
 		} catch ( ArrayIndexOutOfBoundsException e) {
-			System.out.println(“존재하지 않는 index로의 접근입니다.”);
+			System.out.println("존재하지 않는 index로의 접근입니다.");
 		}finally {
 			//try영역에서의 예외 발생 여부와 관계 없이
 			//마지막에 반드시 호출되는 영역
 예를들면 c드라이브에 파일을 갖고 오고 싶어요 a.txt를 가져오고 싶은데 파일이 없으면 오류가 나요.
-			System.out.println(“finally”);
+			System.out.println("finally");
 		}
 		System.out.println(res);
 	}
@@ -1012,9 +1110,9 @@ public class Try_Main {
 		try {
 		int n = sc.nextInt();
 		//오류가 발생하면 출력문을 실행하지 않고 catch로 넘어간다.
-		System.out.println(“입력받은 수: ” + n);
+		System.out.println("입력받은 수: " + n);
 		} catch (Exception e) {
-			System.out.println(“정수만 입력 가능함");
+			System.out.println("정수만 입력 가능함");
 		} 
 			
 	}//main
@@ -1034,13 +1132,13 @@ public class Ex4_TryCatch {
 		
 		System.out.print("정수입력 : ");
 		Scanner sc= new Scanner(System.in);
-		String str = “”;
+		String str = "";
 		
 		try {
 			int n = sc.nextInt();
 			str = sc.next();
 			int num = Integer.parseInt(str);
-			System.out.println(“결과 : ” + num);
+			System.out.println("결과 : " + num);
 		} catch (Exception e) {
 			String name = sc.nextLine();
 			System.out.println(str + "은(는) 정수가 아닙니다.");
@@ -1208,7 +1306,7 @@ public class ThreadMain {
 		t.start();
 		
 		for(int I = 0; i< 10; I++) {
-			System.out.println(“메인함수 실행중” + I);
+			System.out.println("메인함수 실행중" + I);
 		}
 	}
 }
@@ -1224,9 +1322,9 @@ public static void main(String [] args) {
 	ThreadName tn = new ThreadName();
 	tn.start();
 
-	System.out.println(“현재실행되고있는스레드의이름: Thread.currentThread().getName());
-	System.out.println(“현재실행되고있는스레드의상태: Thread.currentThread().getState());
-	System.out.println(“현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
+	System.out.println("현재실행되고있는스레드의이름: Thread.currentThread().getName());
+	System.out.println("현재실행되고있는스레드의상태: Thread.currentThread().getState());
+	System.out.println("현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
 }
 ```
 
@@ -1236,10 +1334,10 @@ public static void main(String [] args) {
 class ThreadName extends Thread {
 	@Override	
 	public void run() {
-		this.setName(“Thread3”);
-		System.out.println(“현재실행되고있는스레드의이름: Thread.currentThread().getName());
-	System.out.println(“현재실행되고있는스레드의상태: Thread.currentThread().getState());
-	System.out.println(“현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
+		this.setName("Thread3");
+		System.out.println("현재실행되고있는스레드의이름: Thread.currentThread().getName());
+	System.out.println("현재실행되고있는스레드의상태: Thread.currentThread().getState());
+	System.out.println("현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
 	}
 }
 ```
@@ -1266,7 +1364,7 @@ Dead : run()메서드의 실행을 모두 완료하게 되면 스레드는 Dead�
 ```java
 public class SleepThread extends Thread{
 	public void run() {
-		System.out.println(“카운트다운 5초”);
+		System.out.println("카운트다운 5초");
 		for(int I = 5; i>=0; I--) {
 			if(i!=0) {
 				try{
@@ -1276,7 +1374,7 @@ public class SleepThread extends Thread{
 				}//catch
 			}//if
 		}//for
-		System.out.println(“종료!”);
+		System.out.println("종료!");
 	}
 }
 ```
@@ -1297,7 +1395,7 @@ public class SleepMain{
 public class YieldTest1 implements Runnable{
 	public void run() {
 		for(int I = 0; i<30; I++) {
-			System.out.println(“★”);
+			System.out.println("★");
 			Thread.yield();
 		}
 	}
@@ -1308,7 +1406,7 @@ public class YieldTest1 implements Runnable{
 public class YieldTest2 implements Runnable{
 	public void run() {
 		for(int I = 0; i<30; I++) {
-			System.out.println(“☆”);
+			System.out.println("☆");
 		}
 	}
 }
@@ -1335,10 +1433,10 @@ public class YieldMain{
 public class JoinTest1 implements Runnable{
 	public void run() {
 		for(int I = 0; i<10; I++) {
-			System.out.println(“t1:” + i);
+			System.out.println("t1:" + i);
 			
 		}
-		System.out.println(“<<t1완료>>”);
+		System.out.println("<<t1완료>>");
 	}
 }
 
@@ -1347,9 +1445,9 @@ public class JoinTest1 implements Runnable{
 public class JoinTest2 implements Runnable{
 	public void run() {
 		for(int I = 0; i<10; I++) {
-			System.out.println(“t2:” + i);
+			System.out.println("t2:" + i);
 		}
-		System.out.println(“<<t2완료>>”);
+		System.out.println("<<t2완료>>");
 	}
 }
 ```
@@ -1375,7 +1473,7 @@ public class JoinMain{
 
 		}
 		for(int I = 0; i<10; I++) {
-			System.out.println(“메인스레드:” +i);
+			System.out.println("메인스레드:" +i);
 		}
 
 	}
@@ -1447,7 +1545,7 @@ public class DaemonMain implements Runnable{
 문제 : 
 스캐너를 이용하여 키보드에서 숫자를 입력받고
 스레드에서 입력받은 숫자가 1씩 감소하다가 0이 되었을 때
-“종료”라는 메시지와 함께 스레드를 빠져나오도록 만들어보자.
+"종료"라는 메시지와 함께 스레드를 빠져나오도록 만들어보자.
 
 public class ThreadCount implements Runnable{
 
@@ -1577,7 +1675,7 @@ QuizThread qt = new QuizThread();
 
 
 단, 사용자가 문제의 정답으로 정수 이외의 문자를 입력했을 경우에
-“정답은 정수로 입력하세요”라는 문장이 출력되도록 한다.
+"정답은 정수로 입력하세요"라는 문장이 출력되도록 한다.
 
 ---------실행 결과----------- 
 
@@ -1743,7 +1841,7 @@ public class SyncMain {
 	public static void main(String[] args) {
 		SynchronizedEx atm = new SynchronizedEx();
 		Thread mom = new Thread(atm, "엄마");
-		//Thread.currentThread().getName();이 “엄마”가 된다.
+		//Thread.currentThread().getName();이 "엄마"가 된다.
 
 		Thread son = new Thread(atm, "아들");
 		
