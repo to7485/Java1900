@@ -404,6 +404,75 @@ public class ComMain {
     -  A instanceof B : A 객체가 생성될 때 B 타입으로 생성되었는지 확인하는 연산자
     -  맞으면 true, 아니면 false를 반환하며 만약 null을 가리키고 있으면 false를 반환한다.
 
+## FarmTest클래스
+```java
+package test;
+
+class Animal{}
+class Pig extends Animal{}
+class Cow extends Animal{}
+
+class Farm{
+	public void sound(Animal animal) {
+		if(animal instanceof Pig) {
+			System.out.println("꿀꿀");
+		} else {
+			System.out.println("음메");
+		}
+	}
+}
+
+
+public class FarmTest {
+	public static void main(String[] args) {
+		Farm f = new Farm();
+		Pig p = new Pig();
+		Cow c = new Cow();
+		f.sound(p);
+		f.sound(c);
+	}
+}
+```
+
+## 오버라이딩으로 해결하기
+- instanceof 연산자를 사용하지 않고도, 오버라이딩을 사용해 같은 문제를 해결할 수 있다.
+```java
+package test;
+
+class Animal{
+	public void cry() {};
+}
+class Pig extends Animal{
+	@Override
+	public void cry() {
+		System.out.println("꿀꿀");
+	}
+}
+class Cow extends Animal{
+	@Override
+	public void cry() {
+		System.out.println("꿀꿀");
+	}
+}
+
+class Farm{
+	public void sound(Animal animal) {
+		animal.cry();
+	}
+}
+
+
+public class FarmTest {
+	public static void main(String[] args) {
+		Farm f = new Farm();
+		Pig p = new Pig();
+		Cow c = new Cow();
+		f.sound(p);
+		f.sound(c);
+	}
+}
+```
+
 ### 추상 메서드와 추상 클래스
 
 추상메서드의 구성 : [접근제한] abstract [반환형] [메서드명](); //{ }없이 ;으로 마무리됨<br>
