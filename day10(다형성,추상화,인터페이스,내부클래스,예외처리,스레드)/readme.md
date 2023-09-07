@@ -987,6 +987,89 @@ public class KitchenMain {
 
 }
 ```
+
+# 내부 클래스
+- 내부 클래스는 클래스 안에 만들어진 또 다른 클래스로 중첩 클래스라고도 부른다.
+- 클래스에 다른 클래스를 선언하는 이유는 두 개의 클래스가 서로 긴밀한 관계를 맺고 있기 때문이다.
+
+## 내부 클래스의 장점
+- 두 클래스 멤버들 간에 손쉽게 접근할 수 있다.
+- 불필요한 클래스를 감춰서 코드의 복잡성을 줄일 수 있다.
+
+```java
+public class OuterClass{ //외부 클래스
+
+	class InnerClass{ //내부 클래스
+
+	}
+}
+```
+
+## 내부 클래스의 종류
+|메서드|설명|
+|-----|-----|
+|인스턴스 클래스|외부 클래스의 멤버 변수와 같은 위치에 선언<br>주로 외부 클래스의 멤버 변수와 관련된 작업에 사용될 목적으로 선언|
+|정적 클래스|외부 클래스의 클래스 변수와 같이 static키워드 부여|
+|지역 클래스|외부 클래스의 메서드 내부에서 선언하여 사용<br>메서드 영역에서 선언되기 때문에 메서드 내부에서만 사용 가능|
+
+## 인스턴스 클래스
+- 인스턴스 클래스는 외부 클래스 내부에서 생성하고, 선언되어 사용하는 클래스를 의미한다.
+- 인스턴스 변수(필드)와 같은 위치에 선언하며, 외부 클래스의 인스턴스 멤버처럼 다루어진다.
+- 주로 외부클래스의 멤버들과  관련된 작업에 사용될 목적으로 선언된다.
+
+```java
+public class Outer{
+	private String name; //필드
+
+	//인스턴스 클래스
+	public class Inner{
+		private String name;
+	}
+
+}
+```
+- 내부 클래스도 외부 클래스 안에 생성되는 것 외에는 별도의 클래스이기 때문에, 파일이 컴파일되면 별도로 생성된다.
+
+## 인스턴스 클래스의 객체화
+- 인스턴스 클래스는 기본적인 내부 클래스이다.
+- 외부 클래스 안에 생성되기 때문에, 클래스를 사용하려면 외부 클래스객체가 생성된 상태에서 객체 생성을 할 수 있다.
+```java
+Outer outer = new Outer(); //외부 클래스 객체 생성
+Outer.Inner in = Outer.new Inner(); //외부 클래스를 이용해 내부 클래스 객체 생성
+```
+
+## CalculatorExample클래스
+```java
+package test3;
+
+class Calculator{
+	private int val1;
+	private int val2;
+	
+	public Calculator(int val1, int val2) {
+		this.val1 = val1;
+		this.val2 = val2;
+	}
+	
+	public class Calc{
+		public int add() {
+			return val1 + val2;
+		}
+	}
+}
+
+
+public class CalculatorExample {
+	public static void main(String[] args) {
+		Calculator cal = new Calculator(10, 11);
+		Calculator.Calc c = cal.new Calc();
+		System.out.println("합 : " + c.add());
+	}
+}
+```
+- 하나의 소스파일에 둘 이상의 public class가 존재하면 안된다.
+- 각 클래스를 별도의 소스파일에 나눠서 저장하던가 아니면 둘 중 한 클래스에만 public을 붙혀야 한다.
+ ---------------------------------------------------------------------------------------------------------------------------
 ### Try – Catch(예외처리)
 자바에서 프로그램이 실행하는 도중에 예외(에러)가 발생하면 그 시점에서 프로그램이 강제적으로 종료된다.<br>
 이것은 올바른 판단이지만, 때로는 예상할 수 있는 가벼운 오류가 있거나, 예외가 발생했을때도 프로그램을 종료하지 않고 이후의 작업을 진행해야 할 때가 있다.<br>
