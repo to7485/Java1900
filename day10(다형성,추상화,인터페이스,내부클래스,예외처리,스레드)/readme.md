@@ -1069,6 +1069,301 @@ public class CalculatorExample {
 ```
 - 하나의 소스파일에 둘 이상의 public class가 존재하면 안된다.
 - 각 클래스를 별도의 소스파일에 나눠서 저장하던가 아니면 둘 중 한 클래스에만 public을 붙혀야 한다.
+
+## 정적 내부 클래스(static class)
+- 클래스 안에 정적 변수를 선언할 수 있는 것처럼 클래스도 정적 클래스를 만들 수 있다.
+- 필드(멤버)와 마찬가지로 static키워드를 사용해 클래스를 선언한 후 정적 내부 클래스를 생성한다.
+- 주로 외부 클래스의 static메서드에서 사용될 목적으로 만든다.
+
+```java
+public class Outer{
+	private String name; -> 필드
+
+	public static class Inner{
+		private String name;
+	}
+}
+```
+- 외부 클래스의 필드 또는 메서드를 정적 내부 클래스 안에서는 사용할 수 없다.
+```java
+public class Outer{
+	private int val1; //필드
+
+	public static class Inner{
+		public void add(){
+			int result = val1 + 10; -> 에러
+		}
+		
+	}
+}
+```
+- 정적 내부 클래스는 정적 변수 또는 정적 메서드를 호출하는 것은 가능하다.
+```java
+public class Outer{
+	private int val1; //필드
+	private static int cnt = 1; //클래스 변수
+
+	public static class Inner{
+		public void displayOuterInfo(){
+			System.out.println(val); -> 에러
+			System.out.println(cnt);
+		}
+		
+	}
+}
+```
+
+## 정적 내부 클래스의 객체 생성
+- 외부 클래스의 객체를 생성하지 않아도 선언할 수 있다.
+```java
+Outer.Inner in = new Outer.Inner();
+```
+
+## StaticClassExam클래스
+```java
+package test3;
+
+class PrintOut{
+	public static class Out{
+		public void println(String str) {
+			System.out.println(str);
+		}
+	}
+}
+
+public class StaticClassExample {
+	public static void main(String[] args) {
+		String str = "정적 내부 클래스 테스트";
+		PrintOut.Out out = new PrintOut.Out();
+		out.println(str);
+	}
+}
+```
+
+## 지역클래스(local class)
+- 지역 클래스는 외부 클래스의 메서드 내에서 선언되어 사용하는 클래스이다.
+- 메서드 내에서 선언되기 때문에 해당 클래스는 메서드 내에서만 사용할 수 있다.
+- 메서드의 실행이 끝나면 해당 클래스도 사용이 종료된다.
+```java
+public class LocalClass{
+	public void print(){
+		///////////////////
+		class A{
+				지역 클래스 선언
+		}
+
+		A a = new A();	메서드 내에서 사용
+		//////////////////
+
+	}
+
+}
+```
+## LocalClassExample클래스
+```java
+package test3;
+
+public class LocalClassExample {
+	private int speed = 10;
+	
+	public void getUnit(String unitName) {
+		
+		class Unit{
+			public void move() {
+				System.out.println(unitName + "이 " + speed + " 속도로 이동합니다.");
+			}
+		}
+		
+		Unit unit = new Unit();
+		unit.move();
+	}
+	
+	public static void main(String[] args) {
+		LocalClassExample local = new LocalClassExample();
+		local.getUnit("마린");
+	}
+}
+```
+
+## 내부 클래스의 접근 제한
+- 내부 클래스도 클래스이기 때문에 접근 제한자를 붙여서 사용할 수 있다.
+
+## Permit클래스
+```java
+package test3;
+
+public class Permit {
+	private class InClass{
+		public void print() {
+			System.out.println("접근을 private로 제한합니다.");
+		}
+	}
+	
+	public void getInClass() {
+		InClass inClass = new InClass();
+		inClass.print();
+	}
+}
+```
+
+## PermitMain클래스
+```java
+package test3;
+
+public class PermitMain {
+
+	public static void main(String[] args) {
+		Permit permit = new Permit();
+		
+		permit.getInClass();
+
+	}
+}
+```
+
+## 지역 클래스의 접근 제한
+- 지역 클래스는 메서드 내에서 선언되어 사용한다.
+- 보통 메서드가 종료되면 클래스도 함께 종료되지만 메서드와 실행되는 위치가 다르기 때문에 종료되지 않고 남아있을 수도 있다.
+- 그래서 지역 클래스에서 메서드 내의 변수를 사용할 때는 변수를 복사해 사용한다.
+- 이러한 이유로 지역 클래스에서 메서드의 변수를 사용할 때 해당 변수가 변경되면 오류가 발생한다.
+
+## LoacalClassExample클래스 코드 추가하기
+```java
+package test3;
+
+public class LocalClassExample {
+	private int speed = 10;
+	
+	public void getUnit(String unitName) {
+		unitName = unitName + " 님";
+		
+		class Unit{
+			public void move() {
+				//unitName에서 에러 발생
+				System.out.println(unitName + "이 " + speed + " 속도로 이동합니다.");
+			}
+		}
+		
+		Unit unit = new Unit();
+		unit.move();
+	}
+	
+	public static void main(String[] args) {
+		LocalClassExample local = new LocalClassExample();
+		local.getUnit("마린");
+	}
+}
+
+```
+- 자바 7버전까지는 지역 클래스에서 메서드의 변수를 사용하려면 final키워드를 붙여서 사용하도록 했으나
+- 자바 8버전부터는 해당 변수를 변경하지 않는다는 조건하에 effective final이라는 기능이 추가되어 키워드를 사용하지 않아도 final변수로 인정된다.
+
+## 익명클래스(anonymous class)
+- 다른 내부 클래스와는 달리 이름이 없는 클래스를 의미한다.
+- 익명 클래스는 클래스의 선언과 객체의 생성을 동시에 하므로 한 번만 사용할 수 있다.
+- 오직 하나의 객체만을 생성할 수 있는 일회용 클래스이다.
+- 따라서 생성자를 선언할 수도 없으며, 둘 이상의 인터페이스를 구현할 수도 없다.
+
+## 보통의 상속관계 처리
+- Person클래스
+```java
+package test3;
+
+public class Person {
+	public void mySelf() {
+		System.out.println("나는 인간입니다.");
+	}
+}
+```
+- Student클래스
+```java
+package test3;
+
+public class Student extends Person{
+	@Override
+	public void mySelf() {
+		System.out.println("I'm child");
+	}
+}
+```
+- PersonMain
+```java
+package test3;
+
+public class PersonMain {
+	public static void main(String[] args) {
+		Student s = new Student();
+		s.mySelf();
+	}
+}
+```
+- Person클래스를 확장하기 위해 자식 클래스를 만들어서 사용한다.
+- 그런데 만약 Person을 상속받아 처리해야 하는 클래스가 또 필요하지만 한번만 사용할 거라면 굳이 상속할 필요가 없다.
+
+```java
+package test3;
+
+public class PersonMain {
+	public static void main(String[] args) {
+		Student s = new Student();
+		s.mySelf();
+		
+		Person p2 = new Person() {
+			@Override
+			public void mySelf() {
+				System.out.println("저는 직장인입니다.");
+			}
+		};
+		
+		p2.mySelf();
+	}
+}
+```
+- 생성자 뒤에 코드 블록{}이 추가되고, 해당 클래스가 가진 메서드들을 override하여 구현하는 방법이다.
+- 해당 클래스 자체를 재정의하여 구현한다.
+- 구현된 문법 마지막에는 세미콜론(;)을 붙힌다.
+- 익명 클래스는 보통 인터페이스의 기능을 구현할 때 사용한다.
+- 인터페이스를 상속하여 하위 클래스를 통해 구현하는 것이 아니라 인터페이스를 익명 클래스로 선언하여 기능을 직접 구현한다.
+
+## AnonymousExample클래스
+```java
+package test;
+
+interface buttonClickListener{
+	public void click();
+}
+
+public class AnonymousExample {
+	
+	public class Button{
+		private buttonClickListener listener;
+		
+		public void setButtonListener(buttonClickListener listener) {
+			this.listener = listener;
+		}
+		
+		//버튼 클릭 기능
+		public void click() {
+			if(listener != null) {
+				this.listener.click();
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		AnonymousExample exam = new AnonymousExample();
+		AnonymousExample.Button button = exam.new Button();
+		
+		button.setButtonListener(new buttonClickListener() {
+			
+			@Override
+			public void click() {
+				System.out.println("버튼을 눌렀습니다.");
+			}
+		});
+	}
+}
+```
  ---------------------------------------------------------------------------------------------------------------------------
 ### Try – Catch(예외처리)
 자바에서 프로그램이 실행하는 도중에 예외(에러)가 발생하면 그 시점에서 프로그램이 강제적으로 종료된다.<br>
