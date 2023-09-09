@@ -403,10 +403,401 @@ public class Test {
 
 ```
 
+# 기본 API 클래스
+- 자바에서 제공하는 API는 프로그램 개발에 자주 사용되는 클래스 및 인터페이스의 모음을 말하며 라이브러리라고도 부릅니다.
+
+## java.lang 패키지
+- java.lang 패키지는 자바 프로그램의 기본적인 클래스를 담고 있는 패키지다.
+- 가령 우리가 Scanner를 사용하려 한다면 스캐너를 import해줘야 사용할 수 있다.
+- 그러나 System, String등과 같은 클래스는 따로 선언 없이 사용이 가능했다.
+
+|클래스|용도|
+|----|----|
+|Object|자바 클래스의 최상위 클래스로 사용|
+|System|시스템의 표준 입력/출력 장치로부터 데이터를 입력받거나 출력하기 위해 사용<br>자바 가상 기계를 종료할 때 사용|
+|String|문자열을 저장하고 여러 가지 정보를 얻을 때 사용|
+|StringBuffer/StringBuilder| 문자열을 저장하고 내부 문자열을 조작할 때 사용|
+|Math|수학 함수를 이용할 때 사용|
+
+## Object클래스
+- Object클래스는 자바의 최상위 클래스이다.
+- 자바에서 생성되는 모든 클래스는 생성될 때 상속을 하지 않아도 Object를 자동으로 상속받게 되어있다.
+- 따라서 클래스를 생성하면 Object가 가지고 있는 여러 메서드를 그대로 사용하거나 Override하여 사용할 수 있다.
+
+|메서드|설명|
+|----|----|
+|protected Object clone()|객체 자신을 복사한 후 반환|
+|boolean equals(Object obj)|다른 객체와 자신이 가진 실제 값을 비교|
+|int hashCode()|객체의 hashCode 값을 반환|
+|String toString()|객체 자신의 정보를 반환|
+
+## equals()메서드
+- 기본 자료형의 데이터들의 동등 비교를 위해서 '==' 비교 연산자를 사용한다.
+- 하지만 객체를 동등비교 할 경우, 해당 객체의 값을 비교하는 것이 아니라, 객체가 메모리에 있는 위치를 비교하게 된다.
+- 객체의 데이터를 비교할 때는 equals()메서드를 override하여 사용한다.
+
+### Ex1_equals
+```java
+package test;
+
+public class Test {
+
+	public static void main(String[] args) {
+		String str1 = "hello";
+		String str2 = "hello";
+		String str3 = new String("hello");
+		
+		//문자열 변수 비교
+		System.out.println("str1 vs str2 : " + (str1 == str2));
+		System.out.println("str2 vs str3 : " + (str2 == str3));
+		
+		//각 문자열 변수가 있는 위치의 값을 출력
+		//System.identityHashCode() : 객체의 고유한 hashcode를 리턴하는 메서드
+		//hashcode()는 다른 객체이지만 주소가 동일한 경우가 있을 수 있다.
+		System.out.println("str1 hashCode : " + System.identityHashCode(str1));
+		System.out.println("str2 hashCode : " + System.identityHashCode(str2));
+		System.out.println("str3 hashCode : " + System.identityHashCode(str3));
+	}
+}
+
+```
+
+### Ex2_equals
+```java
+package test;
+
+public class Test {
+
+	public static void main(String[] args) {
+		String str1 = "hello";
+		String str2 = "hello";
+		String str3 = new String("hello");
+		
+		//문자열 변수 비교
+		System.out.println("str1 vs str2 : " + (str1.equals(str3)));
+		System.out.println("str2 vs str3 : " + (str2.equals(str3)));
+	}
+}
+
+```
+
+## toString()메서드
+- toString()메서드는 객체의 문자 정보를 반환해주는 메서드이다.
+- print()문을 사용해 객체를 줄력할 경우, 해당 메서드가 자동으로 실행되어 객체의 정보를 반환해주고 출력이 된다.
+- 따라서 해당 메서드를 재정의해서 사용하면 원하는 객체의 정보를 쉽게 출력할 수 있다.
+
+```java
+Object obj = new Object();
+System.out.println(obj);
+```
+- Object객체를 만든 후에 출력문에 그대로 삽입하면 toString()메서드가 자동으로 실행된다.
+
+### Car클래스
+```java
+package test;
+
+public class Car {
+	private String carName;
+	private String company;
+
+	public Car(String carName, String company) {
+		this.carName = carName;
+		this.company = company;
+	}
+
+	@Override
+	public String toString() {
+		String str = "차량 이름 : " + this.carName + ", 제조사 : " + this.company;
+		return str;
+	}
+
+}
+```
+
+### CarMain
+```java
+package test;
+
+public class CarMain {
+	public static void main(String[] args) {
+		Car car = new Car("소나타", "현대");
+		System.out.println(car);
+	}
+}
+```
+
+## String클래스
+- String클래스는 문자열을 처리하는 객체형 데이터 타입이다.
+- 일반적으로 기본 데이터 타입들과 마찬가지로 문자열 데이터를 담는 간단한 형식으로 사용하지만
+- 문자열츨 차리하기 위한 다양한 기능들을 가지고 있다.
+- String객체는 한 번 생성되면 그 값을 읽기만 하고 변경할 수 없다.
+
+|메서드|설명|
+|----|----|
+|int length()|문자열의 길이를 반환|
+|char charAt(int index)|문자열을 하나의 단어 단위로 출력<br>파라미터로는 추출할 문자의 위치를 받는다.|
+|int indexOf(String ch)<br>int indexOf(int ch)|문자열에 포함된 단어 또는 문자열의 위치를 앞에서부터 검색했을 때 일치하는 위치의 인덱스 값을 반환(없을 경우 -1을 반환)|
+|String replace(변경할 문자, 변경 문자)|단어 또는 문장에 있는 특정 단어를 변경|
+|String substring(int beginIndex)|문자열을 원하는 위치에서 자를 때 사용<br>입력된 시작 위치부터 문자열의 마지막까지 반환|
+|String substring(int beginIndex,int endIndex)|문자열을 입력된 시작 위치부터 마지막 위치 전까지의 값을 리턴|
+
+### Ex1_String
+```java
+indexOf, lastIndexOf, charAt, substring, split정도만 설명. api보면서 하면 더 좋겠지만
+융통성있게 하자
 
 
+String str = "Kim Mal Ddong";
+System.out.println("문자열 str의 길이 : " + str.length());
+		
+int index = str.indexOf('k');
+System.out.println("맨 처음 문자 k의 위치 : " + index);//대소문자 구별 함
+	
+index = str.indexOf("Mal");
+System.out.println("문자열 Mal의 위치 : " + index);//띄어쓰기 포함
+	
+index = str.lastIndexOf('n');
+System.out.println("마지막 문자 n의 위치 : " + index);
+		
+char c = str.charAt(4);
+System.out.println("추출한 문자 : " + c);
+		
+String str2 = str.substring(0, str.indexOf('M'));
+System.out.println("0번째부터 M앞자리까지 글자 잘라내기 : " + str2);
+System.out.println("잘라낸 str2의 길이 : " + str2.length());//길이는 띄어쓰기 포함 1부터 증가
+
+스트링은 아니지만 스트링으로 작성된 숫자형태의 문자열을 실제 정수로 바꿔주는 코드
+String number = "1";
+System.out.println(Integer.parseInt(number) + 10);
+
+int number = 1;
+String s1 = Integer.toString(number);
+System.out.println(s1);
+		
+String arr[] = str.split(" ");//띄어쓰기를 기준으로 분할
+
+for(int i = 0; i < arr.length; i++)
+	System.out.println("arr[" + i + "] : " + arr[i]);
+```
+
+### Ex2_String
+```java
+키보드에서 숫자와 특수문자를 제외한 알파벳을 무작위로 입력받는다.
+입력받은 문자열에 소문자 a가 몇 개 있는지를 판별하는 로직을 구현해보자.
+
+결과 : 
+입력 : asdfasdf
+a의 갯수 : 2
+
+풀이 : 
+public class Work_Ex1 {
+	public static void main(String[] args) {
+
+		String str;
+		int count = 0;
+		
+		System.out.print("입력 : ");
+		Scanner scan = new Scanner(System.in);
+		str = scan.next();
+		
+		for(int i = 0; i < str.length(); i++){
+			if(str.charAt(i) == 'a'){
+				count++;
+			}
+		}
+		
+		System.out.println("a의 갯수 : " + count);
+	}
+}
+-------------------------------------------------------------------------
+자바 강의 1주차(3) 문제(String) - 3
+회문수 구하기.
+회문수란 앞으로 읽어도 뒤로 읽어도 똑같이 읽히는 숫자를 말합니다. 예를들어 12121과 같은 숫자.
+
+키보드에서 세자리 이상의 숫자를 입력받은 후 해당 숫자가 회문수인지 아닌지를 판단하는 로직을 구현하자.
+
+단, String클래스의 메서드를 활용하는 문제이니만큼, 키보드에서 입력받는 숫자는 String변수에 담아서 활용할수 있도록 한다.
+
+풀이 :
+public class Work_Ex3 {
+	public static void main(String[] args) {
+		
+		String str = "";
+		String str2 = "";
+		
+		System.out.print("3자리 이상의 숫자를 입력하세요 : ");
+		Scanner scan = new Scanner(System.in);
+		str = scan.next();
+		
+		for(int i = str.length(); i > 0; i--){
+			str2 += str.charAt(i-1);
+		}
+		
+		if(str.equals(str2)){
+			System.out.println(str + "은 회문수 입니다.");
+		}else{
+			System.out.println(str + "은 회문수가 아닙니다.");
+		}			
+	}
+}
+-------------------------------------------------------------------------
+자바 강의 1주차(3) 문제(String) - 4
+아래와 같은 결과를 반영하는 로직을 구현해보자.
+
+결과)
+
+주민번호를 모두 입력하세요(-포함)
+예)911223-203345
+>> 991122-1122333
+당신은 1999년 11월 22일에 태어난 남자입니다.
 
 
+풀이)
+public class Work {
+	public static void main(String[] args) {
+		
+		System.out.println("주민번호를 모두 입력하세요(-포함)");
+		System.out.println("예)911223-203345");
+		System.out.print(">> ");
+		Scanner scan = new Scanner(System.in);
+		String id = scan.next();
+
+		if(id.trim().length() < 14 || id.trim().charAt(6) != '-'){
+
+			System.out.println("주민번호를 올바르게 입력하세요.");
+
+		}else{
+
+			String year = "";
+			String result = "";
+
+			year = id.substring(0, 2);
+
+			if(Integer.parseInt(year) <= 14){
+				result = "당신은 20";
+			}else{
+				result = "당신은 19";
+			}
+			result += year + "년 "
+					+ id.substring(2, 4) +"월 " 
+					+ id.substring(4, 6)
+					+ "일에 태어난 ";
+
+			if(id.charAt(7)%2 != 0){
+				result += "남자입니다.";
+			}else{
+				result += "여자입니다.";
+			}
+
+			System.out.println(result);
+
+		}//else
+
+	}//main
+}
+```
+
+## StringBuffer/StringBuilder
+- String클래스는 최초 지정된 문자열 이후에 값이 추가되면 내부적으로 새로운 메모리를 할당해 새롭게 문자열을 등록한다.
+- 문자열을 많이 사용할수록 메모리 사용이 늘어나 메모리가 낭비될 수 있다.
+- 이런 문제점을 해결하기 위해 가변 속성을 지닌 StringBuffer또는 StringBuilder클래스를 사용한다.
+- StringBuffer와 StringBuilder는 내부에 여유 공간을 두기 때문에 문자열을 합칠 때 메모리에 새롭게 생성하는 과정을 String보다 현저히 생략할 수 있다.
+- StringBuffer와 StringBuilder는 사용하는 기능에서는 차이가 없으나 StringBuffer의 경우 뒤에서 배울 스레드 환경에서 안정성 기능을 추가로 가지고 있다.
+- 스레드 환경이 아닌 경우에는 StringBuilder의 성능이 좋으므로 일반적인 프로그래밍에서는 StringBuilder를 사용하는 것을 권장합니다.
+
+|메서드|설명|
+|----|----|
+|append(String str)|기존 문자열 뒤에 더하여 반환|
+|delete(int start, int end)|시작 위치부터 끝 위치 전까지 삭제|
+|insert(int offset, String str)|시작 위치부터 문자열을 삽입|
+|reverse()|문자열을 반대로 출력|
+
+### Ex3_StringBuilder
+```java
+package test;
+
+public class Test {
+
+	public static void main(String[] args) {
+		StringBuilder str = new StringBuilder("Hello");
+		
+		//기존 문자열 뒤에 삽입
+		str.append(" World");
+		System.out.println(str);
+		System.out.println("문자열의 길이 : " + str.length());
+		
+		//문자열 삭제
+		str.delete(0,6);
+		System.out.println(str);
+		System.out.println("문자열의 길이 : " + str.length());
+		
+		//원하는 위치에 문자열 삽입
+		str.insert(0, "Hello");
+		System.out.println(str);
+		System.out.println("문자열의 길이 : " + str.length());
+		
+		//문자를 반대로 출력
+		str.reverse();
+		System.out.println(str);
+		
+	}
+}
+```
+
+## Math클래스
+- 수학에서 자주 사용하는 상수들과 함수들을 미리 구현해 놓은 클래스로 자바에서 수학 계산이 필요할 때 주로 사용한다
+- 객체를 선언하지 않고 바로 사용할 수 있도록 해당 클래스가 제공하는 모든 메서드는 모두 정적 메서드로 이루어져 있다.
+
+|메서드|설명|
+|----|----|
+|int abs(int a)<br>double abs(double a)|절대값 계산|
+|double ceil(double a)|올림 계산|
+|double floor(double a)|버림 계산|
+|double round(double a)|반올림 계산|
+|int max(int a, int b)<br>double max(double a, double b)|최대값 반환|
+|int min(int a, int b)<br>double min(double a, double b)|최소값 반환|
+|double random()|난수를 반환|
+
+### Ex1_Math
+```java
+package test;
+
+public class Test {
+
+	public static void main(String[] args) {
+		//올림
+		System.out.println("3.51 올림 : " + Math.ceil(3.51));
+		
+		//내림
+		System.out.println("13.61버림 : " + Math.floor(13.61));
+		
+		//반올림
+		System.out.println("12.8 반올림 : " + Math.round(12.8));
+		
+		//절대값 구하기
+		System.out.println("절대값 1 : " + Math.abs(-4.55));
+		System.out.println("절대값 2 : " + Math.abs(-50));
+		
+		//최대값 구하기
+		int maxValue = Math.max(30, 60);
+		
+		//최소값 구하기
+		int minValue = Math.min(40, 70);
+		
+		System.out.println("30, 60 최대값 : " + maxValue);
+		System.out.println("40, 70 최소값 : " + minValue);
+		
+	}
+}
+
+```
+
+## Wrapper클래스
+
+### Ex1_Wrapper
+```java
+
+```
 ## 제네릭스
 ### 제네릭스란?
 - 일반적인 코드를 작성하고 이 코드를 다양한 타입의 객체에 대하여 재사용하는 객체 지향 기법이다.
