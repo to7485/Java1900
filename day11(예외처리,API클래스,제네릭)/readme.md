@@ -180,6 +180,71 @@ public class Test {
 }
 ```
 
+### 예외처리 실습
+```java
+문제:
+키보드에서 정수를 입력받도록 하고, 정수 이외의 값이 입력되었다면
+‘정수만 입력가능’이라는 메시지를 출력하자.
+
+결과:
+
+//정수를 입력 받은 경우
+정수 : 100
+입력받은 수 : 100
+
+
+//정수를 입력 받지 않은 경우
+정수 : aaa
+정수만 입력가능
+
+
+풀이 :
+public class Try_Main {
+	public static void main(String[] args) {
+		
+		System.out.print("정수 : ");
+		Scanner sc = new Scanner(System.in);
+		
+		try {
+		int n = sc.nextInt();
+		//오류가 발생하면 출력문을 실행하지 않고 catch로 넘어간다.
+		System.out.println("입력받은 수: " + n);
+		} catch (Exception e) {
+			System.out.println("정수만 입력 가능함");
+		} 
+			
+	}//main
+}
+```
+
+```java
+문제:
+//정수 : 100
+//결과 : 100
+
+//정수 : aab
+//결과 : aab은(는) 정수가 아닙니다.
+
+public class Ex4_TryCatch {
+	public static void main(String[] args) {
+		
+		System.out.print("정수입력 : ");
+		Scanner sc= new Scanner(System.in);
+		String str = "";
+		
+		try {
+			int n = sc.nextInt();
+			str = sc.next();
+			int num = Integer.parseInt(str);
+			System.out.println("결과 : " + num);
+		} catch (Exception e) {
+			String name = sc.nextLine();
+			System.out.println(str + "은(는) 정수가 아닙니다.");
+		}		
+	}
+}
+```
+
 ## 다중 catch 사용하기
 - 프로그램을 구동할 때 하나의 예외만 발생한다면 처리하기는 어렵지 않다.
 - 하지만 try 구문 안에서 예외는 다양하게 발생할 수 있다.
