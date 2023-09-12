@@ -1214,8 +1214,3 @@ if(!map.containskey(id)) {
       }
 }
 ```
-### ArrayList
-
-LinkedList는 C언어에서 넘어온 개념이고 ArrayList는 이를 보완해서 나온 개념이다.
-
-
