@@ -137,7 +137,7 @@ public class GenEx_Main {
 		System.out.println(v2.getValue()+10);
 
 		GenEx<Character> v3 = new GenEx<Character>();
-		v3.setValue(‘A’);
+		v3.setValue('A');
 		System.out.println(v3.getValue());
 
 		GenEx<Double> v4 = new GenEx<Double>();
@@ -395,12 +395,12 @@ ArrayList<Ex4_ArrayFriend> list = new ArrayList<Ex4_ArrayFriend>();
 Ex4_ArrayFriend f1 = new Ex4_ArrayFriend();
 f1.name = "홍";
 f1.age = 20;
-f1.bt = ‘A’;
+f1.bt = 'A';
 
 Ex4_ArrayFriend f2 = new Ex4_ArrayFriend();
 f1.name = "김";
 f1.age = 25;
-f1.bt = ‘B’;
+f1.bt = 'B';
 
 list.add(f1); //list의 0번방과 f1영역이 주소를 공유한다.
 list.add(f2);
@@ -1134,26 +1134,22 @@ class Bingo {
 public class MapEx1 {
 	public static void main(String[] args) {
 
+		HashMap<Integer , Character> map = new HashMap<Integer , Character>();
+		  map.put(1, 'A');	
+		  map.put(2, 'B');	
+		  map.put(3, 'C'); 
+		  // map에 저장되는 value는 중복될 수 있다.
+		  map.put(4, 'A');  Value값으로 key값을 찾는건 불가능 하다.
 
+		  //map의 key값은 중복될 수 없다.
+		  map.put(1, 'F'); //기존에 같은 이름을 가진 key가 있다면 value를 갱신한다.
 
-HashMap<Integer , Character> map = new HashMap<Integer , Character>();
-	map.put(1, ‘A’);	
-  map.put(2, ‘B’);	
-  map.put(3, ‘C’); 
-  // map에 저장되는 value는 중복될 수 있다.
-  map.put(4, ‘A’);  Value값으로 key값을 찾는건 불가능 하다.
+		  //key값을 통해 데이터(value)를 삭제하는 방법
+		  map.remove(3);
+		  System.out.println("map의 사이즈:"+map.size());//map은 .langth가 아닌 .size()를 사용System.out.println(map);  {1=A , 2=B}	
 
-  //map의 key값은 중복될 수 없다.
-  map.put(1, ‘F’); //기존에 같은 이름을 가진 key가 있다면 value를 갱신한다.
-
-  //key값을 통해 데이터(value)를 삭제하는 방법
-  map.remove(3);
-	System.out.println("map의 사이즈:"+map.size());//map은 .langth가 아닌 .size()를 사용System.out.println(map);  {1=A , 2=B}	
-
-
-
-  char res = map.get(1); //인덱스가 아닌 킷값으로 벨류를 찾는다.
-  System.out.println(res);		
+		  char res = map.get(1); //인덱스가 아닌 킷값으로 벨류를 찾는다.
+		  System.out.println(res);		
   }
 }
 ```
@@ -1162,8 +1158,8 @@ HashMap<Integer , Character> map = new HashMap<Integer , Character>();
 ```java
 HashMap<String, Float> map = new HashMap<String, Float>();
 	map.put("k1", 100.0f);
-  map.put("k2", 3.14f);
-  map.put("k3", 4.15f);
+	map.put("k2", 3.14f);
+	map.put("k3", 4.15f);
 
   알고있으면 도움이 되는 것들 boolean
 
@@ -1176,7 +1172,8 @@ if(map.containsValue(3.14f)) { 3.14라는 값을 가진 Value가 존재합니까
 }
 
 //3.14를 가져와보자
-float res = map.get("s2");	System.out.println("res : " + res);
+float res = map.get("s2");
+System.out.println("res : " + res);
 ```
 #### Ex3_Map 클래스 정의
 ```java
