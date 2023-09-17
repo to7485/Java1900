@@ -62,14 +62,116 @@ public class ThreadMain{
   }
 ```
 
+## ThreadTest클래스에 코드 수정하기
+```java
+public class MyThread extends Thread{
 
+	@Override
+	public void run() {
+		//프로세스의 독립적인 수행을 위한 영역
+		for (int i = 0; i < 10; i++) {
+			System.out.println("스레드 진행 중"+i);
+		}
+	}
+}
+```
 
+## RunnableTest클래스 코드 수정하기
+```java
+public class MyThread2 implements Runnable{
+	@Override
+	public void run() {
+		//프로세스의 독립적인 수행을 위한 영역
+		for (int i = 0; i < 10; i++) {
+			System.out.println("러너블 진행중"+i);
+		}
+	}
+}
+```
 
+## ThreadMain클래스에 코드 추가하기
+```java
+public class ThreadMain {
+	public static void main(String[] args) {
+		
+		MyThread t = new MyThread();
+		t.start();//run()메서드를 호출하는 메서드
+		//t.run();은 run()메서드를 독립적으로 수행하지 못한다.
+		//즉, 일반 메서드처럼 호출해버림.
+		//run()메서드의 내용을 별개로 수행하고 싶다면
+		//t.start()를 이용해야 함.
 
+		MyThread2 th2 = new MyThread();
+		Thread t = new Thread(th2);
+		t.start();
+		
+		for(int I = 0; i< 10; I++) {
+			System.out.println("메인함수 실행중" + I);
+		}
+	}
+}
+```
 
+## 익명클래스를 람다식으로 표현하기
+- Runnable인터페이스를 상속해 구현하지 않고, 익명클래스로 만들어서 사용한다.
+```java
+package test;
 
+public class Test {
+	public static void main(String[] args) {
+		//Runnable 인터페이스를 익명 객체로 처리
+		Runnable white = () -> {
+			while(true) {
+				System.out.println("백기 올");
+			}
+		};
+		
+		Thread whiteFlag = new Thread(white);
+		whiteFlag.start();
+		
+	}
+}
+```
 
+## 스레드의 이름,상태,순위
 
+## ThreadName 클래스 생성
+```java
+public class ThreadName extends Thread {
+	@Override	
+	public void run() {
+		this.setName("Thread3");
+		System.out.println("현재실행되고있는스레드의이름: Thread.currentThread().getName());
+	System.out.println("현재실행되고있는스레드의상태: Thread.currentThread().getState());
+	System.out.println("현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
+	}
+}
+```
+
+## MainThread클래스 생성
+```java
+public static void main(String [] args) {
+
+	ThreadName tn = new ThreadName();
+	tn.start();
+
+	System.out.println("현재실행되고있는스레드의이름: Thread.currentThread().getName());
+	System.out.println("현재실행되고있는스레드의상태: Thread.currentThread().getState());
+	System.out.println("현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
+}
+```
+
+## 스레드 상태
+- 스레드는 생성하고 실행, 종료되기까지 다양한 상태를 가진다.
+- 각 스레드의 상태는 스레드 클래스에 정의되어 있으며, Thread.State 타입으로 알 수 있다.
+- 스레드 상태에 따라 6개의 타입으로 분류하고 있다.
+
+|상태|상수|설명|
+|---|----|---|
+|생성|NEW|스레드 객체가 생성되었지만 아직 start()메서드가 호출되지 않은 상태|
+|대기|RUNNABLE|실행 대기 또는 실행 상태로 언제든지 갈 수 있는 상태|
+|일시정지|WATING<br>TIMED_WATING<br>BLOCKED|다른 스레드가 종료될 때까지 대기하는 상태<br>주어진 시간동안 대기하는 상태<br>락이 풀릴 때까지 대기하는 상태|
+|종료|TERMINATED|수행을 종료한 상태|
 
 
 
