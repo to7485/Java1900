@@ -1370,42 +1370,7 @@ public class AnonymousExample {
 변수를 사용자가 지정한 이름으로 0부터 순차적으로 증가시켜준다.<br>
 
 
-#### EnumMain클래스 정의
-```java
-public class EnumMain{
 
-	public enum Item{
-		Start, Pause, Exit
-	}
-
-	public static void main(String[] args) {
-
-		while(true){
-			System.out.println("0 : 게임시작");
-			System.out.println("1 : 일시정지");
-			System.out.println("2 : 게임종료");
-
-			Scanner scan = new Scanner(System.in);
-			int n = scan.nextInt();
-
-			Item start = Item.Start;
-			Item exit = Item.Exit;
-			Item pause = Item.Pause;
-
-			if(n == start.ordinal())
-				System.out.println("게임이 시작됨");
-
-			else if(n == pause.ordinal())
-				System.out.println("게임이 일시정지됨");
-
-			else{
-				System.out.println("게임종료");
-				return;
-			}
-		}	
-	}
-}
-```
 --------------------------------------------------------------------예제
 ### 스레드
 스레드는 독립적인 실행단위입니다.<br>
