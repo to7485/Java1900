@@ -225,7 +225,104 @@ public class SleepMain{
 - wait()메서드는 스레드를 대기시키고, notify()메서드는 대기중인 스레드를 다시 동작시킬 때 사용한다.
 
 
+### Storage클래스
+```java
+package test;
 
+public class Storage {
+	private int stackCount = 10;
+	public synchronized void addStack(int stackCount) {
+		this.stackCount += stackCount;
+		if(this.stackCount >= 10) {
+			System.out.println("== 스레드 깨우기 ===");
+			notify();
+		}
+	}
+	
+	public synchronized void popStack(int leaveCount) {
+		try {
+			if(leaveCount > this.stackCount) {
+				this.stackCount = 0;
+			} else {
+				this.stackCount -= leaveCount;
+			}
+			
+			if(this.stackCount == 0) {
+				System.out.println("== 짐 없음 대기 ===");
+				wait();
+				System.out.println("==짐 없음 대기완료===");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public int getStackCount() {
+		return this.stackCount;
+	}
+}
+```
+
+### ThreadWaitExample클래스
+```java
+package test;
+
+class AddStackThread extends Thread{
+	private Storage stroage;
+	public AddStackThread(Storage storage) {
+		this.stroage = storage;
+	}
+	
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				Thread.sleep(1000);
+				if(this.stroage.getStackCount() == 0) {
+					System.out.println("짐 10개 추기");
+					this.stroage.addStack(10);
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+}
+
+class PopStackThread extends Thread{
+	private Storage storage;
+	public PopStackThread(Storage storage) {
+		this.storage = storage;
+	}
+	
+	@Override
+	public void run() {
+		try {
+			while(true) {
+				Thread.sleep(1000);
+				System.out.println("짐 5개 나르기");
+				this.storage.popStack(5);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+}
+
+
+public class ThreadWaitExample {
+	public static void main(String[] args) {
+		Storage s = new Storage();
+		AddStackThread add = new AddStackThread(s);
+		PopStackThread pop = new PopStackThread(s);
+		
+		add.start();
+		pop.start();
+	}
+	
+	
+}
+```
 
 
 
