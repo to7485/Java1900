@@ -173,6 +173,56 @@ public static void main(String [] args) {
 |일시정지|WATING<br>TIMED_WATING<br>BLOCKED|다른 스레드가 종료될 때까지 대기하는 상태<br>주어진 시간동안 대기하는 상태<br>락이 풀릴 때까지 대기하는 상태|
 |종료|TERMINATED|수행을 종료한 상태|
 
+## 1. New와 RUNNABLE,TERMINATED
+- 처음 스레드가 생성되면 스레드는 NEW 상태가 된다.
+- 생성 이후에 start() 메서드를 실행하면 스레드는 RUNNBLE 상태로 변하고
+- 시작 이후에 스레드가 조욜되면 TERMINATED상태가 된다.
+
+## 2.WAIT
+- 스레드 WAIT 상태는 필요에 의해서 스레드를 잠시 멈춤 상태로 두는 것
+- 스레드를 잠시 멈춤 상토래 만들 때는 일정 시간을 지정하거나, 멈춤 상태의 락이 풀릴 때까지 대기하도록 만들 수 있다.
+
+## 상태변화 메서드
+- 스레드의 상태를 변화시키는 다양한 메서드에 대해서 알아보자
+
+## sleep()메서드
+- sleep(int mils)메서드는 주어진 시간 동안 스레드를 정지시키는 메서드이다.
+- 해당 기능은 모든 스레드를 대기시켜주며, 주어진 시간이 지나면 풀리게 된다.
+
+### SleepThread클래스 생성
+```java
+public class SleepThread extends Thread{
+	public void run() {
+		System.out.println("카운트다운 5초");
+		for(int I = 5; i>=0; I--) {
+			if(i!=0) {
+				try{
+					Thread.sleep(1000);//1000당 1초
+				} catch(Exception e) {
+
+				}//catch
+			}//if
+		}//for
+		System.out.println("종료!");
+	}
+}
+```
+### SleepMain 클래스 생성
+```java
+public class SleepMain{
+	public static void main(String[] args) {
+		SleepThread st = new SleepThread();
+		st.start();
+	}
+}
+```
+
+## wait()와 notify()
+- 여러 개의 스레드가 동시에 동작하다 보면, 하나의 스레드가 완료되어야 다음 스레드가 동작할 수 있는 경우가 있다.
+- 예를 들어 한쪽에서는 물건을 나르고, 다른 한쪽에서는 물건을 쌓는 스레드가 있다고 가정해보자.
+- 만약 쌓을 물건이 없다면 물건을 나르는 스레드는 할일이 없어진다.
+- 이때, 물건을 나르는 스레드를 잠시 중지시키고, 물건이 오면 다시 나르도록 할 수 있다.
+- wait()메서드는 스레드를 대기시키고, notify()메서드는 대기중인 스레드를 다시 동작시킬 때 사용한다.
 
 
 
