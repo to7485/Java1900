@@ -119,7 +119,7 @@ public class Calculator2 {
 	}
 }
 ```
-### Calculator2 클래스 생성하기
+### CalculatorImpl 클래스 생성하기
 ```java
 package calculator;
 
@@ -138,6 +138,8 @@ public class CalculatorImpl {
 ## 람다식과 외부변수의 관계
 - 람다식을 사용할 때 매개변수로 값을 전달하는 것 외에 외부에서 정의 된 지역변수를 사용하는 경우가 있다.
 - 람다식 내부에서 지역변수를 사용하려면 그 지역변수는 final로 선언되어야 한다.
+
+### Calculator2 클래스 생성
 ```java
 package calculator;
 
@@ -181,7 +183,7 @@ public class Calculator3 {
 ```
 
 
-#### MyFunction 람다식 인터페이스 생성하기
+### MyFunction 람다식 인터페이스 생성하기
 ```java
 package calculator;
 
@@ -191,7 +193,7 @@ public interface MyFunction {
 	void method(int num);
 }
 ```
-#### Calculator3 에 코드 추가하기
+### Calculator3 에 코드 추가하기
 ```java
 package calculator;
 
@@ -214,13 +216,12 @@ public class Calculator3 {
 }
 ```
 
-
 ### Calculrator4 클래스 만들기
 - 람다식을 메서드의 매개변수로 사용하기
 ```java
-package calculator;
+package test;
 
-public class Calculrator4 {
+public class Test {
 	public static void main(String[] args) {
 		MyCalculator calc = (num1,num2) -> num1 + num2;
 		int result = myCalc(calc);
@@ -231,10 +232,16 @@ public class Calculrator4 {
 		System.out.println(result2);
 	}
 	
+	//매개변수로 MyCalculator 객체를 필요로 한다.
 	static int myCalc(MyCalculator calc) {
+		
+		//인터페이스에 정의된 plus메서드를 calc객체를 통해 호출한다.
+		//이때 사용된 calc객체는 람다식으로 생성한 객체 또는 직접 메서드 호출시에 생성한
+		//객체일 수 있으며, 이를 통해 다양한 계산을 수행할 수 있다.
 		return calc.plus(1,2);
 	}
 }
+
 ```
 ### Calculrator5 클래스 만들기
 - 컬렉션 프레임워크와 함수형 인터페이스
@@ -316,7 +323,7 @@ public class Calculator6 {
 
 #### 참고) 타입문자 'T'는 'Type'을 'R'은 'Return Type'을 의미한다.
 
-### 매개변수가 두 개인 함수형 인터페이스
+## 매개변수가 두 개인 함수형 인터페이스
 
 매개변수가 두 개인 함수형 인터페이스는 이름 앞에 접두사 'Bi'가 붙는다.
 
@@ -328,8 +335,6 @@ public class Calculator6 {
 
 - 참고) Supplier는 매개변수는 없고 반환값만 존재하는데, 매서드는 두 개의 값을 반환할 수 없으므로 BiSupplier가 없다.
 - 두 개 이상의 매개변수를 갖는 함수형 인터페이스가 필요하면 직접 만들어 써야 한다.
-
-ex2_function 패키지 생성
 
 ### Ex1_function 클래스 생성
 
@@ -352,101 +357,6 @@ public class Test {
 	}
 }
 ```
-### 컬렉션 프레임워크와 함수형 인터페이스
-
-- 컬렉션 프레임워크의 인터페이스에 다수의 디폴트 메서드가 추가 되었고 그 중 일부는 함수형 인터페이스를 사용한다.
-	
-|인터페이스|메서드|설명|
-|----|-----|-----|
-|Collection|boolean removeIf(Predicate<E> filter)|조건에 맞는 요소를 삭제|
-|List|void replaceAll(UnaryOperator<E> operator)|모든 요소를 반환하여 대체|
-|Iterable|void forEach(Consumer<T> action)|모든 요소를 변환하여 대체|
-|Map|V compute(K key, BiFunction<K,V,V> f)|지정된 키의 값에 작업 f를 수행|
-|Map|V computeIfAbsent(K key, Function(K,V) f)|키가 없으면 작업 f 수행 후 추가|
-|Map|V computeIfPresent(K key, BiFunction(K,V,V) f)|지정된 키가 있을 때 작업 f수행|
-|Map|V merge(K key, V value, BiFunction(V, V, V) f)|모든 요소에 병합작업 f를 수행|
-|Map|void forEach(BiConsumer<K,V> action)|모든 요소에 작업 action을 수행|
-|Map|void replaceAll(BiFunction(K,V,V) f)| 모든 요소에 치환작업 f를 수행|
-
-### Ex2_function 클래스 생성
-```java
-package test;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-public class Test {
-	public static void main(String[] args) {
-
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("id1","이름1");
-		map.put("id2","이름2");
-		map.put("id3","이름3");
-		map.put("id4","이름4");
-		map.put("id5","이름5");
-		
-		//compute() : Map의 value값을 업데이트할 때 사용합니다.
-		/*
-		map.compute("id1", (k,v)->{
-			return v+"**";
-		});	
-		
-		System.out.println("map.get(\"id1\") : "+map.get("id1"));
-		*/
-		map.forEach((key,value)->{
-			map.compute(key, (k,v)-> v+"**");
-		});
-		
-		map.forEach((key,value)->{
-			System.out.printf("key = %s, value = %s\n",key,value);
-		});
-		
-		//Map.Entry :  Map 인터페이스의 내부 인터페이스이다.
-		//Map에 저장되어 있는 key-value쌍을 다루기 위해 내부적으로 Entry 인터페이스를 정의해놓았다.
-		//Map인터페이스를 구현하는 클래스 에서는 Map.Entry 인터페이스도 함께 구현해야 한다.
-//		for(Map.Entry entry : map.entrySet()) {
-//			System.out.printf("key = %s, value = %s\n",entry.getKey(),entry.getValue());
-//		}
-	}
-}
-```
-### UnaryOperator와 BinaryOperator
-- Function의 변형이다
-- 매개변수의 타입과 반환타입의 타입이 모두 일치한다.
-- UnaryOperator와 BinaryOperator의 상위 인터페이스는 각각 Function, BiFunction이다.
-	
-|함수형 인터페이스|메서드|설명|
-|----|-----|-----|
-|UnaryOperator<T>|T apply(T t)|Function의 하위 인터페이스, Function과 달리 매개변수와 결과의 타입이 같다.|
-|BinaryOperator<T>|T apply(T t, T t)|BiFunction의 하위 인터페이스, BiFunction과 달리 매개변수와 결과 타입이 같다.|
-
-### Ex3_function 클래스 생성
-```java
-package test;
-
-import java.util.function.BinaryOperator;
-import java.util.function.UnaryOperator;
-
-public class Test {
-	public static void main(String[] args) {
-
-		int result = square(10,x -> x*x);
-		
-		int result2 = multi(10,20,(x,y) -> x*y);
-		
-	}
-	
-	public static int square(int num1,UnaryOperator<Integer> oper) {
-		return oper.apply(num1);//언박싱 발생
-	}
-	
-	public static int multi(int num1, int num2, BinaryOperator<Integer> oper) {
-		return oper.apply(num1, num2);
-	}
-}
-```
-https://docs.oracle.com/en/java/javase/19/docs/api/java.base/java/util/function/package-summary.html
 
 ## 람다식의 합성과 결합
 - Function의 합성과 Predicate의 결합
@@ -539,8 +449,9 @@ public class PredicateExam {
 	}
 }
 ```
+
 ## 메서드 참조
-- 람다식을 더욱 간결하게 표현할 수 있다.
+- 메서드 참조는 말 그대로 메서드를 참조해서 매개변수의 정보 및 리턴 타입을 알아내어, 람다식에서 불필요한 매개변수를 제거하는 것
 - 람다식이 하나의 메서드만 호출하는 경우에는 메서드 참조(method reference)라는 방법으로 람다식을 간결하게 할 수 있다.
 - 하나의 메서드만 호출하는 람다식은 **클래스이름::메서드이름** 또는 **참조변수::메서드이름**으로 바꿀 수 있다.
 
@@ -551,105 +462,79 @@ public class PredicateExam {
 Function<String, Integer> f = (String s) -> Integer.parseInt(s);
 Function<String, Integer> f = Integer::parseInt; // 메서드 참조
 ```
+
 ```java
 BiFunction<String, String, Boolean> f = (s1, s2) -> s1.equals(s2);
 BiFunction<String, String, Boolean> f = String::equals; // 메서드 참조
 ```
-### Ex5_function 클래스 만들기
+
+## 1. 정적 메서드 참조
+- 클래스명::정적메서드명
+```java
+(x,y)-> Math.max(x,y);
+```
+- 함수 형태를 보면 리턴값 자체가 또다른 Math 클래스의 메서드를 호출하는 것 뿐이고,
+- 람다 함수 매개변수 역시 그대로 max() 메서드의 매개변수로 들어가기 때문에 코드 중복이 발생한다.
+```java
+Math::max;
+```
+- 만약 Math:max 메서드 참조를 변수에 담고 싶다면 함수평 인터페이스인 IntBinaryOperator를 사용해야 한다.
+- 두 개의 int형 입력값을 받아 int값을 리턴하는 함수 applyAsInt(int,int)를 가지고 있기 때문이다.
 ```java
 package test;
 
-import java.util.function.BiPredicate;
+import java.util.function.IntBinaryOperator;
 
 public class Test {
 	public static void main(String[] args) {
+		IntBinaryOperator operator;
 		
-		//boolean result = isEqualString("abc", "abc", (s1,s2) -> s1.equals(s2));
-		boolean result = isEqualString("abc", "abc", String::equals);
-		System.out.println(result);	
+		operator = Math::max;
+		
+		operator.applyAsInt(100, 200);
 	}
-	
-	static boolean isEqualString(String s1, String s2, BiPredicate<String, String> predicate) {
-		return predicate.test(s1, s1);
-	}	
 }
-
 ```
 
-- 이미 생성된 객체의 메서드를 람다식에서 사용한 경우에는 클래스 이름 대신 그 객체의 참조변수를 적어야 한다.
+## 2. 인스턴스 메서드 참조
+- 객체명::메서드명
 
-```java
-MyClass Obj = new MyClass();
-Function<String, Boolean> f = (x) -> obj.equals(x); // 람다식
-Function<String, Boolean> f2 = obj::equals; // 메서드 참조
-```
-### 생성자의 메서드 참조
-```java
-Supplier<MyClass> s = () -> new MyClass(); // 람다식
-Supplier<MyClass> s = MyClass::new; // 메서드 참조
-```
-```java
-Function<Integer, MyClass> f = (i) -> new MyClass(i); // 람다식
-Function<Integer, MyClass> f2 = MyClass::new;  // 메서드 참조
-BiFunction<Integer, String, MyClass> bf = (i, s) -> new MyClass(i, s);
-BiFunction<Integer, String, MyClass> bf2 = MyClass::new;  // 메서드 참조
-```
-
-### Ex5_function 클래스 코드 추가하기
+### IAdd인터페이스 생성
 ```java
 package test;
 
-import java.util.function.BiPredicate;
-import java.util.function.Supplier;
-
-public class Test {
-	public static void main(String[] args) {
-		
-		//boolean result = isEqualString("abc", "abc", (s1,s2) -> s1.equals(s2));
-		boolean result = isEqualString("abc", "abc", String::equals);
-		System.out.println(result);
-		
-		//Object obj = getObject(()->new Object());
-		Object obj = getObject(Object::new);
-			
-	}
-	
-	static boolean isEqualString(String s1, String s2, BiPredicate<String, String> predicate) {
-		return predicate.test(s1, s1);
-	}
-	
-	static Object getObject(Supplier<Object> supplier) {
-		return supplier.get();
-	}
+@FunctionalInterface
+public interface IAdd {
+	int add(int x, int y);
 }
-
 ```
 
-```java
-Function<Integer, int[]> f = x -> new int[x];
-Function<Integer, int[]> f2 = int[]::new;
-```
-### Ex6_function 클래스 생성
+### MathUtils클래스 생성
 ```java
 package test;
 
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.function.Supplier;
+public class MathUtils {
+	public static int AddElement(int x, int y) {
+		return x + y;
+	}
+}
+```
+
+### MathMain클래스 생성
+```java
+package test;
 
 public class Test {
 	public static void main(String[] args) {
+		MathUtils mu = new MathUtils();
 		
-		//int[] nums = createArray(10, x -> new int[x]);
-		int[] nums = createArray(10, int[]::new);
-	}
-	
-	static int[] createArray(int x, Function<Integer, int[]> function) {
-		return function.apply(x);
+		IAdd addLamda = (x,y) -> MathUtils.AddElement(x, y);
+		System.out.println(addLamda.add(10, 20));
+		
+		IAdd addMethodRef = MathUtils::AddElement;
+		System.out.println(addLamda.add(20, 40));
+		
+		
 	}
 }
-
 ```
-
-
-
