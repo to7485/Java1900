@@ -1,25 +1,27 @@
-## IO(Input, Output)
-- IO는 입출력 스트림을 의미합니다.
-- 스트림이란, 데이터를 입출력하기 위한 방법.
-프로그램에서 파일을 읽어온다든지, 콘솔에서 키보드값을 얻어오는 등의 작업을 할 수 있습니다.
-자바 가상머신에서 콘솔로 값을 보낼땐 Output, 반대로 콘솔의 값을 JVM에서 읽을땐 Input
+# 파일 입출력
+## 자바 입출력과 스트림
+- 프로그램은 데이터를 외부에서 입력받아 처리하고 출력하는 구조로 되어 있습니다.
+- 프로그램으로 들어오는 모든 값을 Input이라고 한다.
+- 프로그램을 나가는 모든 값을 Output이라고 한다.
+- 자바에서는 입출력을 처리하기 위해 별도의  I/O패키지를 제공한다.
+- 데이터는 자바에서 처리할 수 있는 모든것을 의미한다.
+- 디스크상에 존재하는 데이터일 수도 있고, 키보드나 마우스와 같은 외부입력 장치에서 입력되는 데이터일 수도 있고,
+- 인터넷을 통해 전송되는 데이터일 수도 있다.
+- 자바가 디스크에 접근에 데이터를 주고받는 작업을 도와주는 통로를 '스트림(stream)'이라고 한다.
 
 ![image](https://user-images.githubusercontent.com/54658614/221475515-1bbfdce7-6880-413f-8023-3d5fbd43f2b7.png)
 
+## File클래스
+- 파일 또는 폴더에 대한 정보를 제공하는 클래스
+- 경로명, 파일 크기, 타입, 날짜 등의 속성 정보를 제공한다.
+- 파일 생성, 삭제, 이름 변경 등 파일 관리 작업을 지원하기 위한 메서드로 구성되어 있다.
 
-ex1_File 패키지 생성
- 
-#### Ex1_File 클래스 정의
+### Ex1_File 클래스 정의
 ```java
-test.txt 문서를 만들고 안녕하세요 라고 적은 뒤에 d:/에 가져다 놓은 뒤에 코드 작성
+test.txt 문서를 만들고 안녕하세요abc 라고 적은 뒤에 d:/에 가져다 놓은 뒤에 코드 작성
+
 public class Ex1_File {
 public static void main(String[] args) {
-
-//IO(Input,Output) : 입출력 스트림
-//스트림이란 데이터 입력을 입출력하기 위한 통로
-
-
-//JVM에서 콘솔로 값을 내보낼 때는 Output, 콘솔의 값을 JVM에서 읽어올 때는 Input
 
 우리가 늘 작업하던 경로로 들어와서 메모장을 만든다.web_14.lhj
 test.txt 
@@ -40,14 +42,14 @@ File f = new File(path);
 통로를 만들어 준다고 생각하면 된다. 앞으로 내가 만든 파일 이라는 클래스는 path까지 다이렉트로 접근하는 터널같은 것. 중간에 경로가 잘못 되지 않았는지까지도 판별해준다.
         
 //f.isFile() : 파일클래스가 접근한 최종 목적지가 파일형식일 경우 true	if(f.isFile()){// 생성된 객체가 파일일 경우 !f.isFile() 
-    System.out.println(f.length() + “byte”); 한글은 2byte, 영문 특수문자 1byte 
+    System.out.println(f.length() + "byte”); 한글은 2byte, 영문 특수문자 1byte 
 폴더의 용량도 가져올 수 있다. 파일이든 폴더든 나의 최종 목적지에 해당하는 용량을 가져올 수 있다.
   }
 }
 13이 안나온다면 띄어쓰기가 포함되어 있을 수 있다.
 ```
 
-#### Ex2_File 클래스 정의
+### Ex2_File 클래스 정의
 
 ```
 public class Ex2_File {	
@@ -67,9 +69,10 @@ public class Ex2_File {
   // 디렉토리 안에있는 하위 요소들의 이름을 모두 가져온다.
   String[] names = f.list(); 반환형 String[] //f경로의 하위 요소들을 names배열에 저장
 
-  왜 배열로 넘겨주느냐 list라고 하는 녀석은 (폴더경로 보여주며) 내가 접근한 경로에 하위 목록을 배열형태로 정렬을 해서 이름을 알파벳 순서대로 정렬까지 해놔요. 
+  list()메서드는 내가 접근한 경로에 하위 목록을 배열형태로 정렬을 해서 이름을 알파벳 순서대로 정렬까지 한다. 
 
-  직접 세보지 않고도 파일 클래스를 통해서 하위 요소들이 총 몇 개인지를 알아서 list라고 하는 메서드가 구해준다. 비어있는공간이 없도록 딱 맞는 공간에 맞게 크기를 제공한다.
+  직접 세보지 않고도 파일 클래스를 통해서 하위 요소들이 총 몇 개인지를 알아서 list라고 하는 메서드가 구해준다.
+  비어있는공간이 없도록 딱 맞는 공간에 맞게 크기를 제공한다.
 
   경로를 입력 받을수도 있어서 배열의 크기를 미리 만들어 놓을수가 없다.
 
@@ -83,18 +86,16 @@ for(String s : names) {
 }
 ```
 
-#### Ex3_File 클래스 정의
+### Ex3_File 클래스 정의
 
 ```java
 public class Ex3_File {	
 	public static void main(String[] args) {	
 
 String path = "D:/web14_lhj/aaa/bbb";//만들어질 폴더
-파일클래스가 하는 기능중에 어지간한건 다할 수 있는데
-단점은 폴더인지 파일인지 용량은 얼마인지 구분은 할 수 있는데 파일 일 경우에 열었을 때 속에 뭐라고 쓰여있는지 까지는 알 수 없다.
 
 File f1 = new File(path);
-aaa라고 하는 폴더가 물리적으로 존재하지 않는다. aaa가 없다....
+aaa라고 하는 폴더가 물리적으로 존재하지 않는다
 내가 최종 목적지 까지 가는 길에 혹시라도 길이 존재하지 않는 경로가 포함되어있지 않은지 판단할 수 있어요.
 
 //exists() : 파일 클래스가 path경로로 찾아가는 중
@@ -103,37 +104,61 @@ if(!f1.exists()){ //f.exists() == false
 System.out.println("폴더생성");
 f1.mkdirs();//폴더생성
 
-우리가 미리 만들어 놓은거 아니죠 코드를 통해서 자동으로 만들어준거다.
+코드를 통해서 목적지를 자동으로 만들어준거다.
 실제로 되게 많은 프로그램들이 이런 기능들을 가진 클래스를 거진 가지고 있다.
-예를들어 자바를 다운받았는데 자바 폴더 없으면 만들어라, 안에 버전에 맞는 폴더를 또 만들어라.
-이렇게 메모장으로 던져주면 아무도 설치를 하려 하지 않을 것이다.
 
 파일클래스는 특정 문서를 만드는 기능은 없다 클래스 파일은 폴더만드는거 까지만 가능하다.
-
 
     	}
    }
 }
 ```
+## 입출력 스트림의 종류
+- 자바의 기본적인 데이터 입출력은 java.io 패키지에서 제공한다.
+- java.io패키지에서는 파일 시스템의 정보를 얻기 위한 File클래스와 데이터 입출력을 위한 다양한 스트림 클래스를 제공한다.
+- 스트림의 종류를 크게 분류하면 전달 방식에 따라 바이트(byte)기반 스트림과 문자(char)기반 스트림으로 구분한다.
+- 바이트 기반의 스트림은 데이터를 컴퓨터의 기본 단위인 byte단위로 나누어 읽거나 쓰고,
+- 문자 기반 스트림은 텍스트 기반 문서를 다루기 위해 사용하는 스트림이다.
 
-### FileInputStream
+![image](https://github.com/to7485/Java1900/assets/54658614/ef011e69-53f8-4724-8984-6540d80bb661)
 
-ex2_fileInput 패키지 생성
+## 바이트(byte)기반 스트림
+- 컴퓨터의 모든 데이터는 바이트(byte)단위로 이루어져 있다.
+- 따라서 바이트 기반 스트림의 경우 모든 타입의 데이터를 읽고 쓰는 것이 가능하다.
+- 바이트 기반의 스트림은 바이트 입력 스트림과 바이트 출력 스트림이 있다.
 
-#### ex1_FileInputStream 클래스 생성
-- 클래스가 못하는 내용까지 읽는 stram이라고 하는애가 할 수 있다.
+## InputStream
+- 바이트 기반의 입력 스트림은 최상위 클래스로 InputStream객체가 제공된다.
+- 해당 객체를 상속해 다양한 입력 스트림들이 존재한다.
 
+![image](https://github.com/to7485/Java1900/assets/54658614/65ef0bee-cb84-493e-ad38-33ae480aa8ab)
+
+- 모두 InputStream을 상속하여 다양한 입력 스트림을 구현하고 있다.
+- 각자의 개발 목적에 맞게 성택하여 사용할 수 있다.
+- 예를 들어 파일을 읽어서 사용하고 싶다면 FileInputStream객체를 선언해 사용하면 된다.
+
+## InputStream의 주요 메서드
+|메서드|설명|
+|------|-----|
+|int read()|문자를 1byte씩 읽고 반환<br>더 이상 읽을 문자가 없으면 -1을 반환|
+|int read(byte[]b)|매개변수로 주어진 배열에 읽은 문자를 저장하고 실제로 읽은 수만큼 반환<br>더 이상 읽을 문자가 없으면 -1을 반환|
+|int read(byte[],int offset,int len)|매개변수로 주어진 배열에 정해진 범위만큼 읽어서 저장<br>시작 위치(offset), 길이(len)|
+|int available() | 스트림으로부터 읽어올 수 있는 데이터의 크기를 변환|
+|close() | 스트림 사용을 종료하고 자원을 반환|
+
+## FileInputStream
+- FileInputStream은 파일에서 바이트 단위로 자료를 읽어들일 때 사용하는 스트림이다.
+- 이미지,동영상,텍스트 등 모든 타입의 파일을 읽어올 수 있다.
+
+### Ex1_FileInputStream 클래스
 ```java
 public class Ex1_FileInput {
 	public static void main(String[] args) {
 
 	Stream에 대한 특징
 
-	//...Stream : byte기반의 스트림 -> 실무에서는 훨씬 많이 씀 한글데이터를 직접 읽어오는 경우가 거의 없음 읽어와도 db를 통해서 읽어옴
-	//...Reader, ...Writer : char기반의 스트림
 
-
-	String path = "D:/web14_lhj/test.txt“;
+	String path = "D:/web14_lhj/test.txt";
 	//위 예제에서 만든 test.txt문서
 
 	File f = new File(path);
@@ -167,6 +192,7 @@ public class Ex1_FileInput {
 			//아스키 코드값으로 변경되어 출력되기 때문.
    				System.out.print((char)code); 
    			}
+
 			//스트림은 사용이 완료된 이후 close를 통해 닫아주는 것이 좋다.
 			//그래야 다음 작업을 하는데 문제가 생기지 않는다. 
 			//close를 작성하지 않았을 때 아직도 할 작업이 남았으니까 화면에 띄우거나 파일을 만들면 안되겠구나 착각하는 경우가 있기 때문이다.
@@ -178,13 +204,12 @@ public class Ex1_FileInput {
 	}
 ```
 
-#### Ex2_FileInput클래스 정의
-
+### Ex2_FileInput클래스
 ```java
 public class FileInput {
 public static void main(String[] args){
 
-	String path = "D:/web14_lhj/test.txt“;
+	String path = "D:/web14_lhj/test.txt";
 
 	File f = new File(path);
 	//넉넉하게 100. 배열은 int범위까지만 만들 수 있다.
@@ -196,8 +221,13 @@ public static void main(String[] args){
 	if(f1.exists()){ //파일이 실제 존재할 때만 수행!
 	   try{
 		FileInputStream fis = new FileInputStream(f);
+
+		//read()는 한 바이트씩 읽어들이지만,
+		//read(byte[]b)는 배열 btye[]b를 이용해서 한꺼번에 바이트 개수를 읽어온다.
+		//그래서 반복문을 쓰지 않아도 된다.
 		fis.read(read);
- 		fis가 읽어온걸 read 배열에 넣어주는데 방 두 개를 점유하면서 한글이 저장된다.
+
+ 		//fis가 읽어온걸 read 배열에 넣어주는데 방 두 개를 점유하면서 한글이 저장된다.
  		//현재 byte[]인 read에는 test.txt.에서 읽어온 데이터들이 저장되어 있다.
 		//이를 문자열 형태로 재조합하여 출력할 수 있다.
 		String res = new String(read); 
@@ -214,8 +244,7 @@ public static void main(String[] args){
    	}
    }
 ```
-
-#### Ex3_FileInput클래스 정의 – Scanner의 원리
+### Ex3_FileInput클래스 정의 – Scanner의 원리
 ```java
 public class FileInput {
 	public static void main(String[] args) {
@@ -237,21 +266,13 @@ public class FileInput {
 	} catch ( IOException e) {
 
 	}
-
-	
-처음부터 스캐너를 사용하지 않고 이렇게 먼저 알려줬으면 멘탈 나가서 자바 그만뒀을 것이다.
-
-문자와 정수를 나누는 것도 쉽지가 않기 때문이다. 이렇게 어렵게 받을 바에야 클래스를 하나 만들어서 쉽게 쓰자 라는 느낌으로
-스캐너 클래스를 사용하게 된 것이다.
 ```
 
-#### 자바 강의 3주차(1) 문제(회문수) 풀기
+### 자바 강의 3주차(1) 문제(회문수) 풀기
+- 특정 경로에 file.txt문서를 만들고 내용으로 아무 문장이나 입력해둔다
+- file.txt의 내용을 FileInputStream으로 읽어온 뒤, 이 값이 회문수인지 아닌지를 판단하시오.
 
-특정 경로에 file.txt문서를 만들고<br>
-내용으로 아무 문장이나 입력해둔다<br>
-file.txt의 내용을 FileInputStream으로 읽어온 뒤, 이 값이 회문수인지 아닌지를 판단하시오.<br>
-
-ex1_work 클래스 생성
+### ex1_work 클래스 생성
 ```java
 public class Ex1_work{
 public static void main(String[] args) {
@@ -267,22 +288,22 @@ public static void main(String[] args) {
 
 		//read배열을 String타입으로 변경
 		String ori = new String(read);
-		String rev = “”;
+		String rev = "”;
 		//String rev = null;  null이라고 하는 코드가 초기화 하는데 사용이 되면 		
 		//heap 영역에 메모리 할당 자체가 안되어 있는다는 뜻. String 클래스는 			
-		//집을 만들었는데 일단 비워놓는다는 의미로 “”로 초기화를 많이한다.
+		//집을 만들었는데 일단 비워놓는다는 의미로 "”로 초기화를 많이한다.
 		
-		rev += 1; --> rev = rev + 1; --> rev =“1”;
-		rev = null; --> rev += 1; --> rev = null + 1; --> rev = “null1”
+		rev += 1; --> rev = rev + 1; --> rev ="1”;
+		rev = null; --> rev += 1; --> rev = null + 1; --> rev = "null1”
 
 		//원본문자열인 ori를 뒤집어서 rev객체에 저장
 		for(int I = ori.length()-1; I>=0; I--) {
 			rev+=ori.charAt(i);
 		}//for
 		if(ori.equals(rev)) {
-			System.out.println(ori + “는 회문수입니다”);
+			System.out.println(ori + "는 회문수입니다”);
 		} else {
-			System.out.println(ori + “는 회문수가 아닙니다”):
+			System.out.println(ori + "는 회문수가 아닙니다”):
 		}
 	   fis.close()
 	  }//if
@@ -292,10 +313,13 @@ public static void main(String[] args) {
     }//main
 }
 ```
+## OutputStream
+- 바이트 기반의 출력 스트림은 최상위 클래스로 OuputStream 객체가 제공된다.
+- 해당 객체를 상속해 다양한 출력 스트림들이 존재한다.
 
-ex2_outputStream 패키지
+## FileOutputStream
 
-#### Ex1_PrintStream 클래스 작성 – System.out.print 에 대한 원리
+### Ex1_PrintStream 클래스 작성 – System.out.print 에 대한 원리
 public class Ex1_PrintStream{
 	public static void main(String[] args) {
 
@@ -334,7 +358,7 @@ public class Ex2_FileOutput{
 
 	try{
 	내가 기록하려고 할 때 드라이브가 뻑이난다던지 폴더가 사라질수 있기 때문에 try-catch에 넣는다.
-	FileOutputStream fos = new FileOutputStream(“d:/fileOut.txt”);
+	FileOutputStream fos = new FileOutputStream("d:/fileOut.txt”);
 
 	fos.write(‘f’);
 	fos.write(‘i’);
@@ -342,8 +366,8 @@ public class Ex2_FileOutput{
 	fos.write(‘e’);
 	이렇게 하면 코드가 지나치게 길어지고 한글을 쓸 수가 없다.
 
-	String msg = “fileOutput 예제입니다.\n”;
-	String msg2 = “여러줄도 가능”;
+	String msg = "fileOutput 예제입니다.\n”;
+	String msg2 = "여러줄도 가능”;
 
 	파일에 작성을 하려고 하는데 없으니 파일을 같이 만들어준다.
 	이상태로 실행을 해보면 놀랍게도 우리가 지정한 경로에 fileOut 이라고 하는 파일이 만들어져있고 write한 내용도 기록되있다.
@@ -378,12 +402,12 @@ Ex1_FileReader{
 	   //기본적으로 2byte를 지원하기 때문에 2byte언어로 구성된 파일도 쉽게
 	   // 입출력이 가능
 	try{
-	   FileReader fr = new FileReader("D:/web14_lhj/test.txt“);
+	   FileReader fr = new FileReader("D:/web14_lhj/test.txt");
 	   int code = 0;
 	   
 	   while((code=fr.read() != -1) {
 		System.out.print((char)code);
-		System.out.print(code + “ ”);
+		System.out.print(code + " ”);
 	1byte는 아스키 코드로 읽고 2byte는 유니코드로 알아서 읽어서 문자가 깨지거나 하는일이 없다.
 	이게 더 좋은거 같은데 음악 파일같은거 전송할 때는 2바이트씩 전송하는게 좋지 않을 수 있다.
 	100피스짜리 퍼즐을 옆으로 똑같이 옮긴다고 생각하면 한주먹씩 주는거보다 하나씩 주는게 상식적으로 훨씬 빠를것이다. 
@@ -416,7 +440,7 @@ public class Ex2_FileReader{
 	한글, 특수문자 판단할 필요 없다.
 
 	try{
-	FileReader fr = new FileReader("D:/web14_lhj/test.txt“);
+	FileReader fr = new FileReader("D:/web14_lhj/test.txt");
 	int code = 0;
 		while((code = fr.read()) != -1) {
 			if(code >= ‘A’65 && code <= ‘Z’96) {
@@ -428,8 +452,8 @@ public class Ex2_FileReader{
 			}
 
 		}//while
-		System.out.println(“대문자: ” + upper);
-		System.out.println(“대문자: ” + lower);
+		System.out.println("대문자: ” + upper);
+		System.out.println("대문자: ” + lower);
 
 		fr.close();
 	} catch(Exception e) {
@@ -446,12 +470,12 @@ public class Ex3_FileWriter{
    
 
 		try{
-		FileWriter fw = new FileWriter("D:/web14_lhj/fileWriter예제.txt“);
+		FileWriter fw = new FileWriter("D:/web14_lhj/fileWriter예제.txt");
 		
 		
-		fw.write(“첫번째 줄 작성합니다 hehehe”.getBytes());
-		fw.write(“\n”);
-		fw.write(“두번째 줄도 문제없지 hehehe”);
+		fw.write("첫번째 줄 작성합니다 hehehe”.getBytes());
+		fw.write("\n”);
+		fw.write("두번째 줄도 문제없지 hehehe”);
 
 		fw.close();
 
@@ -716,7 +740,7 @@ public class BufferedWriterEx {
 - DataInputStream은 받아온 정보에서 기본자료형을 읽어오는 메서드를 제공한다.
 
 문자로 데이터를 저장하면, 다시 데이터를 읽어 올 때 문자들을 실제 값으로 변환하는<br>
-예를 들면 문자열 “100”을 숫자 100으로 변환하는, 과정을 거쳐야 하고<br>
+예를 들면 문자열 "100”을 숫자 100으로 변환하는, 과정을 거쳐야 하고<br>
 또 읽어야 할 데이터의 개수를 결정해야하는 번거로움이 있다.<br>
 
 하지만 이처럼 DataInputStream과 DataOutputStream을 사용하면<br>
