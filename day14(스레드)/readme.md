@@ -134,6 +134,15 @@ public class Test {
 ```
 
 ## 스레드의 이름,상태,순위
+- Thread클래스의 주요 메서드
+|메서드|설명|
+|-----|-----|
+|static Thread currentThread()|현재 수행되는 스레드 객체를 리턴|
+|String getName() | 스레드의 이름을 반환
+|void setName(String name) | 스레드의 이름을 지정|
+|int getPriority()|스레드의 우선순위를 반환|
+|void setPriority(int new Priority)|스레드의 우선순위를 지정|
+|void start() | 스레드를 시작|
 
 ## ThreadName 클래스 생성
 ```java
@@ -142,8 +151,8 @@ public class ThreadName extends Thread {
 	public void run() {
 		this.setName("Thread3");
 		System.out.println("현재실행되고있는스레드의이름: Thread.currentThread().getName());
-	System.out.println("현재실행되고있는스레드의상태: Thread.currentThread().getState());
-	System.out.println("현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
+		System.out.println("현재실행되고있는스레드의상태: Thread.currentThread().getState());
+		System.out.println("현재실행되고있는스레드의우선순위: Thread.currentThread().getPriority);
 	}
 }
 ```
@@ -184,6 +193,12 @@ public static void main(String [] args) {
 
 ## 상태변화 메서드
 - 스레드의 상태를 변화시키는 다양한 메서드에 대해서 알아보자
+|메서드|설명|
+|-----|-----|
+|static void sleep(long millis) | millisecond에 지정된 시간만큼 대기|
+|void join()|현재 스레드는 join()메서드를 호출한 스레드가 종료할 때까지 대기|
+|static void yield()| 수행중인 스레드 중 우선순위가 같은 스레드에게 제어권을 넘긴다.|
+
 
 ## sleep()메서드
 - sleep(int mils)메서드는 주어진 시간 동안 스레드를 정지시키는 메서드이다.
@@ -323,9 +338,206 @@ public class ThreadWaitExample {
 	
 }
 ```
+## 데몬스레드
+- 데몬 쓰레드는 다른 일반 쓰레드의 작업을 돕는 보조적인 역할을 수행하는 쓰레드이다.
+- 함께 구동중인 일반 스레드가 종료되면 데몬스레드도 함께 종료된다.
+- 예를들어 문서를 작성하는 도중에 3초 간격으로 자동 세이브가 필요하다고 가정하여 코드를 작성해 보자.
+
+### DaemonTest
+```java
+package test;
+
+public class DaemonMain {
+    public static void main(String[] args) {
+        // 데몬 스레드를 생성합니다.
+        Thread daemonThread = new Thread(new MyDaemonRunnable());
+        
+        // 데몬 스레드로 설정합니다.
+        daemonThread.setDaemon(true);
+        
+        // 데몬 스레드 시작
+        daemonThread.start();
+        
+        // 메인 스레드에서 1부터 15까지 출력합니다.
+        for (int i = 1; i <= 15; i++) {
+            System.out.println(i);
+            
+            try {
+                Thread.sleep(1000); // 1초 대기
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        System.out.println("메인 스레드 종료");
+    }
+}
+
+class MyDaemonRunnable implements Runnable {
+    @Override
+    public void run() {
+            try {
+                
+                for (int i = 1; i <= 15; i++) {
+                    System.out.println("저장되었습니다");
+                    Thread.sleep(3000); // 3초 대기
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        
+    }
+}
+```
 
 
 
+### 문제1
+- 스캐너를 이용하여 키보드에서 숫자를 입력받고
+- 스레드에서 입력받은 숫자가 1씩 감소하다가 0이 되었을 때
+- "종료"라는 메시지와 함께 스레드를 빠져나오도록 만들어보자.
+
+### ThreadCount클래스 생성
+```java
+public class ThreadCount implements Runnable{
+
+	private int n;
+	
+	public ThreadCount(int n) {
+		this.n = n;
+	}
+
+		public void run() {		
+		for(int i = n; i >= 0; i--){
+			
+			try {
+				System.out.println(i);
+				Thread.sleep(1000);
+				
+			} catch (Exception e) {
+			}
+		}
+		System.out.println("종료");
+	}
+```
+
+### ThreadCountMain클래스 생성
+```java
+	public static void main(String[] args) {
+
+		System.out.print("값을 입력 : ");
+		Scanner scan = new Scanner(System.in);
+
+		ThreadCount t = new ThreadCount(scan.nextInt());
+		Thread tt = new Thread(t);		
+		tt.start();
+	}
+
+}
+```
+
+### 문제2
+- QuizThread클래스를 만들어 스레드를 상속 받는다.
+- startGame()메서드를 만들고 그 안에서 1 ~ 100사이의 난수 두 개를 더하는 문제를 출제
+- 키보드에서 답을 입력하여 5문제가 정답처리 될 때까지 로직을 반복한다.
+- 정답을 맞히고 난 후에 모든 문제를 맞히는데 몇 초가 걸렸는지를 화면에 출력하며 프로그램 종료.
+- QuizMain클래스를 만들고 이 메인 클래스에서는
+```java
+QuizThread qt = new QuizThread();
+		qt.start();//스레드 구동
+		qt.startGame();//문제풀이 함수
+```
+- 위의 세 줄 이외의 다른 코드는 추가하지 않도록 한다.
+- 단, 사용자가 문제의 정답으로 정수 이외의 문자를 입력했을 경우에
+- "정답은 정수로 입력하세요"라는 문장이 출력되도록 한다.
+```java
+---------실행 결과----------- 
+
+23 + 48 = 71
+정답!!
+66 + 100 = 166
+정답!!
+68 + 52 = 1
+오답
+61 + 51 = 112
+정답!!
+9 + 48 = 57
+정답!!
+53 + 28 = 81
+정답!!
+결과 : 24초...
+```
+
+### QuizThread클래스 생성
+```java
+public class QuizThread extends Thread{
+
+	int su1, su2;
+	int timer = 0;
+	int playCount = 0;
+	boolean isCheck = true;
+	final int FINISH = 5;//출제 문제 갯수
+
+	public void startGame(){
+
+		while(isCheck){
+
+			try {
+				su1 = new Random().nextInt(100) + 1;
+				su2 = new Random().nextInt(100) + 1;
+				System.out.print(su1 + " + " + su2 + " = ");
+				Scanner scan = new Scanner(System.in);
+				int result = scan.nextInt();
+
+				if(result == (su1 + su2)){
+					System.out.println("정답!!");
+				}else{
+					System.out.println("오답");
+					continue;
+				}	
+
+				playCount++;
+
+				if(playCount == FINISH){
+					System.out.println("결과 : " 
+							       + timer + "초...");
+					isCheck = false;
+				}
+				
+			} catch (Exception e) {
+				System.out.println("정답은 정수로 입력하세요");
+			}
+		}
+	}
+
+	@Override
+	public void run() {
+
+		while (isCheck) {
+
+			try {
+				Thread.sleep(1000);
+				timer++;
+
+			} catch (Exception e) {
+				// TODO: handle exception
+			}			
+		}
+	}
+}
+```
+### QuizMain클래스 생성
+```java
+public class QuizMain {
+	public static void main(String[] args) {
+
+		QuizThread qt = new QuizThread();
+		qt.start();
+		qt.startGame();
+		
+	}
+}
+```
 
 
 
