@@ -135,6 +135,7 @@ public class Test {
 
 ## 스레드의 이름,상태,순위
 - Thread클래스의 주요 메서드
+
 |메서드|설명|
 |-----|-----|
 |static Thread currentThread()|현재 수행되는 스레드 객체를 리턴|
@@ -193,6 +194,7 @@ public static void main(String [] args) {
 
 ## 상태변화 메서드
 - 스레드의 상태를 변화시키는 다양한 메서드에 대해서 알아보자
+
 |메서드|설명|
 |-----|-----|
 |static void sleep(long millis) | millisecond에 지정된 시간만큼 대기|
