@@ -340,6 +340,45 @@ public class ThreadWaitExample {
 	
 }
 ```
+
+## yield()메서드
+- 스레드 자신에게 주어진 실행시간을 다음 차례의 스레드에게 양보(yield)한다.
+- 예를 들어 스케쥴러에 의해 1초의 실행시간을 할당받은 스레드가 0.5초의 시간동안 작업한 상태에서 yield()가 호출되면
+- 나머지 0.5초는 포기하고 다시 실행대기 상태가 된다.
+
+### YieldTest
+```java
+public class YieldExample {
+    public static void main(String[] args) {
+        Thread producerThread = new Thread(new Producer());
+        Thread consumerThread = new Thread(new Consumer());
+
+        producerThread.start();
+        consumerThread.start();
+    }
+}
+
+class Producer implements Runnable {
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Producer: " + i);
+            Thread.yield(); // 다른 스레드에게 CPU 양보
+        }
+    }
+}
+
+class Consumer implements Runnable {
+    @Override
+    public void run() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Consumer: " + i);
+            Thread.yield(); // 다른 스레드에게 CPU 양보
+        }
+    }
+}
+```
+
 ## 데몬스레드
 - 데몬 쓰레드는 다른 일반 쓰레드의 작업을 돕는 보조적인 역할을 수행하는 쓰레드이다.
 - 함께 구동중인 일반 스레드가 종료되면 데몬스레드도 함께 종료된다.
@@ -391,8 +430,6 @@ class MyDaemonRunnable implements Runnable {
     }
 }
 ```
-
-
 
 ### 문제1
 - 스캐너를 이용하여 키보드에서 숫자를 입력받고
@@ -540,6 +577,3 @@ public class QuizMain {
 	}
 }
 ```
-
-
-
