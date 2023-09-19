@@ -374,6 +374,123 @@ public class Ex2_FileOutput{
 ```
 
 ### read()와 write()를 이용한 이미지 복사
+- Ex1_CopyTest 클래스
+```java
+package test;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+public class Ex19_05 {
+	public static void main(String[] args) {
+		FileInputStream in = null;
+		FileOutputStream out = null;
+		
+		try {
+			in = new FileInputStream("C:\\Users\\ITSC\\Desktop\\java/wall.jpg");
+			out = new FileOutputStream("C:\\Users\\ITSC\\Desktop\\java/wall_copy.jpg");
+			
+			//현재 시간을 m/s단위로 나타냄
+			long start = System.currentTimeMillis();
+			System.out.println("이미지 읽기 시작");
+			int read = 0;
+			while((read = in.read()) != -1) {
+				out.write(read);
+			}
+			System.out.println("이미지 읽기 종료");
+			long end = System.currentTimeMillis();
+			long time = (end - start)/1000;
+			System.out.println(time+"초");
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if(out != null) {
+					out.close();
+				}
+				if(in != null) {
+					in.close();
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	}
+}
+```
+- 복사를 하는데 약 17초의 시간이 걸렸다.
+- 배열을 이용해서 복사를 할 때는 얼마나 걸리는지 확인해보자
+
+### Ex2_CopyTest2
+```java
+package test;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+public class Ex19_05 {
+	public static void main(String[] args) {
+		FileInputStream in = null;
+		FileOutputStream out = null;
+		
+		try {
+			in = new FileInputStream("C:\\Users\\ITSC\\Desktop\\java/wall.jpg");
+			out = new FileOutputStream("C:\\Users\\ITSC\\Desktop\\java/wall_copy.jpg");
+			byte[] buffer= new byte[512];
+			
+			//현재 시간을 m/s단위로 나타냄
+			long start = System.currentTimeMillis();
+			System.out.println("이미지 읽기 시작");
+			
+			int read = 0;
+			while((read = in.read(buffer)) != -1) {
+				out.write(buffer,0,read);
+			}
+			
+			System.out.println("이미지 읽기 종료");
+			long end = System.currentTimeMillis();
+			double time = (double)(end - start)/1000;
+			System.out.println(time+"초");
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if(out != null) {
+					out.close();
+				}
+				if(in != null) {
+					in.close();
+				}
+			}catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	}
+}
+```
+- 바이트 배열을 이용하여 이미지를 복사했을 때 처음에 비해 속도가 눈에 띄게 향샹된 것을 확인할 수 있다.
+
+## 문자 기반 스트림
+- 자바에서는 기본 자료형은 char형을 통해 문자를 저장할 수 있다.
+- 1byte 단위로 처리하는 바이트 기반 스트림은 모든 파일을 다룰 수 있으나 문자를 처리하는 char형의 크기는 2byte로 별도의 처리를 하지 않으면 정상적으로 읽지 못하는 경우가 있다.
+- 이때, 문자 기반의 스트림을 사용하면 간단하게 문자를 처리할 수 있다.
+
+## Reader : 문자 입력 스트림
+- 문자 기반 입력 스트림은 최상위 클래스인 Reader를 상속해 다양한 클래스를 제공한다.
+
+![image](https://github.com/to7485/Java1900/assets/54658614/18e86518-c340-4111-85f1-3161e1271319)
+
+## 문자기반 스트림에서 제공하는 메서드
+|메서드|설명|
+|-----|-----|
+|int read()|1개의 문자를 읽고 반환<br>더 이상 읽을 문자가 없으면 -1를 반환|
+|int read(char[] buf)|매개변수로 주어진 배열에 읽은 문자를 저장하고 읽은 수만큼 반환<br>더 이상 읽을 문자가 없으면 -1를 반환|
+|int read(char[] cbuf,int offset,int len)|매개변수로 주어진 배열에 정해진 범위만큼 읽어서 저장<br>시작위치(offset),길이(len)|
+|close()|스트림 사용을 종료하고 자원을 반환|
+
+## FileReader
+- FileReader는 앞에서 학습한 FileInputStream의 기능들과 메서드의 이름이 같다.
+- 기능의 사용법도 크게 다르지 않다.
 
 ### Ex1_FileReader 클래스 생성 – 데이터를 읽어오는 작업
 ```java
@@ -445,7 +562,7 @@ public class Ex2_FileReader{
 }
 ```
 
-#### Ex2_FileWriter클래스 char기반의 출력스트림
+### Ex2_FileWriter클래스 char기반의 출력스트림
 ```java
 public class Ex3_FileWriter{
 	public static void main(String[] args) {
@@ -467,11 +584,42 @@ public class Ex3_FileWriter{
 	}
 }
 
-사실 공부를 하려면 byteStream 방식을 좀 더 공부하는게 낫다.
-저희가 이제 ui쪽을 보면은 지금 우리 단계에서는 이미지파일을 전송할 수가 없어요. 그래서 저랑  fileWriter 같은건 한번 더 보지 않을까 요런거는 생각을 하고 있고 나중에 이미지 같은거 업로드 해야되면 그땐 byte기반스트림을 써야하거든요. 근데 끄때되면 바이트기반스트림으로 뭔가 업로드 하기 위한 준비가 다 되어있는 클래스를 가져다가 쓸꺼에요 우리가 직접 만드는 그런 상황은 앞으로 그렇게 많이 나오지 않을꺼에요 직접 만들어야 되는 경우도 있어서.
+
+이제 ui쪽을 보면은 지금 우리 단계에서는 이미지파일을 전송할 수가 없다.
+그래서 저랑  fileWriter 같은건 한번 더 보지 않을까 요런거는 생각을 하고 있고 나중에 이미지 같은거 업로드 해야되면 그땐 byte기반스트림을 써야한다..
+하지만 바이트기반스트림으로 뭔가 업로드 하기 위한 준비가 다 되어있는 클래스를 가져다가 쓸것이다.
+우리가 직접 만드는 그런 상황은 앞으로 그렇게 많이 나오지 않을것이다.
+```
+## 보조 스트림
+- 스트림은 기능에 따라 스트림과 보조 스트림으로 구분한다.
+    - 기반 스트림 : 대상에 직접 바료를 읽고 쓰는 스트림입니다.
+    - 보조 스트림 : 직접 읽고 쓰는 기능 없이 기반 스트림에 추가로 사용할 수 있는 스트림이다.
+ 
+- 보조 스트림은 실제로 데이터를 주고받을 수는 없다.
+- 스트림의 기능을 향상시키거나 새로운 기능을 제공해주는 스트림으로 다른 보조스트림과 중첩하여 사용할 수 있다.
+
+## 보조 스트림 연결하기
+- 보조 스트림을 사용하려면 보조 스트림을 매개변수로 받는 기반 스트림이 먼저 선언되어야 한다.
+- 보조 스트림은 스스로 데이터를 읽거나 쓸 수 없기 때문에 입출력과 바로 연결되는 기반 스트림이 필요하다.
+
+```java
+보조 스트림 변수명 = new 보조 스트림(기반 스트림);
 ```
 
+## 성능 향상 보조 스트림
+- 느린 하드디스크와 네트워크는 입출력 성능에 영향을 준다.
+- 이때 입출력 소스와 직접 작업하지 않고 버퍼라는 메모리를 이용해 작업하면 실행 성능을 향상시킬 수 있다.
+- 하지만 버퍼는 크기가 작아 많은 양의 데이터를 처리하기에는 부족하다.
+- 보조 스트림 중에서는 다음과 같이 메모리 버퍼를 추가로 제공하여 스트림의 성능을 향상시키는 것들이 있다.
+    - 바이트 기반 스트림: BufferedInputStream,BufferedOutputStream
+    - 문자 기반 스트림 : BufferedReader,BufferedWriter
 
+![image](https://github.com/to7485/Java1900/assets/54658614/a19f06db-01d8-42df-8dd0-71a1005067d5)
+
+## Ex1_BufferedInput
+```java
+
+```
 
 ### 바이트기반Stream
 
