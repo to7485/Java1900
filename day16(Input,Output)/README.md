@@ -42,27 +42,27 @@ File f = new File(path);
 통로를 만들어 준다고 생각하면 된다. 앞으로 내가 만든 파일 이라는 클래스는 path까지 다이렉트로 접근하는 터널같은 것. 중간에 경로가 잘못 되지 않았는지까지도 판별해준다.
         
 //f.isFile() : 파일클래스가 접근한 최종 목적지가 파일형식일 경우 true	if(f.isFile()){// 생성된 객체가 파일일 경우 !f.isFile() 
-    System.out.println(f.length() + "byte”); 한글은 2byte, 영문 특수문자 1byte 
+    System.out.println(f.length() + "byte"); 한글은 2byte, 영문 특수문자 1byte 
 폴더의 용량도 가져올 수 있다. 파일이든 폴더든 나의 최종 목적지에 해당하는 용량을 가져올 수 있다.
   }
 }
-13이 안나온다면 띄어쓰기가 포함되어 있을 수 있다.
+
 ```
 
 ### Ex2_File 클래스 정의
 
-```
+```java
 public class Ex2_File {	
   public static void main(String[] args) {
   // 파일객체로 쓰인 경로
   String path = "D:/web14_lhj/";
   //강의에 사용중인 폴더 경로 지정 \\ 쓰려면 두 개 써줘야 함
-  폴더경로 보여주며 여기까지 접근한다는걸 설명 이 폴더가 가진 하위 목록들의 이름까지 가져올 수 있다.
+ 
 
-  파일클래스가 할 수 있는 두번째 기능 폴더를 찾았을 때 내 폴더의 하위 요소들의 이름을 가져와 봅시다~
+  //파일클래스가 할 수 있는 두번째 기능 : 폴더를 찾았을 때 내 폴더의 하위 요소들의 이름을 문자열 배열로 반환한다.
 
   File f = new File(path);
-  파일클래스가 접근하고자 하는 최종 목저지는 폴더까지... 폴더까지 접근해야 하위 목록들의 이름을 가져올 수 있음 파일은 하위 목록이 없기 때문
+  //파일클래스가 접근하고자 하는 최종 목저지는 폴더까지... 폴더까지 접근해야 하위 목록들의 이름을 가져올 수 있음 파일은 하위 목록이 없기 때문
 
 
   if(!f.isFile()){ //파일이 아닐경우,!f.isFile()), f.isDirectory() 애초에 폴더인지 판별하는 메서드도 가지고 잇다.
@@ -288,22 +288,22 @@ public static void main(String[] args) {
 
 		//read배열을 String타입으로 변경
 		String ori = new String(read);
-		String rev = "”;
+		String rev = "";
 		//String rev = null;  null이라고 하는 코드가 초기화 하는데 사용이 되면 		
 		//heap 영역에 메모리 할당 자체가 안되어 있는다는 뜻. String 클래스는 			
-		//집을 만들었는데 일단 비워놓는다는 의미로 "”로 초기화를 많이한다.
+		//집을 만들었는데 일단 비워놓는다는 의미로 ""로 초기화를 많이한다.
 		
-		rev += 1; --> rev = rev + 1; --> rev ="1”;
-		rev = null; --> rev += 1; --> rev = null + 1; --> rev = "null1”
+		rev += 1; --> rev = rev + 1; --> rev ="1";
+		rev = null; --> rev += 1; --> rev = null + 1; --> rev = "null1"
 
 		//원본문자열인 ori를 뒤집어서 rev객체에 저장
 		for(int I = ori.length()-1; I>=0; I--) {
 			rev+=ori.charAt(i);
 		}//for
 		if(ori.equals(rev)) {
-			System.out.println(ori + "는 회문수입니다”);
+			System.out.println(ori + "는 회문수입니다");
 		} else {
-			System.out.println(ori + "는 회문수가 아닙니다”):
+			System.out.println(ori + "는 회문수가 아닙니다"):
 		}
 	   fis.close()
 	  }//if
@@ -317,66 +317,49 @@ public static void main(String[] args) {
 - 바이트 기반의 출력 스트림은 최상위 클래스로 OuputStream 객체가 제공된다.
 - 해당 객체를 상속해 다양한 출력 스트림들이 존재한다.
 
+![image](https://github.com/to7485/Java1900/assets/54658614/95317635-e5ba-4f01-a94b-1dd6dc61ce1e)
+
+## OutputStream의 주요 메서드
+|메서드|설명|
+|------|-----|
+|int write(int b)|1byte 출력|
+|int write(byte[]b)|매개변수로 주어진 배열의 모든 바이트 출력|
+|int write(byte[],int offset,int len)|매개변수로 주어진 배열에 정해진 범위만큼 읽어서 출력<br>시작 위치(offset), 길이(len)|
+|int flush() | 출력 버퍼에 장류하는 모든 내용 출력|
+|close() | 스트림 사용을 종료하고 자원을 반환|
+
 ## FileOutputStream
-
-### Ex1_PrintStream 클래스 작성 – System.out.print 에 대한 원리
-public class Ex1_PrintStream{
-	public static void main(String[] args) {
-
-	//화면에 데이터를 출력하도록 하는 대표적인 클래스
-	PrintStream ps = System.out; 어디서 많이 본 모양이다.
-
-	ps.write(‘A’); 
-	ps.write(‘B’);
-	ps.write(‘\n’);
-	ps.write(‘c’);
-
-	
-	try {
-	byte[] by = {‘J’,‘A’,‘V’,‘A’};
-	ps.write(by); 프린트스트림이라는 애가 write메서드에서 byte배열을 받을 수 있다.
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-	ps.close(); 내가 지금부터 코드를 기록할 예정인데 끝난거 맞어? 작업이 완전히 끝났다는걸 알려줘야 출력이 제대로 됨
-	}
-}
-
-근데 우리 그러면 화면에 정수를 입력하세요 home 네글자만 받고싶어도 배열로 만들든 write를 4번 쓰든 해야한다.
-system.out 하나면 해결되는데 printstream 가지고는 자바라고 하는것만 출력하려고 해도 코드를 써야되고 귀찮은 부분들이 상당히 많아지게 된다.
-이렇게 고생할 필요 없이 system.out.println 화면에 출력할 수 있으니까 앞으로 이거 활용하면 된다.
-println 이라고 하는걸 통해서 조금 더 간단하고 편리하게 화면에 출력해줄수 있는 요러한 기능들을 내부적으로 대체해주고 있다.
-사실 공부할 필요 없음 println이 있기 때문에...
+- 파일을 쓸 때 기존 파일명이 존재하는 경우가 있다.
+- 이때 해당 파일의 내용을 유지한 채 이어 쓰거나 기존의 내용을 무시하고 새롭게 파일을 생성할 수 있다.
+```java
+new FileOutputStream(경로/파일명, 이어쓰기 옵션);
 ```
+- 이어쓰기 옵션이 true이면 기존 파일에 이어서 내용을 추가하고, false면 기존 내용을 무시하고 새로 쓰게 된다.
+- 기본 옵션은 false로 되어있다.
 
-파일을 만드는 방법에 대해서 알아보자.<br>
+### Ex1_FileOutput – 출력하기 위한 스트림
 
-#### Ex2_FileOutput – 출력하기 위한 스트림
 ```java
 public class Ex2_FileOutput{
 	public static void main(String[] args) {
 
 	try{
-	내가 기록하려고 할 때 드라이브가 뻑이난다던지 폴더가 사라질수 있기 때문에 try-catch에 넣는다.
-	FileOutputStream fos = new FileOutputStream("d:/fileOut.txt”);
+	//내가 기록하려고 할 때 드라이브가 뻑이난다던지 폴더가 사라질수 있기 때문에 try-catch에 넣는다.
+	FileOutputStream fos = new FileOutputStream("d:/fileOut.txt");
 
-	fos.write(‘f’);
-	fos.write(‘i’);
-	fos.write(‘l’);
-	fos.write(‘e’);
+	fos.write('f');
+	fos.write('i');
+	fos.write('l');
+	fos.write('e');
 	이렇게 하면 코드가 지나치게 길어지고 한글을 쓸 수가 없다.
 
-	String msg = "fileOutput 예제입니다.\n”;
-	String msg2 = "여러줄도 가능”;
+	String msg = "fileOutput 예제입니다.\n";
+	String msg2 = "여러줄도 가능";
 
-	파일에 작성을 하려고 하는데 없으니 파일을 같이 만들어준다.
-	이상태로 실행을 해보면 놀랍게도 우리가 지정한 경로에 fileOut 이라고 하는 파일이 만들어져있고 write한 내용도 기록되있다.
-	세이브파일을 만든다거나 저장하는 문서를 만드는 경우에 요렇게 outputStream이 사용이 된다.
-	확장자도 여러분 마음대로 지정할 수 있다.
-
-	FileOutputStream에서 두 번째 파라미터로 boolean을 받으면 기존 내용에 이어붙히는 방식으로 이어붙힐수 있다.
-
-	배열을 문자열로 바꾸는 것 String str = new String(배열);
+	//파일에 작성을 하려고 하는데 없으니 파일을 같이 만들어준다.
+	//이상태로 실행을 해보면 놀랍게도 우리가 지정한 경로에 fileOut 이라고 하는 파일이 만들어져있고 write한 내용도 기록되있다.
+	//세이브파일을 만든다거나 저장하는 문서를 만드는 경우에 요렇게 outputStream이 사용이 된다.
+	//확장자도 마음대로 지정할 수 있다.
 
 	fos.write(msg.getBytes());//문자열 msg를 byte[]로 변경하는 메서드
 	fos.write(msg2.getBytes());
@@ -388,12 +371,11 @@ public class Ex2_FileOutput{
     }//main
 }
 
-byte기반 스트림 끝
 ```
-----------------------------------------------------------------------------
 
-ex3_charStream char기반 스트림
-#### Ex1_FileReader 클래스 생성 – 데이터를 읽어오는 작업
+### read()와 write()를 이용한 이미지 복사
+
+### Ex1_FileReader 클래스 생성 – 데이터를 읽어오는 작업
 ```java
 Ex1_FileReader{
 	public static void main(String[]args) {
@@ -407,7 +389,7 @@ Ex1_FileReader{
 	   
 	   while((code=fr.read() != -1) {
 		System.out.print((char)code);
-		System.out.print(code + " ”);
+		System.out.print(code + " ");
 	1byte는 아스키 코드로 읽고 2byte는 유니코드로 알아서 읽어서 문자가 깨지거나 하는일이 없다.
 	이게 더 좋은거 같은데 음악 파일같은거 전송할 때는 2바이트씩 전송하는게 좋지 않을 수 있다.
 	100피스짜리 퍼즐을 옆으로 똑같이 옮긴다고 생각하면 한주먹씩 주는거보다 하나씩 주는게 상식적으로 훨씬 빠를것이다. 
@@ -443,17 +425,17 @@ public class Ex2_FileReader{
 	FileReader fr = new FileReader("D:/web14_lhj/test.txt");
 	int code = 0;
 		while((code = fr.read()) != -1) {
-			if(code >= ‘A’65 && code <= ‘Z’96) {
+			if(code >= 'A'65 && code <= 'Z'96) {
 				upper++;
 			}
 
-			if( code >=’a’ && code <=’z’) {
+			if( code >='a' && code <='z') {
 				lower++;
 			}
 
 		}//while
-		System.out.println("대문자: ” + upper);
-		System.out.println("대문자: ” + lower);
+		System.out.println("대문자: " + upper);
+		System.out.println("대문자: " + lower);
 
 		fr.close();
 	} catch(Exception e) {
@@ -473,9 +455,9 @@ public class Ex3_FileWriter{
 		FileWriter fw = new FileWriter("D:/web14_lhj/fileWriter예제.txt");
 		
 		
-		fw.write("첫번째 줄 작성합니다 hehehe”.getBytes());
-		fw.write("\n”);
-		fw.write("두번째 줄도 문제없지 hehehe”);
+		fw.write("첫번째 줄 작성합니다 hehehe".getBytes());
+		fw.write("\n");
+		fw.write("두번째 줄도 문제없지 hehehe");
 
 		fw.close();
 
@@ -740,7 +722,7 @@ public class BufferedWriterEx {
 - DataInputStream은 받아온 정보에서 기본자료형을 읽어오는 메서드를 제공한다.
 
 문자로 데이터를 저장하면, 다시 데이터를 읽어 올 때 문자들을 실제 값으로 변환하는<br>
-예를 들면 문자열 "100”을 숫자 100으로 변환하는, 과정을 거쳐야 하고<br>
+예를 들면 문자열 "100"을 숫자 100으로 변환하는, 과정을 거쳐야 하고<br>
 또 읽어야 할 데이터의 개수를 결정해야하는 번거로움이 있다.<br>
 
 하지만 이처럼 DataInputStream과 DataOutputStream을 사용하면<br>
