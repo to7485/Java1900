@@ -618,340 +618,412 @@ public class Ex3_FileWriter{
 
 ## Ex1_BufferedInput
 ```java
+package test;
 
-```
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 
-### 바이트기반Stream
-
-- byte기반은 Input,Output Stream을... char기반은 Reader,Writer를 씀
-- java.io패키지의 InputStream과 OutputStream이 byte구조의 스트림이다.
-
-InputSteam에는 BufferedInputStream, ByteArrayInputStream, DataInputStream, FilterInputStream, read(), OutputStream, PushbackInputStream 등이 있다.<br>
-이중에서 많이 쓰이는 것 위주로 알아보자<br>
-
-※ Api의 SeeAlso 참조
-
-### Byte기반의 InputStream
-- InputStream은 키보드의 입력값을 받아 화면에 출력하는 OS의 표준 입력장치와 이미 연결되어 있다는 것만 알고 넘어가자.
-
-#### FileInputStream
-위에서 File클래스를 배우면서 FileInputStream했었죠?
-거기서 확장된 예제라고 생각하시면 될 듯. 부담없이 확인하세요
-
-#### FileInputEx클래스 정의
-```java
-실행 결과
-
-전에 만들었던 test.txt파일을 읽어오자요
-파일 경로 : d:/test.txt
-안녕하세요abcd
-
-public class FileInputEx {
+public class Test {
 	public static void main(String[] args) {
-		FileInputStream fis = null;
-		byte read[] = new byte[100];
-		byte console[] = new byte[100];
-
-		    try {	
-		      System.out.print("파일 경로 : ");	
-		      System.in.read(console); //읽어올 파일의 경로를 byte배열로 받는다.	
-		      String file = new String(console).trim();//위에서 입력한 경로를 문자열로 변환	
-		      
-		      //Scanner scan = new Scanner(System.in);	
-		      //String file = scan.next();
-		      //위의 System.in.read(console)은 Scanner로 값을 입력받는것과 같은 결과지만	
-		      //Stream을 배우고 있기 때문에 System.in.read()를 사용했다.
-
-		      fis = new FileInputStream(file);//FileInputStream을 통해 file경로를 받는 객체를 준비
-		      fis.read(read, 0, read.length);//read[]배열의 0번째부터 100번째 사이에, 읽어온 txt파일의 내용을 복사
-		      System.out.println(new String(read).trim());//read[]를 문자열로 변경하여 출력
-		      } catch (Exception e) {
-			  e.printStackTrace();
-		    } finally {//finally는 try catch구문을 마치고 무조건 실행되는 예약어
-			    try {
-			      //스트림을 닫아준다.
-			      if(fis != null)	fis.close();
-			      } catch (IOException e) {
-				      // TODO Auto-generated catch block	
-				      e.printStackTrace();
-			      }
-		   	 }
-		     }
-		}
-```
-
------------------------------------------------------------------------예제
-
-BufferedInputStream을 알아보자
-
-#### BufferedInputEx클래스 정의
-
-Buffered스트림을 사용하는 이유는 입출력의 효율성을 향상시키기 위해서 이다.<br>
-화장실을 예로들자면, 공용화장실 같은 경우는 남녀가 모두 이용하는 공간이기 때문에 자칫 처리가 늦어질 수 있지만,<br>
-남자화장실 혹은 여자화장실로 각각의 역할을 구분해두면 쉽게 접근할 수 있는것과 비슷한 이치이다.<br>
-위에 작성한 예제와 거의 흡사한 예제이지만, Buffered스트림을 연결해서 어떻게 구현되는지에 대한 예제를 확인해보자.<br>
-```java
-public class BufferedInputEx {
-	public static void main(String[] args) {
-		
-		//여기 주석은 맨 마지막에 결과 확인 후, 작성해주자
-		//FileInputStream과 BufferedInputStream을 연결함으로써
-		//파일을 읽을 때 버퍼링 작업을 수행하도록 한다.
-		//버퍼링 작업이란, 출력할 바이트를 버퍼라고 하는 메모리 공간에 바이트 배열로 저장하여 한번에 출력하는 것.
-		//버퍼라는 공간은 파일을 쓰고 받기위해 마련된 기억장치의 한 부분인데,
-		//입출력할 자료를 버퍼에 모아두면, 입출력시에 버퍼라는 전용 공간을 활용하기 때문에 출력속도 향상에 도움이 된다.
-		//너무 어려우니, Buffer스트림은 그냥 입출력 향상에 도움이 된다. 라는 정도로만 기억하고 있으면 된다.
-		
-		FileInputStream fis = null;
+			//보조스트림 사용
+		FileInputStream in = null;
 		BufferedInputStream bis = null;
-
-		byte _byte[] = new byte[100];
-		byte result[] = new byte[100];
-
+		
 		try {
-			System.out.print("경로 입력 : ");
-			System.in.read(_byte);
-			String path = new String(_byte).trim();
-
-			//d:/test.txt를 불러올 예정
-			fis = new FileInputStream(path);
-			bis = new BufferedInputStream(fis);
-
-			bis.read(result, 0, result.length);
-			System.out.print(new String(result).trim());
+			in = new FileInputStream("test.txt");
+			bis = new BufferedInputStream(in);
 			
+			int read = 0;
+			
+			//보조 스트림을 사용하면 라인 단위로 읽어올 수 있다.
+			while((read  = bis.read())!= -1) {
+				System.out.print((char)read);
+			}
 		} catch (Exception e) {
 			// TODO: handle exception
-		}finally{
-
+		} finally {
 			try {
-				if(fis != null)
-					fis.close();
-				if(bis != null)
+				if(bis != null) {
 					bis.close();
+				}
+				if(in != null) {
+					in.close();
+				}
 			} catch (Exception e2) {
 				// TODO: handle exception
-			}			
+			}
 		}
 	}
 }
 ```
-BufferedOutputStream에 대해 알아봅시다.<br>
-앞서 진행한 FileOutputStream과 유사하지만, FileOutputStream을 BufferedOutputStream에 탑재하여 쓰기 작업에 효율성을 높여보자.<br>
-
-#### BufferedOutputEx클래스 정의
+## Ex2_ReadImage
+- 보조 스트림 읽기 성능 테스트
 ```java
-public class BufferedOutputEx {
+package test;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+
+public class Test {
 	public static void main(String[] args) {
-		FileOutputStream fos = null;
+		// 보조스트림 사용
+		FileInputStream readFile = null;
+		FileInputStream bisReadFile = null;
+		BufferedInputStream bis = null;
+
+		try {
+			System.out.println("기본 스트림으로 읽기 시작");
+			readFile = new FileInputStream("wall.jpg");
+			// 현재 시간을 m/s 단위로 나타냄
+			long start = System.currentTimeMillis();
+			System.out.println("이미지 읽기 시작1");
+			while (readFile.read() != -1) {
+				// 이미지 읽기
+			}
+			System.out.println("이미지 읽기 종료1");
+			long end = System.currentTimeMillis();
+			long time = (end - start) / 1000;
+
+			System.out.println("소요 시간 : " + time + "초");
+			System.out.println("기본 스트림으로 읽기 종료");
+
+			System.out.println("보조 스트림으로 읽기 시작");
+			bisReadFile = new FileInputStream("wall.jpg");
+			bis = new BufferedInputStream(bisReadFile);
+
+			// 현재 시간을 m/s 단위로 나타냄
+			start = System.currentTimeMillis();
+			System.out.println("이미지 읽기 시작2");
+			while (bis.read() != -1) {
+				// 이미지 읽기
+			}
+			System.out.println("이미지 읽기 종료2");
+			end = System.currentTimeMillis();
+			double result = (end - start) / 1000;
+
+			System.out.println("소요 시간 : " + result + "초");
+			System.out.println("보조 스트림으로 읽기 종료");
+
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if (bis != null) {
+					bis.close();
+				}
+				if (bisReadFile != null) {
+					bisReadFile.close();
+				}
+				if(readFile != null) {
+					readFile.close();
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+	}
+}
+```
+
+## Ex3_CopyImage
+- 보조 스트림을 이용한 이미지 복사
+```java
+package test;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+public class Test {
+	public static void main(String[] args) {
+		FileInputStream readFile = null;
+		BufferedInputStream bis = null;
+		
+		FileOutputStream writeFile = null;
 		BufferedOutputStream bos = null;
 		
 		try {
-			fos = new FileOutputStream("d:/bufferedOutput.txt");
-			bos = new BufferedOutputStream(fos);
-			//BufferedOutputStream에 FileOutputStream을 연결
+			System.out.println("기본 스트림으로 복사 시작");
+			readFile = new FileInputStream("wall.jpg");
+			writeFile = new FileOutputStream("wall_copy.jpg");
 			
-			String str = "BufferedOutputStream 예제";
-			bos.write(str.getBytes());
+			int read = 0;
 			
-			//BufferedOutputStream은 flush()메서드를 호출하지 않으면
-			//파일에 데이터를 쓰는것(write)가 불가능하다.
-			//write()메서드는 값을 기억하고 있고 이를 물리적으로 파일에 
-			//쓰기 위해서 flush()함수를 반드시 사용해야 합니다.
-			bos.flush();
+			long start = System.currentTimeMillis();
+			System.out.println("이미지 복사 시작1");
+			while((read = readFile.read())!= -1) {
+				writeFile.write(read);
+			}
+			System.out.println("이미지 복사 종료1");
+			long end = System.currentTimeMillis();
+			long time = (end - start)/10000;
 			
+			System.out.println("소요 시간 : " + time + "초");
+			System.out.println("기본 스트림으로 복 종료");
+			
+			readFile.close();
+			writeFile.close();
+			
+			System.out.println("보조 스트림으로 복사 시작");
+			
+			readFile = new FileInputStream("wall.jpg");
+			writeFile = new FileOutputStream("wall_copy.jpg");
+			
+			bis = new BufferedInputStream(readFile);
+			bos = new BufferedOutputStream(writeFile);
+			
+			start = System.currentTimeMillis();
+			System.out.println("이미지 복사 시작2");
+			while(bis.read() != -1) {
+				//이미지 쓰기
+				bos.write(read);
+			}
+			
+			System.out.println("이미지 복사 종료2");
+			end = System.currentTimeMillis();
+			double result = (double)(end-start)/1000;
+			
+			System.out.println("소요 시간 : " + time+"초");
+			System.out.println("보조 스트림으로 복사 종료");
+			
+	
 		} catch (Exception e) {
 			// TODO: handle exception
-		}finally{
+		} finally {
 			try {
-				if(fos != null)
-					fos.close();
-				if(bos != null)
+				if(bis != null) {
+					bis.close();
+				}
+				if(readFile != null) {
+					readFile.close();
+				}
+				
+				if(bos != null) {
 					bos.close();
+				}
+				if(writeFile != null) {
+					writeFile.close();
+				}
+				
 			} catch (Exception e2) {
 				// TODO: handle exception
 			}
+			
 		}
 	}
 }
 ```
-BufferedReader에 대해 알아봅시다.<br>
-FileReader와 결과는 동일하지만 버퍼드리더가 Buffer공간을 할당받아 처리하기 때문에<br>
-입출력 속도가 향상된다.<br>
 
-#### BufferedReaderEx클래스 정의
+## 문자 기반 보조 스트림
+- BufferedReader는 Reader에 BufferedWriter는 Writer에 연결되어 버퍼를 제공해주는 보조스트림이다.
+- 바이트 기반 스트림과 마찬가지로 보조 스트림을 사용해 성능을 향상시킬 수 있다.
+- BufferedReader 또는 BufferedWriter의 경우, 버퍼에 데이터를 저장하여 입력 또는 출력하기 때문에 한 단어 뿐만 아니라 문장 단위로 데이터를 읽거나 쓸 수 있다.
+
+### Ex1_BufferedReader
 ```java
-public class BufferedReaderEx {
+package test;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+public class Test {
 	public static void main(String[] args) {
-		//일단 지금까지 써왔던 test.txt의 내용을 여러줄로 수정 ㅋ
-		FileReader fr = null;
+		FileReader reader = null;
 		BufferedReader br = null;
 		
 		try {
-			fr = new FileReader("d:/test.txt");
+			reader = new FileReader("book.txt");
+			br = new BufferedReader(reader);
 			
-			//BufferedReader로 fr이 읽어온 내용을 한줄단위로 처리한다.
-			br = new BufferedReader(fr);
+			//문장을 저장할 변수 
+			String str = "";
 			
-			String msg;
-			
-			while((msg = br.readLine()) != null){
-				System.out.println(msg);
+			//버퍼에 문자를 저장하기 때문에 한번에 읽기 가능
+			while((str = br.readLine())!= null) {
+				System.out.println(str);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				
-				if(fr != null)
-					fr.close();
-				if(br != null)
-					br.close();
-			} catch (Exception e2) {
-				// TODO: handle exception
-			}
-		}
-	}
-}
-```
-
-BufferedWriter봅시다<br>
-
-#### BufferedWriterEx클래스 정의
-```java
-public class BufferedWriterEx {
-	public static void main(String[] args) {
-		FileWriter fw = null;
-		BufferedWriter bw = null;
-		
-		try {
-			
-			fw = new FileWriter("d:/BufWriter.txt");
-			bw = new BufferedWriter(fw);
-			bw.write("BufferedWriter테스트");
-			
-			bw.newLine();//한줄 아래로(\n)내리는 함수 ↓↓
-			//bw.write("\r\n"); 이걸 내부 함수를 이용해 구현한것임
-			
-			bw.write("갑돌이와 갑순이는 한마을에 살았더래요" + 
-			System.getProperty("line.separator"));
-			//System.getProperty("line.separator"))를 통해
-			//프로그램이 라인의 끝이라는 것을 알 수 있도록 해 준다.
-			//없어도 무방하지만, 명시하면 파일을 쓰는데 속도면에서 어느정도 효율성이 높아진다.
-			
-			bw.flush();//Buffer를 이용한 write에는 flush()를 통해 실제로 파일에 내용을 작성해야 한다.
-
-			//bw.close();를 여기서 사용하면 flush()를 사용하지 않아도
-			//close()메서드 내부 기능에 의해 파일쓰기가 가능하지만,
-			//finally가 아닌 try부분에 close()를 사용하면
-			//close()윗라인에서 오류가 발생했을 경우
-			//스트림을 닫지 못하고 종료되기 때문에 그냥 flush()를 쓰자.
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			
-			try {
-				
-				if(fw != null)
-					fw.close();
-				if(bw != null)
-					bw.close();
-				
-			} catch (Exception e2) {
-				// TODO: handle exception
-			}
-		}
-	}
-}
-```
-
-#### DataOutputStream과 DataInputStream을 알아봅시다.
-- DataOutputStream은 출력 스트림에 기본자료형을 기록하기 편리하도록 메서드를 제공한다.
-- DataInputStream은 받아온 정보에서 기본자료형을 읽어오는 메서드를 제공한다.
-
-문자로 데이터를 저장하면, 다시 데이터를 읽어 올 때 문자들을 실제 값으로 변환하는<br>
-예를 들면 문자열 "100"을 숫자 100으로 변환하는, 과정을 거쳐야 하고<br>
-또 읽어야 할 데이터의 개수를 결정해야하는 번거로움이 있다.<br>
-
-하지만 이처럼 DataInputStream과 DataOutputStream을 사용하면<br>
-데이터를 변환할 필요도 없고, 자리수를 세어서 따지지 않아도 되므로 편리하고 빠르게 데이터를 저장하고 읽을 수 있게 된다.<br>
-
-#### DataOutputEx클래스 정의
-```java
-public class DataOutputEx {
-	public static void main(String[] args) {
-		//DataOutput스트림과 DataInput스트림을 동시에 사용하는 예제
-		FileInputStream fis = null;
-		FileOutputStream fos = null;
-		
-		DataInputStream dis = null;
-		DataOutputStream dos = null;
-		
-		try {
-			fos = new FileOutputStream("d:/dataOutput.txt");
-			dos = new DataOutputStream(fos);
-			
-			dos.writeBoolean(false);
-			dos.writeInt(1000);
-			dos.writeChar('A');
-			dos.writeDouble(10.5);
-			
-			//여기까지 실행하고, 해당 경로에 파일이 생성되었는지 확인
-			//DataOutputStream의 메서드는
-			//Boolean, Inteager, Character, Double등 기본자료형을 포함하는 부모객체를 반환하므로, 결과 확인시에 값이 깨져서 나온다는 것을 알고가자.
-		
-
-			//txt파일 결과 확인 후 값을 가져오는 부분 추가
-			fis = new FileInputStream("d:/dataOutput.txt");
-			dis = new DataInputStream(fis);
-			System.out.println(dis.readBoolean());
-			System.out.println(dis.readInt());
-			System.out.println(dis.readChar());
-			System.out.println(dis.readDouble());
 		} catch (Exception e) {
 			// TODO: handle exception
 		} finally {
 			try {
-				if(fis != null)
-					fis.close();
-				if(fos != null)
-					fos.close();
-				if(dis != null)
-					dis.close();
-				if(dos != null)
-					dos.close();
+				if(br != null) {
+					br.close();
+				}
+				if(reader != null) {
+					reader.close();
+				}
 			} catch (Exception e2) {
 				// TODO: handle exception
 			}
-		}		
+		}
 	}
 }
 ```
-byte스트림과 char스트림의 연결
 
-#### ByteCharReader클래스 정의
+### Ex2_BufferedWriter
 ```java
-public class ByteCharReader {
-	public static void main(String[] args) throws IOException {
-		//byte스트림과 char스트림의 연결
+package test;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+
+public class Test {
+	public static void main(String[] args) {
 		
-		File f = new File("d:/java/Test5/src/FileReaderEx1.java");//이전예제 java파일의 경로
-
-		FileInputStream fis = new FileInputStream(f);
-
-		// 위는 byte기반이므로 한줄 단위처리가 안된다.
-		// BufferedReader가 필요하다.
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-
-		String str;
-		while((str = br.readLine()) != null){
-			System.out.println(str);
+		FileReader reader = null;
+		BufferedReader br = null;
+		
+		FileWriter writer = null;
+		BufferedWriter bw = null;
+		
+		try {
+			reader = new FileReader("book.txt");
+			writer = new FileWriter("book_copy.txt",false);
+			
+			br = new BufferedReader(reader);
+			bw = new BufferedWriter(writer);
+			
+			//문장을 저장할 변수 
+			String str = "";
+			
+			//버퍼에 문자를 저장하기 때문에 한번에 읽기 가능
+			while((str = br.readLine())!= null) {
+				bw.write(str+"\n");
+			}
+			System.out.println("텍스트 파일 복사 완료");
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if(bw != null) {
+					bw.close();
+				}
+				if(writer != null) {
+					writer.close();
+				}
+				
+				if(br != null) {
+					br.close();
+				}
+				if(reader != null) {
+					reader.close();
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
 		}
+	}
+}
+```
 
-		if(fis != null)
-			fis.close();
-		if(br != null)
-			br.close();
+## 문자 변환 보조 스트림
+- 바이트 기반 스트림으로 텍스트 파일을 읽거나 쓸 경우, 한글을 포함한 비영여권 문자들이 정상적으로 출력되지 않았다.
+- 소스 스트림이 바이트 기반의 스트림이고, 입출력 데이터가 문자라면 Reader와 Writer로 변환하여 사용하는것을 고려해야 한다.
+- 그 이유는 Reader와 Writer는 문자 단위로 입출력하기 때문에 바이트 기반 스트림보다 다양한 문자를 입출력할 수 있기 때문이다.
+
+## InputStreamReader
+- InputStreamReader는 바이트 기반 스트림 InputStream을 문자 기반의 스트림 Reader로 변환하는 보조 스트림이다.
+```java
+FileInputStream in = new ...
+InputStreamReader is = new InputStreamReader(in);
+InputStreamReader is = new InputStreamReader(in, text-encoding);
+```
+- InputStreamReader를 선언할 때는 text-encoding을 선택해 선언할 수 있다.
+- 개발 환경의 text-encoding이 기본적으로 지정되어 사용된다.
+- 만약 개발 환경이 읽어 들이는 파일의 text-encoding과 다르다면 직접 지정해야 한다.
+
+### Ex1_InputStreamReader
+```java
+package test;
+
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+
+public class Test {
+	public static void main(String[] args) {
+		
+		FileInputStream in = null;
+		InputStreamReader is = null;
+		
+		try {
+			in = new FileInputStream("test.txt");
+			is = new InputStreamReader(in,"UTF-8");
+			int read = 0;
+			
+			while((read = is.read())!= -1) {
+				System.out.println((char)read);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if(is != null) {
+					is.close();
+				}
+				if(in != null) {
+					in.close();
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
+	}
+}
+```
+- 바이트 기반 스트림으로 읽었지만 문자 변환 보조 스트림을 사용하여 변환함으로써 한글과 영문이 정상적으로 출력되었다.
+
+## OutputStreamWriter
+- OutputStreamWriter는 바이트 기반 스트림 OutputStream을 문자 기반의 스트림 Writer로 변환하는 보조스트림이다.
+
+```java
+FileOutputStream out = new ...;
+OutputStreamWriter is = new OutputStreamWriter(out);
+OutputStreamWriter is = new OutputStreamWriter(out,text-encoding);
+```
+
+### Ex1_OutputStreamReader
+```java
+package test;
+
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+
+public class Test {
+	public static void main(String[] args) {
+		
+		FileOutputStream in = null;
+		OutputStreamWriter is = null;
+		
+		try {
+			in = new FileOutputStream("test.txt");
+			is = new OutputStreamWriter(in,"UTF-8");
+			
+			System.out.println("파일 생성 시작");
+			String[] strArray = {
+					"OutputStreamWriter에 대해서 배웁니다."
+					,"we are learning about OutputStreamWriter"};
+			
+			for(String str: strArray) {
+				is.write(str+"\n");
+			}
+			System.out.println("파일 생성 완료");
+		} catch (Exception e) {
+			// TODO: handle exception
+		} finally {
+			try {
+				if(is != null) {
+					is.close();
+				}
+				if(in != null) {
+					in.close();
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
+			}
+		}
 	}
 }
 ```
